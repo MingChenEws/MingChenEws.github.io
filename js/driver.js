@@ -122,7 +122,6 @@ function clearSuccess() {
 
 function processRegisterFormLocal(e) {
     if (e.preventDefault) e.preventDefault();
-    /***
     let accounts = [];
     if (!!localStorage.accounts) {
         //alert("accounts found!");
@@ -137,7 +136,6 @@ function processRegisterFormLocal(e) {
             return;
         }
     }
-    ***/
     //alert(userName + " not found!!");
 
     let rpid = "https://webauthndemo.ews.com/";
