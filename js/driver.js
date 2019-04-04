@@ -221,12 +221,13 @@ function processLoginFormLocal(e) {
     let userName = $("#loginUsername").val();
     var thisUser = null;
     for (let a of accounts) {
-        if (a.username === userName) {
-            $("#successMessage").text(userName + " found!!");
-            $("#success").show();
-            thisUser = a;
-            break;
-        }
+		if (!thisUser) {
+			if (a.username === userName) {
+				$("#successMessage").text(userName + " found!!");
+				$("#success").show();
+				thisUser = a;
+			}
+		}
     }
 	alert(">> 1");
     if (!thisUser) {
