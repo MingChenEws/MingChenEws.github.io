@@ -187,10 +187,10 @@ function processRegisterFormLocal(e) {
 			var response = publicKeyCredentialToJSON(newCredentialInfo);
 			alert("response = " + JSON.stringify(response));
 			alert(">>3.2");
-			if (newCredentialInfo.id) {
-				alert(">> use newCredentialInfo.id:" + binToStr(newCredentialInfo.id));
-				newUser.keyHandle = binToStr(newCredentialInfo.id);
-			} else if (newCredentialInfo.rawId) {
+			if ('id' in newCredentialInfo) {
+				alert(">> use newCredentialInfo.id:" + newCredentialInfo.id);
+				newUser.keyHandle = newCredentialInfo.id;
+			} else if ('rawId' in newCredentialInfo) {
 				alert(">> use newCredentialInfo.rawId:" + binToStr(newCredentialInfo.rawId));
 				newUser.keyHandle = binToStr(newCredentialInfo.rawId);
 			}
