@@ -228,6 +228,7 @@ function processLoginFormLocal(e) {
             break;
         }
     }
+	alert(">> 1");
     if (!thisUser) {
         displayError(userName + " not found!!");
         return;
