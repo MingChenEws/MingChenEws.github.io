@@ -236,13 +236,14 @@ function processLoginFormLocal(e) {
     }
 
 	alert("thisUser:: " + JSON.stringify(thisUser));
-	            let userid = strToBin(thisUser.userid);
+						alert(">> 1.0");
+	            var userid = strToBin(thisUser.userid);
 					alert(">> 1.1");
-            let name = thisUser.username;
+            var name = thisUser.username;
 				alert(">> 1.2");
-            let displayName = thisUser.displayName;
+            var displayName = thisUser.displayName;
 				alert(">> 1.3");
-			let id = strToBin(thisUser.keyHandle);
+			var id = strToBin(thisUser.keyHandle);
 				alert(">> 1.4");
 	
     //let rpid = "https://webauthndemo.ews.com";
