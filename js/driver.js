@@ -124,7 +124,7 @@ function processRegisterFormLocal(e) {
     if (e.preventDefault) e.preventDefault();
     let accounts = [];
     if (!!localStorage.accounts) {
-        //alert("accounts found!");
+        alert("accounts found!");
         accounts = JSON.parse(localStorage.accounts); // Convert the object string back to a JavaScript object.
     } else {
         alert("no accounts found!!");
@@ -136,11 +136,11 @@ function processRegisterFormLocal(e) {
             return;
         }
     }
-    //alert(userName + " not found!!");
+    alert(userName + " not found!!");
 
-    let rpid = "https://webauthndemo.ews.com/";
+    //let rpid = "https://webauthndemo.ews.com/";
     //let rpid = "https://webauthntest.azurewebsites.net";
-    //let rpid = document.domain;
+    let rpid = window.location.hostname;
     var newUser = { "userid": binToStr(getRandomNumbers(16)), "username": $("#username").val(), "displayName": $("#alias").val() };
     alert(">>1 rpid:"+rpid);
     var publicKey = {
@@ -223,8 +223,8 @@ function processLoginFormLocal(e) {
         return;
     }
 
-    let rpid = "https://webauthndemo.ews.com";
-    //let rpid = window.location.hostname;
+    //let rpid = "https://webauthndemo.ews.com";
+    let rpid = window.location.hostname;
     var options = {
         // The challenge is produced by the server; see the Security Considerations
         challenge: getRandomNumbers(32),
