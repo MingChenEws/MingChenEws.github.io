@@ -183,7 +183,10 @@ function processRegisterFormLocal(e) {
     navigator.credentials.create({ publicKey })
         .then(function (newCredentialInfo) {
             // Send new credential info to server for verification and registration. Save locally for now.
-            alert(">>3");
+            alert(">>3.1");
+			var response = publicKeyCredentialToJSON(newCredentialInfo);
+			alert("response = " + JSON.stringify(response));
+			alert(">>3.2");
             newUser.keyHandle = binToStr(newCredentialInfo.id);
 			alert(">>4");
             accounts.push(newUser);
