@@ -184,7 +184,7 @@ function processRegisterFormLocal(e) {
         .then(function (newCredentialInfo) {
             // Send new credential info to server for verification and registration. Save locally for now.
             alert(">>3");
-            newUser.keyHandle = binToStr(credential.id);
+            newUser.keyHandle = binToStr(newCredentialInfo.id);
             accounts.push(newUser);
             localStorage.accounts = JSON.stringify(accounts); // Convert the object to a string.
             displaySuccess(JSON.stringify(newUser) + " account added!!");
