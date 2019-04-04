@@ -184,12 +184,12 @@ function processRegisterFormLocal(e) {
         .then(function (newCredentialInfo) {
             // Send new credential info to server for verification and registration. Save locally for now.
             alert(">>3.1");
-			var response = publicKeyCredentialToJSON(newCredentialInfo);
-			alert("response = " + JSON.stringify(response));
+			//var response = publicKeyCredentialToJSON(newCredentialInfo);
+			//alert("response = " + JSON.stringify(response));
 			alert(">>3.2");
 			if ('id' in newCredentialInfo) {
 				alert(">>>> use newCredentialInfo.id::: " + newCredentialInfo.id);
-				newUser.keyHandle = newCredentialInfo.id;
+				newUser.keyHandle = binToStr(newCredentialInfo.id);
 			} else if ('rawId' in newCredentialInfo) {
 				alert(">> use newCredentialInfo.rawId::: " + binToStr(newCredentialInfo.rawId));
 				newUser.keyHandle = binToStr(newCredentialInfo.rawId);
@@ -243,7 +243,7 @@ function processLoginFormLocal(e) {
 				alert(">> 1.2");
             var displayName = thisUser.displayName;
 				alert(">> 1.3");
-			var id = thisUser.keyHandle;
+			var id = strToBin(thisUser.keyHandle);
 				alert(">> 1.4");
 	
     //let rpid = "https://webauthndemo.ews.com";
@@ -266,7 +266,7 @@ function processLoginFormLocal(e) {
         },
 
         timeout: 60000,  // 1 minute
-        allowCredentials: [{ type: "public-key", id: thisUser.keyHandle }]
+        allowCredentials: [{ type: "public-key", id: strToBin(thisUser.keyHandle) }]
     };
 	alert(">> 2");
     hideForms();
@@ -295,7 +295,7 @@ function processRegisterForm(e) {
 
     let rpid = "https://webauthndemo.ews.com";
     //let rpid = document.domain;
-    let formBody = { "username": $("#username").val(), "displayName": $("#alias").val(), publicKey:"", keyHandle:"" };
+    let formBody = { "username": $("#username").val(), "displayName": $("#alias").val(), keyHandle:"" };
 
             //var account = { username: 'John', displayName: 'Anderson' }; // Create a JavaScript object literal.
         //window.localStorage.person = JSON.stringify(person); // Convert the object to a string.
