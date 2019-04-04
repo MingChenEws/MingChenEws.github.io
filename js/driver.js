@@ -187,7 +187,13 @@ function processRegisterFormLocal(e) {
 			var response = publicKeyCredentialToJSON(newCredentialInfo);
 			alert("response = " + JSON.stringify(response));
 			alert(">>3.2");
-            newUser.keyHandle = binToStr(newCredentialInfo.id);
+			if (newCredentialInfo.id) {
+				alert(">> use newCredentialInfo.id:" + binToStr(newCredentialInfo.id));
+				newUser.keyHandle = binToStr(newCredentialInfo.id);
+			} else if (newCredentialInfo.rawId) {
+				alert(">> use newCredentialInfo.rawId:" + binToStr(newCredentialInfo.rawId));
+				newUser.keyHandle = binToStr(newCredentialInfo.rawId);
+			}
 			alert(">>4");
             accounts.push(newUser);
             localStorage.accounts = JSON.stringify(accounts); // Convert the object to a string.
