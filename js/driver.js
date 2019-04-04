@@ -236,6 +236,15 @@ function processLoginFormLocal(e) {
     }
 
 	alert("thisUser:: " + JSON.stringify(thisUser));
+	            let userid = strToBin(thisUser.userid);
+					alert(">> 1.1");
+            let name = thisUser.username;
+				alert(">> 1.2");
+            let displayName = thisUser.displayName;
+				alert(">> 1.3");
+			let id = strToBin(thisUser.keyHandle);
+				alert(">> 1.4");
+	
     //let rpid = "https://webauthndemo.ews.com";
     let rpid = window.location.hostname;
     var options = {
@@ -258,7 +267,7 @@ function processLoginFormLocal(e) {
         timeout: 60000,  // 1 minute
         allowCredentials: [{ type: "public-key", id: strToBin(thisUser.keyHandle) }]
     };
-
+	alert(">> 2");
     hideForms();
     clearSuccess();
     displayLoading("Contacting token... please perform your verification gesture (e.g., touch it, or plug it in)\n\n");
