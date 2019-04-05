@@ -184,14 +184,15 @@ function processRegisterFormLocal(e) {
         .then(function (newCredentialInfo) {
             // Send new credential info to server for verification and registration. Save locally for now.
             alert(">>3.1");
-			//var response = publicKeyCredentialToJSON(newCredentialInfo);
-			//alert("response = " + JSON.stringify(response));
-			//alert(">>3.2");
+			let cr = newCredentialInfo;
+			var response = publicKeyCredentialToJSON(cr);
+			alert("response = " + JSON.stringify(response));
+			alert(">>3.2");
 			if ('id' in newCredentialInfo) {
-                alert(">>>> use newCredentialInfo.id::: " + binToStr(newCredentialInfo.id));
+                alert(">>>> use newCredentialInfo.id::: " + binToStr(newCredentialInfo.id)+"#####");
                 newUser.keyHandle = binToStr(newCredentialInfo.id);
 			} else if ('rawId' in newCredentialInfo) {
-				alert(">> use newCredentialInfo.rawId::: " + binToStr(newCredentialInfo.rawId));
+				alert(">> use newCredentialInfo.rawId::: " + binToStr(newCredentialInfo.rawId)+"#####");
 				newUser.keyHandle = binToStr(newCredentialInfo.rawId);
 			}
 			alert(">>4");
@@ -438,6 +439,7 @@ function strToBin(str) {
 }
 
 function binToStr(bin) {
+	alert("bin.length="+bin.length);
     return btoa(new Uint8Array(bin).reduce(
         (s, byte) => s + String.fromCharCode(byte), ''
     ));
