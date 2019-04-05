@@ -189,12 +189,13 @@ function processRegisterFormLocal(e) {
 			alert("response = " + JSON.stringify(response));
 			alert(">>3.2");
 			if ('id' in newCredentialInfo) {
+				alert(">>>> use newCredentialInfo.id:::,length=" + newCredentialInfo.id.length+"#####");
                 alert(">>>> use newCredentialInfo.id::: " + newCredentialInfo.id+"#####");
                 newUser.keyHandle = newCredentialInfo.id;
 				alert(">> newUser.keyHandle("+newUser.keyHandle.length+")::: " + newUser.keyHandle+"#####");
 			} else if ('rawId' in newCredentialInfo) {
-				alert(">> use newCredentialInfo.rawId::: " + binToStr(newCredentialInfo.rawId)+"#####");
-				newUser.keyHandle = binToStr(newCredentialInfo.rawId);
+				alert(">> use newCredentialInfo.rawId::: " + newCredentialInfo.rawId+"#####");
+				newUser.keyHandle = newCredentialInfo.rawId;
 			}
 			alert(">>4");
             accounts.push(newUser);
