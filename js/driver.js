@@ -189,8 +189,9 @@ function processRegisterFormLocal(e) {
 			alert("response = " + JSON.stringify(response));
 			alert(">>3.2");
 			if ('id' in newCredentialInfo) {
-                alert(">>>> use newCredentialInfo.id::: " + binToStr(newCredentialInfo.id)+"#####");
-                newUser.keyHandle = binToStr(newCredentialInfo.id);
+                alert(">>>> use newCredentialInfo.id::: " + newCredentialInfo.id+"#####");
+                newUser.keyHandle = newCredentialInfo.id;
+				alert(">> newUser.keyHandle("+newUser.keyHandle.length+")::: " + newUser.keyHandle+"#####");
 			} else if ('rawId' in newCredentialInfo) {
 				alert(">> use newCredentialInfo.rawId::: " + binToStr(newCredentialInfo.rawId)+"#####");
 				newUser.keyHandle = binToStr(newCredentialInfo.rawId);
@@ -244,8 +245,8 @@ function processLoginFormLocal(e) {
 				alert(">> 1.2");
             var displayName = thisUser.displayName;
 				alert(">> 1.3");
-			var id = strToBin(thisUser.keyHandle);
-				alert(">> 1.4");
+			var id = thisUser.keyHandle;
+				alert(">> 1.4 id"+id.length+")");
 	
     //let rpid = "https://webauthndemo.ews.com";
     let rpid = window.location.hostname;
@@ -267,7 +268,7 @@ function processLoginFormLocal(e) {
         },
 
         timeout: 60000,  // 1 minute
-        allowCredentials: [{ type: "public-key", id: strToBin(thisUser.keyHandle) }]
+        allowCredentials: [{ type: "public-key", id: thisUser.keyHandle }]
     };
 	alert(">> 2");
     hideForms();
