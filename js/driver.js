@@ -193,9 +193,20 @@ function processRegisterFormLocal(e) {
                 alert(">>>> use newCredentialInfo.id::: " + newCredentialInfo.id+"#####");
                 newUser.keyHandle = newCredentialInfo.id;
 				alert(">> newUser.keyHandle("+newUser.keyHandle.length+")::: " + newUser.keyHandle+"#####");
-			} else if ('rawId' in newCredentialInfo) {
-				alert(">> use newCredentialInfo.rawId::: " + newCredentialInfo.rawId+"#####");
-				newUser.keyHandle = newCredentialInfo.rawId;
+			} 
+			alert(">>3.4");
+			if ('rawId' in newCredentialInfo) {
+				alert(">> use newCredentialInfo.rawId.length=" + newCredentialInfo.rawId.length);
+				newUser.keyHandle = binToStr(newCredentialInfo.rawId);
+				alert(">> newUser.keyHandle("+newUser.keyHandle.length+")::: " + newUser.keyHandle+"#####");
+			}
+			alert(">>3.6");
+			if (newCredentialInfo.response) {
+				alert(">> got newCredentialInfo.response.clientDataJSON.length=" + newCredentialInfo.response.clientDataJSON.length);
+				let rawIdHexStr = bytesToHex(newCredentialInfo.rawId);
+				alert(">> rawIdHexStr("+rawIdHexStr.length+")::: " + rawIdHexStr+"#####");
+				let clientDataJSONHex = bytesToHex(attestation.response.clientDataJSON);
+				alert(">> clientDataJSONHex("+clientDataJSONHex.length+")::: " + clientDataJSONHex+"#####");
 			}
 			alert(">>4");
             accounts.push(newUser);
