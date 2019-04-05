@@ -189,24 +189,15 @@ function processRegisterFormLocal(e) {
 			alert("response = " + JSON.stringify(response));
 			alert(">>3.2");
 			if ('id' in newCredentialInfo) {
-				alert(">>>> use newCredentialInfo.id:::,length=" + newCredentialInfo.id.length+"#####");
-                alert(">>>> use newCredentialInfo.id::: " + newCredentialInfo.id+"#####");
+				alert(">> IN newCredentialInfo.id");
                 newUser.keyHandle = newCredentialInfo.id;
 				alert(">> newUser.keyHandle("+newUser.keyHandle.length+")::: " + newUser.keyHandle+"#####");
 			} 
 			alert(">>3.4");
 			if ('rawId' in newCredentialInfo) {
-				alert(">> use newCredentialInfo.rawId");
+				alert(">> USE newCredentialInfo.rawId");
 				newUser.keyHandle = binToStr(newCredentialInfo.rawId);
 				alert(">> newUser.keyHandle("+newUser.keyHandle.length+")::: " + newUser.keyHandle+"#####");
-			}
-			alert(">>3.6");
-			if (newCredentialInfo.response) {
-				alert(">> got newCredentialInfo.response.clientDataJSON");
-				var rawIdHexStr = bytesToHex(newCredentialInfo.rawId);
-				alert(">> rawIdHexStr("+rawIdHexStr.length+")::: " + rawIdHexStr+"#####");
-				var clientDataJSONHex = bytesToHex(newCredentialInfo.response.clientDataJSON);
-				alert(">> clientDataJSONHex("+clientDataJSONHex.length+")::: " + clientDataJSONHex+"#####");
 			}
 			alert(">>4");
             accounts.push(newUser);
@@ -452,7 +443,6 @@ function strToBin(str) {
 }
 
 function binToStr(bin) {
-	alert("bin.length="+bin.length);
     return btoa(new Uint8Array(bin).reduce(
         (s, byte) => s + String.fromCharCode(byte), ''
     ));
