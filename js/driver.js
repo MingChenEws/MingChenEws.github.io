@@ -245,9 +245,9 @@ function processLoginFormLocal(e) {
             var name = thisUser.username;
 				alert(">> 1.2");
             var displayName = thisUser.displayName;
-				alert(">> 1.3");
-			var id = thisUser.keyHandle;
-				alert(">> 1.4 id"+id.length+")");
+				alert(">> 1.3, thisUser.keyHandle("+thisUser.keyHandle.length+")::: " + thisUser.keyHandle+"#####");
+			var id = strToBin(thisUser.keyHandle);
+				alert(">> 1.4, id("+id.length+")");
 	
     //let rpid = "https://webauthndemo.ews.com";
     let rpid = window.location.hostname;
@@ -269,7 +269,7 @@ function processLoginFormLocal(e) {
         },
 
         timeout: 60000,  // 1 minute
-        allowCredentials: [{ type: "public-key", id: thisUser.keyHandle }]
+        allowCredentials: [{ type: "public-key", id: strToBin(thisUser.keyHandle) }]
     };
 	alert(">> 2");
     hideForms();
