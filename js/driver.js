@@ -196,16 +196,16 @@ function processRegisterFormLocal(e) {
 			} 
 			alert(">>3.4");
 			if ('rawId' in newCredentialInfo) {
-				alert(">> use newCredentialInfo.rawId.length=" + newCredentialInfo.rawId.length);
+				alert(">> use newCredentialInfo.rawId");
 				newUser.keyHandle = binToStr(newCredentialInfo.rawId);
 				alert(">> newUser.keyHandle("+newUser.keyHandle.length+")::: " + newUser.keyHandle+"#####");
 			}
 			alert(">>3.6");
 			if (newCredentialInfo.response) {
-				alert(">> got newCredentialInfo.response.clientDataJSON.length=" + newCredentialInfo.response.clientDataJSON.length);
-				let rawIdHexStr = bytesToHex(newCredentialInfo.rawId);
+				alert(">> got newCredentialInfo.response.clientDataJSON");
+				var rawIdHexStr = bytesToHex(newCredentialInfo.rawId);
 				alert(">> rawIdHexStr("+rawIdHexStr.length+")::: " + rawIdHexStr+"#####");
-				let clientDataJSONHex = bytesToHex(attestation.response.clientDataJSON);
+				var clientDataJSONHex = bytesToHex(newCredentialInfo.response.clientDataJSON);
 				alert(">> clientDataJSONHex("+clientDataJSONHex.length+")::: " + clientDataJSONHex+"#####");
 			}
 			alert(">>4");
