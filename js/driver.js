@@ -192,7 +192,7 @@ function processRegisterFormLocal(e) {
 				alert(">> IN newCredentialInfo.id");
                 newUser.keyHandle = newCredentialInfo.id;
 				alert(">> newUser.keyHandle("+newUser.keyHandle.length+")::: " + newUser.keyHandle+"#####");
-				var iid = stringToArrayBuffer(newUser.keyHandle);
+				var iid = base64url.decode(newUser.keyHandle);
 				alert(">> 3.3, new iid("+iid.length+")");
 			} 
 			alert(">>3.4");
@@ -200,7 +200,7 @@ function processRegisterFormLocal(e) {
 				alert(">> USE newCredentialInfo.rawId");
 				newUser.keyHandle = binToStr(newCredentialInfo.rawId);
 				alert(">> newUser.keyHandle("+newUser.keyHandle.length+")::: " + newUser.keyHandle+"#####");
-								/*
+				/*
 				var MCbase64 = base64.encode(newCredentialInfo.rawId);
 				var MCbase64url = base64url.encode(newCredentialInfo.rawId);
 				var MSbase64encode = base64encode(newCredentialInfo.rawId);
@@ -457,34 +457,34 @@ function isBrowserCompatible() {
 
 
 //// Microsoft
-    /**
-     * Helper: Base64 encodes an array buffer
-     * @param {ArrayBuffer} arrayBuffer 
-     */
-    function base64encode(arrayBuffer) {
-        if (!arrayBuffer || arrayBuffer.byteLength == 0)
-            return undefined;
+/**
+ * Helper: Base64 encodes an array buffer
+ * @param {ArrayBuffer} arrayBuffer 
+ */
+function base64encode(arrayBuffer) {
+	if (!arrayBuffer || arrayBuffer.byteLength == 0)
+		return undefined;
 
-        return btoa(String.fromCharCode.apply(null, new Uint8Array(arrayBuffer)));
-    }
+	return btoa(String.fromCharCode.apply(null, new Uint8Array(arrayBuffer)));
+}
 
-    /**
-     * Helper: Converts an array buffer to a UTF-8 string
-     * @param {ArrayBuffer} arrayBuffer 
-     * @returns {string}
-     */
-    function arrayBufferToString(arrayBuffer) {
-        return String.fromCharCode.apply(null, new Uint8Array(arrayBuffer));
-    }
+/**
+ * Helper: Converts an array buffer to a UTF-8 string
+ * @param {ArrayBuffer} arrayBuffer 
+ * @returns {string}
+ */
+function arrayBufferToString(arrayBuffer) {
+	return String.fromCharCode.apply(null, new Uint8Array(arrayBuffer));
+}
 
-    /**
-     * Helper: Converts a string to an ArrayBuffer
-     * @param {string} str string to convert
-     * @returns {ArrayBuffer}
-     */
-    function stringToArrayBuffer(str){
-        return Uint8Array.from(str, c => c.charCodeAt(0)).buffer;
-    }
+/**
+ * Helper: Converts a string to an ArrayBuffer
+ * @param {string} str string to convert
+ * @returns {ArrayBuffer}
+ */
+function stringToArrayBuffer(str){
+	return Uint8Array.from(str, c => c.charCodeAt(0)).buffer;
+}
 	
 //// Google
 
