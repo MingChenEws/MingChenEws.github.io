@@ -126,7 +126,6 @@ function processRegisterFormLocal(e) {
     if (!!localStorage.accounts) {
         alert("accounts found!");
         accounts = JSON.parse(localStorage.accounts); // Convert the object string back to a JavaScript object.
-		accounts = [];
     } else {
         alert("no accounts found!!");
     }
@@ -184,20 +183,14 @@ function processRegisterFormLocal(e) {
     navigator.credentials.create({ publicKey })
         .then(function (newCredentialInfo) {
             // Send new credential info to server for verification and registration. Save locally for now.
-            alert(">>3.1");
-			let cr = newCredentialInfo;
-			var response = publicKeyCredentialToJSON(cr);
-			alert("response = " + JSON.stringify(response));
-			alert(">>3.2");
-
-			alert(">> USE newCredentialInfo.rawId");
+            alert(">>3");
 			newUser.keyHandle = binToStr(newCredentialInfo.rawId);
 			alert(">> newUser.keyHandle("+newUser.keyHandle.length+")::: " + newUser.keyHandle+"#####");
 
 			alert(">>4");
             accounts.push(newUser);
             localStorage.accounts = JSON.stringify(accounts); // Convert the object to a string.
-            displaySuccess("Account "+newUser.userName+" added!!");
+            displaySuccess("Account "+newUser.username+" added!!");
             $('#successMessage').append('<a href="./login.html">Click here to log in</a>');
             return true;
         }).catch(function (e) {
@@ -276,7 +269,7 @@ function processLoginFormLocal(e) {
     navigator.credentials.get({ "publicKey": options })
         .then(function (assertion) {
             // Send assertion to server for verification
-			displaySuccess("Account "+thisUser.userName+" authenticated!!");
+			displaySuccess("Account "+thisUser.username+" authenticated!!");
             $('#successMessage').append('<a href="./index.html">Click here to go HOME</a>');
             return true;
         }).catch(function (e) {
