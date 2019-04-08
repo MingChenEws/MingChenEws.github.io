@@ -198,6 +198,7 @@ function processRegisterFormLocal(e) {
 				alert(">> USE newCredentialInfo.rawId");
 				newUser.keyHandle = binToStr(newCredentialInfo.rawId);
 				alert(">> newUser.keyHandle("+newUser.keyHandle.length+")::: " + newUser.keyHandle+"#####");
+
 			}
 			alert(">>4");
             accounts.push(newUser);
@@ -301,11 +302,6 @@ function processRegisterForm(e) {
     let rpid = "https://webauthndemo.ews.com";
     //let rpid = document.domain;
     let formBody = { "username": $("#username").val(), "displayName": $("#alias").val(), keyHandle:"" };
-
-            //var account = { username: 'John', displayName: 'Anderson' }; // Create a JavaScript object literal.
-        //window.localStorage.person = JSON.stringify(person); // Convert the object to a string.
-        //person = JSON.parse(window.localStorage.person); // Convert the object string back to a JavaScript object.
-
 
     fetch('/attestation/options', {
         method: 'POST',
@@ -438,37 +434,6 @@ function isBrowserCompatible() {
     return navigator && navigator.credentials && typeof (navigator.credentials.create) === 'function';
 }
 
-
-//// Microsoft
-/**
- * Helper: Base64 encodes an array buffer
- * @param {ArrayBuffer} arrayBuffer 
- */
-function base64encode(arrayBuffer) {
-	if (!arrayBuffer || arrayBuffer.byteLength == 0)
-		return undefined;
-
-	return btoa(String.fromCharCode.apply(null, new Uint8Array(arrayBuffer)));
-}
-
-/**
- * Helper: Converts an array buffer to a UTF-8 string
- * @param {ArrayBuffer} arrayBuffer 
- * @returns {string}
- */
-function arrayBufferToString(arrayBuffer) {
-	return String.fromCharCode.apply(null, new Uint8Array(arrayBuffer));
-}
-
-/**
- * Helper: Converts a string to an ArrayBuffer
- * @param {string} str string to convert
- * @returns {ArrayBuffer}
- */
-function stringToArrayBuffer(str){
-	return Uint8Array.from(str, c => c.charCodeAt(0)).buffer;
-}
-	
 //// Google
 
 function strToBin(str) {
