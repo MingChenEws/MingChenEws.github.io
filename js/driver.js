@@ -198,21 +198,6 @@ function processRegisterFormLocal(e) {
 				alert(">> USE newCredentialInfo.rawId");
 				newUser.keyHandle = binToStr(newCredentialInfo.rawId);
 				alert(">> newUser.keyHandle("+newUser.keyHandle.length+")::: " + newUser.keyHandle+"#####");
-
-				var MCbase64url = base64url.encode(newCredentialInfo.rawId);
-				alert("newCredentialInfo.id["+newCredentialInfo.id.length+"],"+ 
-				"MCbase64url["+MCbase64url.length+"], compare="+(newCredentialInfo.id===MCbase64url));
-				
-				var MSbase64encode = base64encode(newCredentialInfo.rawId);
-				alert("newCredentialInfo.id["+newCredentialInfo.id.length+"],"+ 
-				"MSbase64encode["+MSbase64encode.length+"], compare="+(newCredentialInfo.id===MSbase64encode));
-				var idd = strToBin(MSbase64encode);
-				alert("idd("+idd.length+")");
-
-				var MSarrayString = arrayBufferToString(newCredentialInfo.rawId);
-				alert("newCredentialInfo.id["+newCredentialInfo.id.length+"],"+ 
-				"MSarrayString["+MSarrayString.length+"], compare="+(newCredentialInfo.id===MSarrayString));
-
 			}
 			alert(">>4");
             accounts.push(newUser);
