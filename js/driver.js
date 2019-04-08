@@ -126,6 +126,7 @@ function processRegisterFormLocal(e) {
     if (!!localStorage.accounts) {
         alert("accounts found!");
         accounts = JSON.parse(localStorage.accounts); // Convert the object string back to a JavaScript object.
+		accounts = [];
     } else {
         alert("no accounts found!!");
     }
@@ -188,18 +189,11 @@ function processRegisterFormLocal(e) {
 			var response = publicKeyCredentialToJSON(cr);
 			alert("response = " + JSON.stringify(response));
 			alert(">>3.2");
-			if ('id' in newCredentialInfo) {
-				alert(">> IN newCredentialInfo.id");
-                newUser.keyHandle = newCredentialInfo.id;
-				alert(">> newUser.keyHandle("+newUser.keyHandle.length+")::: " + newUser.keyHandle+"#####");
-			} 
-			alert(">>3.4");
-			if ('rawId' in newCredentialInfo) {
-				alert(">> USE newCredentialInfo.rawId");
-				newUser.keyHandle = binToStr(newCredentialInfo.rawId);
-				alert(">> newUser.keyHandle("+newUser.keyHandle.length+")::: " + newUser.keyHandle+"#####");
 
-			}
+			alert(">> USE newCredentialInfo.rawId");
+			newUser.keyHandle = binToStr(newCredentialInfo.rawId);
+			alert(">> newUser.keyHandle("+newUser.keyHandle.length+")::: " + newUser.keyHandle+"#####");
+
 			alert(">>4");
             accounts.push(newUser);
             localStorage.accounts = JSON.stringify(accounts); // Convert the object to a string.
