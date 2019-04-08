@@ -192,6 +192,8 @@ function processRegisterFormLocal(e) {
 				alert(">> IN newCredentialInfo.id");
                 newUser.keyHandle = newCredentialInfo.id;
 				alert(">> newUser.keyHandle("+newUser.keyHandle.length+")::: " + newUser.keyHandle+"#####");
+				var iid = base64url.decode(newUser.keyHandle)
+				alert(">> 3.3, iid("+iid.length+")");
 			} 
 			alert(">>3.4");
 			if ('rawId' in newCredentialInfo) {
@@ -202,7 +204,7 @@ function processRegisterFormLocal(e) {
 			alert(">>4");
             accounts.push(newUser);
             localStorage.accounts = JSON.stringify(accounts); // Convert the object to a string.
-            displaySuccess(JSON.stringify(newUser) + " account added!!");
+            displaySuccess("Account "+newUser.userName+" added!!");
             $('#successMessage').append('<a href="./login.html">Click here to log in</a>');
             return true;
         }).catch(function (e) {
@@ -281,7 +283,7 @@ function processLoginFormLocal(e) {
     navigator.credentials.get({ "publicKey": options })
         .then(function (assertion) {
             // Send assertion to server for verification
-            displaySuccess(JSON.stringify(thisUser) + " account authenticated!!");
+			displaySuccess("Account "+thisUser.userName+" authenticated!!");
             $('#successMessage').append('<a href="./index.html">Click here to go HOME</a>');
             return true;
         }).catch(function (e) {
