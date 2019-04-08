@@ -124,11 +124,8 @@ function processRegisterFormLocal(e) {
     if (e.preventDefault) e.preventDefault();
     let accounts = [];
     if (!!localStorage.accounts) {
-        alert("accounts found!");
         accounts = JSON.parse(localStorage.accounts); // Convert the object string back to a JavaScript object.
-    } else {
-        alert("no accounts found!!");
-    }
+    } 
     let userName = $("#username").val();
     for (let a of accounts) {
         if (a.username === userName) {
@@ -136,13 +133,9 @@ function processRegisterFormLocal(e) {
             return;
         }
     }
-    alert(userName + " not found!!");
 
-    //let rpid = "https://webauthndemo.ews.com/";
-    //let rpid = "https://webauthntest.azurewebsites.net";
     let rpid = window.location.hostname;
     var newUser = { "userid": binToStr(getRandomNumbers(16)), "username": $("#username").val(), "displayName": $("#alias").val() };
-    alert(">>1 rpid:"+rpid);
     var publicKey = {
         // The challenge is produced by the server; see the Security Considerations
         challenge: getRandomNumbers(32),
@@ -174,7 +167,7 @@ function processRegisterFormLocal(e) {
         extensions: { "loc": true }  // Include location information
         // in attestation
     };
-    alert(">>2, rpid="+publicKey.rp.id);
+
     hideForms();
     clearSuccess();
     displayLoading("Contacting token... please perform your verification gesture (e.g., touch it, or plug it in)\n\n");
@@ -183,20 +176,15 @@ function processRegisterFormLocal(e) {
     navigator.credentials.create({ publicKey })
         .then(function (newCredentialInfo) {
             // Send new credential info to server for verification and registration. Save locally for now.
-            alert(">>3");
 			newUser.keyHandle = binToStr(newCredentialInfo.rawId);
-			alert(">> newUser.keyHandle("+newUser.keyHandle.length+")::: " + newUser.keyHandle+"#####");
-
-			alert(">>4");
             accounts.push(newUser);
             localStorage.accounts = JSON.stringify(accounts); // Convert the object to a string.
-            displaySuccess("Account "+newUser.username+" added!!");
+            displaySuccess("Account '"+newUser.username+"' added!!");
             $('#successMessage').append('<a href="./login.html">Click here to log in</a>');
             return true;
         }).catch(function (e) {
             // No acceptable authenticator or user refused consent. Handle appropriately.
             displayError("ERROR: " + e.message);
-            //toast("ERROR: " + e);
         });
 
     return false;
@@ -206,11 +194,8 @@ function processLoginFormLocal(e) {
     if (e.preventDefault) e.preventDefault();
     let accounts = [];
     if (!!localStorage.accounts) {
-        //alert("accounts found!");
         accounts = JSON.parse(localStorage.accounts); // Convert the object string back to a JavaScript object.
-    } else {
-        alert("no accounts found!!");
-    }
+    } 
     let userName = $("#loginUsername").val();
     var thisUser = null;
     for (let a of accounts) {
@@ -222,23 +207,11 @@ function processLoginFormLocal(e) {
 			}
 		}
     }
-	alert(">> 1");
     if (!thisUser) {
         displayError(userName + " not found!!");
         return;
     }
 
-	alert("thisUser:: " + JSON.stringify(thisUser));
-						alert(">> 1.0");
-	            var userid = strToBin(thisUser.userid);
-					alert(">> 1.1");
-            var name = thisUser.username;
-				alert(">> 1.2");
-            var displayName = thisUser.displayName;
-				alert(">> 1.3, thisUser.keyHandle("+thisUser.keyHandle.length+")::: " + thisUser.keyHandle+"#####");
-			var id = strToBin(thisUser.keyHandle);
-				alert(">> 1.4, id("+id.length+")");
-	
     //let rpid = "https://webauthndemo.ews.com";
     let rpid = window.location.hostname;
     var options = {
@@ -261,7 +234,6 @@ function processLoginFormLocal(e) {
         timeout: 60000,  // 1 minute
         allowCredentials: [{ type: "public-key", id: strToBin(thisUser.keyHandle) }]
     };
-	alert(">> 2");
     hideForms();
     clearSuccess();
     displayLoading("Contacting token... please perform your verification gesture (e.g., touch it, or plug it in)\n\n");
@@ -269,13 +241,12 @@ function processLoginFormLocal(e) {
     navigator.credentials.get({ "publicKey": options })
         .then(function (assertion) {
             // Send assertion to server for verification
-			displaySuccess("Account "+thisUser.username+" authenticated!!");
+			displaySuccess("Account '"+thisUser.username+"' authenticated!!");
             $('#successMessage').append('<a href="./index.html">Click here to go HOME</a>');
             return true;
         }).catch(function (e) {
             // No acceptable credential or user refused consent. Handle appropriately.
             displayError("ERROR: " + e.message);
-            //toast("ERROR: " + e);
         });
     return false;
 }
