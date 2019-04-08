@@ -208,6 +208,8 @@ function processRegisterFormLocal(e) {
 				var MSbase64encode = base64encode(newCredentialInfo.rawId);
 				alert("newCredentialInfo.id["+newCredentialInfo.id.length+"],"+ 
 				"MSbase64encode["+MSbase64encode.length+"], compare="+(newCredentialInfo.id===MSbase64encode));
+				var idd = strToBin(MSbase64encode);
+				alert("idd("+idd.length+")");
 
 				var MSarrayString = arrayBufferToString(newCredentialInfo.rawId);
 				alert("newCredentialInfo.id["+newCredentialInfo.id.length+"],"+ 
