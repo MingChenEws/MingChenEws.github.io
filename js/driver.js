@@ -206,14 +206,14 @@ function processRegisterFormLocal(e) {
 				var MSbase64encode = base64encode(newCredentialInfo.rawId);
 				var MSarrayString = arrayBufferToString(newCredentialInfo.rawId);
 				
-				alert("newCredentialInfo.id["+newCredentialInfo.id.length]+"],"+ 
-				"MCbase64["+MCbase64.length]+"], compare="+(newCredentialInfo.id===MCbase64));
-				alert("newCredentialInfo.id["+newCredentialInfo.id.length]+"],"+ 
-				"MCbase64url["+MCbase64url.length]+"], compare="+(newCredentialInfo.id===MCbase64url));
-				alert("newCredentialInfo.id["+newCredentialInfo.id.length]+"],"+ 
-				"MSbase64encode["+MSbase64encode.length]+"], compare="+(newCredentialInfo.id===MSbase64encode));
-				alert("newCredentialInfo.id["+newCredentialInfo.id.length]+"],"+ 
-				"MSarrayString["+MSarrayString.length]+"], compare="+(newCredentialInfo.id===MSarrayString));
+				alert("newCredentialInfo.id["+newCredentialInfo.id.length+"],"+ 
+				"MCbase64["+MCbase64.length+"], compare="+(newCredentialInfo.id===MCbase64));
+				alert("newCredentialInfo.id["+newCredentialInfo.id.length+"],"+ 
+				"MCbase64url["+MCbase64url.length+"], compare="+(newCredentialInfo.id===MCbase64url));
+				alert("newCredentialInfo.id["+newCredentialInfo.id.length+"],"+ 
+				"MSbase64encode["+MSbase64encode.length+"], compare="+(newCredentialInfo.id===MSbase64encode));
+				alert("newCredentialInfo.id["+newCredentialInfo.id.length+"],"+ 
+				"MSarrayString["+MSarrayString.length+"], compare="+(newCredentialInfo.id===MSarrayString));
 			}
 			alert(">>4");
             accounts.push(newUser);
