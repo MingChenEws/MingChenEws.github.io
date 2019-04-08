@@ -192,8 +192,8 @@ function processRegisterFormLocal(e) {
 				alert(">> IN newCredentialInfo.id");
                 newUser.keyHandle = newCredentialInfo.id;
 				alert(">> newUser.keyHandle("+newUser.keyHandle.length+")::: " + newUser.keyHandle+"#####");
-				var iid = base64url.decode(newUser.keyHandle)
-				alert(">> 3.3, iid("+iid.length+")");
+				var iid = base64.decode(newUser.keyHandle)
+				alert(">> 3.3, new iid("+iid.length+")");
 			} 
 			alert(">>3.4");
 			if ('rawId' in newCredentialInfo) {
