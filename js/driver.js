@@ -200,6 +200,20 @@ function processRegisterFormLocal(e) {
 				alert(">> USE newCredentialInfo.rawId");
 				newUser.keyHandle = binToStr(newCredentialInfo.rawId);
 				alert(">> newUser.keyHandle("+newUser.keyHandle.length+")::: " + newUser.keyHandle+"#####");
+				
+				var MCbase64 = base64.encode(newCredentialInfo.rawId);
+				var MCbase64url = base64url.encode(newCredentialInfo.rawId);
+				var MSbase64encode = base64encode(newCredentialInfo.rawId);
+				var MSarrayString = arrayBufferToString(newCredentialInfo.rawId);
+				
+				alert("newCredentialInfo.id["+newCredentialInfo.id.length]+"],"+ 
+				"MCbase64["+MCbase64.length]+"], compare="+(newCredentialInfo.id===MCbase64));
+				alert("newCredentialInfo.id["+newCredentialInfo.id.length]+"],"+ 
+				"MCbase64url["+MCbase64url.length]+"], compare="+(newCredentialInfo.id===MCbase64url));
+				alert("newCredentialInfo.id["+newCredentialInfo.id.length]+"],"+ 
+				"MSbase64encode["+MSbase64encode.length]+"], compare="+(newCredentialInfo.id===MSbase64encode));
+				alert("newCredentialInfo.id["+newCredentialInfo.id.length]+"],"+ 
+				"MSarrayString["+MSarrayString.length]+"], compare="+(newCredentialInfo.id===MSarrayString));
 			}
 			alert(">>4");
             accounts.push(newUser);
@@ -439,6 +453,39 @@ function processLoginForm(e) {
 function isBrowserCompatible() {
     return navigator && navigator.credentials && typeof (navigator.credentials.create) === 'function';
 }
+
+
+//// Microsoft
+    /**
+     * Helper: Base64 encodes an array buffer
+     * @param {ArrayBuffer} arrayBuffer 
+     */
+    function base64encode(arrayBuffer) {
+        if (!arrayBuffer || arrayBuffer.byteLength == 0)
+            return undefined;
+
+        return btoa(String.fromCharCode.apply(null, new Uint8Array(arrayBuffer)));
+    }
+
+    /**
+     * Helper: Converts an array buffer to a UTF-8 string
+     * @param {ArrayBuffer} arrayBuffer 
+     * @returns {string}
+     */
+    function arrayBufferToString(arrayBuffer) {
+        return String.fromCharCode.apply(null, new Uint8Array(arrayBuffer));
+    }
+
+    /**
+     * Helper: Converts a string to an ArrayBuffer
+     * @param {string} str string to convert
+     * @returns {ArrayBuffer}
+     */
+    function stringToArrayBuffer(str){
+        return Uint8Array.from(str, c => c.charCodeAt(0)).buffer;
+    }
+	
+//// Google
 
 function strToBin(str) {
     return Uint8Array.from(atob(str), c => c.charCodeAt(0));
