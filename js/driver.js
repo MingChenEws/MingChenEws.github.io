@@ -192,20 +192,20 @@ function processRegisterFormLocal(e) {
 				alert(">> IN newCredentialInfo.id");
                 newUser.keyHandle = newCredentialInfo.id;
 				alert(">> newUser.keyHandle("+newUser.keyHandle.length+")::: " + newUser.keyHandle+"#####");
-				var iid = base64url.decode(newUser.keyHandle);
-				alert(">> 3.3, new iid("+iid.length+")");
+				var iid = base64.decode(newUser.keyHandle);
+				alert(">> 3.3, base64.decode iid("+iid.length+")");
 			} 
 			alert(">>3.4");
 			if ('rawId' in newCredentialInfo) {
 				alert(">> USE newCredentialInfo.rawId");
 				newUser.keyHandle = binToStr(newCredentialInfo.rawId);
 				alert(">> newUser.keyHandle("+newUser.keyHandle.length+")::: " + newUser.keyHandle+"#####");
-				/*
+
 				var MCbase64 = base64.encode(newCredentialInfo.rawId);
 				var MCbase64url = base64url.encode(newCredentialInfo.rawId);
 				var MSbase64encode = base64encode(newCredentialInfo.rawId);
 				var MSarrayString = arrayBufferToString(newCredentialInfo.rawId);
-
+				/*
 				alert("newCredentialInfo.id["+newCredentialInfo.id.length+"],"+ 
 				"MCbase64["+MCbase64.length+"], compare="+(newCredentialInfo.id===MCbase64));
 				alert("newCredentialInfo.id["+newCredentialInfo.id.length+"],"+ 
