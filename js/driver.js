@@ -179,7 +179,7 @@ function processRegisterFormLocal(e) {
 			newUser.keyHandle = binToStr(newCredentialInfo.rawId);
             accounts.push(newUser);
             localStorage.accounts = JSON.stringify(accounts); // Convert the object to a string.
-            displaySuccess("Account '"+newUser.username+"' added!!");
+            displaySuccess("Account '"+newUser.displayName+"' added!!\n");
             $('#successMessage').append('<a href="./login.html">Click here to log in</a>');
             return true;
         }).catch(function (e) {
@@ -241,7 +241,7 @@ function processLoginFormLocal(e) {
     navigator.credentials.get({ "publicKey": options })
         .then(function (assertion) {
             // Send assertion to server for verification
-			displaySuccess("Account '"+thisUser.username+"' authenticated!!");
+			displaySuccess("Account '"+thisUser.displayName+"' authenticated!!\n");
             $('#successMessage').append('<a href="./index.html">Click here to go HOME</a>');
             return true;
         }).catch(function (e) {
@@ -421,7 +421,7 @@ function getRandomNumbers(siz) {
     for (var i = 0; i < 32; i++) {
         challenge[i] = Math.floor(Math.random() * 256);
     }
-    //alert("challenge len=" + challenge.length + ", string=" + binToStr(challenge));
+
     return challenge;
 
     /**
