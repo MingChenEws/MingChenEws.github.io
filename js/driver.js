@@ -192,7 +192,7 @@ function processRegisterFormLocal(e) {
 				alert(">> IN newCredentialInfo.id");
                 newUser.keyHandle = newCredentialInfo.id;
 				alert(">> newUser.keyHandle("+newUser.keyHandle.length+")::: " + newUser.keyHandle+"#####");
-				var iid = stringToArrayBuffer(newUser.keyHandle)
+				var iid = stringToArrayBuffer(newUser.keyHandle);
 				alert(">> 3.3, new iid("+iid.length+")");
 			} 
 			alert(">>3.4");
