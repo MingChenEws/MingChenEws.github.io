@@ -175,6 +175,12 @@ function processRegisterFormLocal(e) {
     // Note: The following call will cause the authenticator to display UI.
     navigator.credentials.create({ publicKey })
         .then(function (newCredentialInfo) {
+			var nc = newCredentialInfo;
+			var ncResult = publicKeyCredentialToJSON(nc);
+			console.info("response = " + ncResult);
+			alert("response = " + ncResult);
+			console.info("response = " + JSON.stringify(ncResult));
+			alert("response = " + JSON.stringify(ncResult));
             // Send new credential info to server for verification and registration. Save locally for now.
 			newUser.keyHandle = binToStr(newCredentialInfo.rawId);
             accounts.push(newUser);
@@ -240,6 +246,12 @@ function processLoginFormLocal(e) {
 
     navigator.credentials.get({ "publicKey": options })
         .then(function (assertion) {
+			var nc = assertion;
+			var ncResult = publicKeyCredentialToJSON(nc);
+			console.info("response = " + ncResult);
+			alert("response = " + ncResult);
+			console.info("response = " + JSON.stringify(ncResult));
+			alert("response = " + JSON.stringify(ncResult));
             // Send assertion to server for verification
 			displaySuccess("Account '"+thisUser.displayName+"' authenticated!!\n");
             $('#successMessage').append('<a href="./index.html">Click here to go HOME</a>');
@@ -441,7 +453,8 @@ function getRandomNumbers(siz) {
     **/
 }
 
-function makeCredential(challenge) {
+function 
+challenge) {
     if (!navigator.credentials)
         return Promise.reject("Error: WebAuthn APIs are not present on this device");
 
