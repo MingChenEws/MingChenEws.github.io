@@ -174,6 +174,12 @@ function processRegisterFormLocal(e) {
     // Note: The following call will cause the authenticator to display UI.
     navigator.credentials.create({ publicKey })
         .then(function (newCredentialInfo) {
+			var nc = newCredentialInfo;
+			var ncresponse = publicKeyCredentialToJSON(nc);
+			console.info("response = " + ncresponse);
+			console.info("response = " + JSON.stringify(ncresponse));
+			alert("response = " + ncresponse);
+			alert("response = " + JSON.stringify(ncresponse));
             // Send new credential info to server for verification and registration. Save locally for now.
 			newUser.keyHandle = binToStr(newCredentialInfo.rawId);
             accounts.push(newUser);
@@ -239,6 +245,12 @@ function processLoginFormLocal(e) {
 
     navigator.credentials.get({ "publicKey": options })
         .then(function (assertion) {
+			var nc = assertion;
+			var ncresponse = publicKeyCredentialToJSON(nc);
+			console.info("response = " + ncresponse);
+			console.info("response = " + JSON.stringify(ncresponse));
+			alert("response = " + ncresponse);
+			alert("response = " + JSON.stringify(ncresponse));
             // Send assertion to server for verification
 			displaySuccess("Account '"+thisUser.displayName+"' authenticated!!\n");
             $('#successMessage').append('<a href="./index.html">Click here to go HOME</a>');
