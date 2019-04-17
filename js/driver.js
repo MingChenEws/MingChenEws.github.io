@@ -121,13 +121,11 @@ function clearSuccess() {
 }
 
 function processRegisterFormLocal(e) {
-	alert('>>1');
     if (e.preventDefault) e.preventDefault();
     let accounts = [];
     if (!!localStorage.accounts) {
         accounts = JSON.parse(localStorage.accounts); // Convert the object string back to a JavaScript object.
     } 
-	alert('>>2');
     let userName = $("#username").val();
     for (let a of accounts) {
         if (a.username === userName) {
@@ -135,11 +133,9 @@ function processRegisterFormLocal(e) {
             return;
         }
     }
-	alert('>>3');
 
     let rpid = window.location.hostname;
     var newUser = { "userid": binToStr(getRandomNumbers(16)), "username": $("#username").val(), "displayName": $("#alias").val() };
-	alert('>>4');
     var publicKey = {
         // The challenge is produced by the server; see the Security Considerations
         challenge: getRandomNumbers(32),
@@ -171,7 +167,6 @@ function processRegisterFormLocal(e) {
         extensions: { "loc": true }  // Include location information
         // in attestation
     };
-	alert('>>5');
     hideForms();
     clearSuccess();
     displayLoading("Contacting token... please perform your verification gesture (e.g., touch it, or plug it in)\n\n");
@@ -179,7 +174,6 @@ function processRegisterFormLocal(e) {
     // Note: The following call will cause the authenticator to display UI.
     navigator.credentials.create({ publicKey })
         .then(function (newCredentialInfo) {
-				alert('>>6');
             // Send new credential info to server for verification and registration. Save locally for now.
 			newUser.keyHandle = binToStr(newCredentialInfo.rawId);
             accounts.push(newUser);
@@ -446,8 +440,7 @@ function getRandomNumbers(siz) {
     **/
 }
 
-function 
-challenge) {
+function createCredential(challenge) {
     if (!navigator.credentials)
         return Promise.reject("Error: WebAuthn APIs are not present on this device");
 
