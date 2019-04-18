@@ -244,9 +244,9 @@ function processLoginFormLocal(e) {
     navigator.credentials.get({ "publicKey": options })
         .then(function (assertion) {
 			var nc = assertion;
-			alert("nc.rawId.length="+nc.rawId.length);
+			alert("nc.rawId.length="+nc.rawId.byteLength);
 			var iid = base64url.decode(nc.id);
-			alert("iid.length="+iid.length);
+			alert("iid.length="+iid.byteLength);
 			var ncresponse = publicKeyCredentialToJSON(nc);
 			console.info("response = " + JSON.stringify(ncresponse));
 			alert("response = " + JSON.stringify(ncresponse));
