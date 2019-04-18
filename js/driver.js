@@ -176,9 +176,7 @@ function processRegisterFormLocal(e) {
         .then(function (newCredentialInfo) {
 			var nc = newCredentialInfo;
 			var ncresponse = publicKeyCredentialToJSON(nc);
-			console.info("response = " + ncresponse);
 			console.info("response = " + JSON.stringify(ncresponse));
-			alert("response = " + ncresponse);
 			alert("response = " + JSON.stringify(ncresponse));
             // Send new credential info to server for verification and registration. Save locally for now.
 			newUser.keyHandle = binToStr(newCredentialInfo.rawId);
@@ -247,9 +245,7 @@ function processLoginFormLocal(e) {
         .then(function (assertion) {
 			var nc = assertion;
 			var ncresponse = publicKeyCredentialToJSON(nc);
-			console.info("response = " + ncresponse);
 			console.info("response = " + JSON.stringify(ncresponse));
-			alert("response = " + ncresponse);
 			alert("response = " + JSON.stringify(ncresponse));
             // Send assertion to server for verification
 			displaySuccess("Account '"+thisUser.displayName+"' authenticated!!\n");
