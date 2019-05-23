@@ -158,7 +158,7 @@ function processRegisterFormLocal(e) {
         pubKeyCredParams: [
             {
                 type: "public-key",
-                alg: -7 // "ES256" as registered in the IANA COSE Algorithms registry
+                alg: "-7" // "ES256" as registered in the IANA COSE Algorithms registry
             }
         ],
 
@@ -532,13 +532,13 @@ function createCredential(challenge) {
     if ($('#create_ES256').is(":checked")) {
         makeCredentialOptions.pubKeyCredParams.push({
             type: "public-key",
-            alg: -7
+            alg: "-7"
         });
     }
     if ($('#create_RS256').is(":checked")) {
         makeCredentialOptions.pubKeyCredParams.push({
             type: "public-key",
-            alg: -257
+            alg: "-257"
         });
     }
 
