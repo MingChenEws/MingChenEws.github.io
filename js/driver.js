@@ -167,6 +167,7 @@ function processRegisterFormLocal(e) {
         extensions: { "loc": true }  // Include location information
         // in attestation
     };
+	alert("Using string for alo");
     hideForms();
     clearSuccess();
     displayLoading("Contacting token... please perform your verification gesture (e.g., touch it, or plug it in)\n\n");
@@ -532,13 +533,13 @@ function createCredential(challenge) {
     if ($('#create_ES256').is(":checked")) {
         makeCredentialOptions.pubKeyCredParams.push({
             type: "public-key",
-            alg: "-7"
+            alg: -7
         });
     }
     if ($('#create_RS256').is(":checked")) {
         makeCredentialOptions.pubKeyCredParams.push({
             type: "public-key",
-            alg: "-257"
+            alg: -257
         });
     }
 
