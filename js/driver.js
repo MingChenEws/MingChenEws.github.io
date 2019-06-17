@@ -177,7 +177,9 @@ function processRegisterFormLocal(e) {
 			var nc = newCredentialInfo;
 			var ncresponse = publicKeyCredentialToJSON(nc);
 			
+ncresponse.credentialId = ncresponse.rawId;
 alert("ncresponse = " + JSON.stringify(ncresponse))
+
 	let tmpGuid = getTmpGuid();
 	var ewSID = "324324324-643534543-345345";
 
