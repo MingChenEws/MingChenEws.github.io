@@ -176,29 +176,6 @@ function processRegisterFormLocal(e) {
         .then(function (newCredentialInfo) {
 			var nc = newCredentialInfo;
 			var ncresponse = publicKeyCredentialToJSON(nc);
-			
-ncresponse.credentialId = ncresponse.rawId;
-alert("ncresponse = " + JSON.stringify(ncresponse))
-
-	let tmpGuid = getTmpGuid();
-	var ewSID = "324324324-643534543-345345";
-
-	
-let formBody = {
-	"ewSID": ewSID,
-	"clientId": "Authentify_Test",
-	"clientAcctId": "Allstate",
-	"app": "fidoRegistration",
-	"license": tmpGuid,
-	"data": ncresponse
-}
-alert("formBody = " + JSON.stringify(formBody))	;
-return false;								
-			
-			
-			
-			
-return false;
 			console.info("response = " + JSON.stringify(ncresponse));
 			alert("response = " + JSON.stringify(ncresponse));
             // Send new credential info to server for verification and registration. Save locally for now.
@@ -277,8 +254,8 @@ function processRegisterFormRemote(e) {
                         navigator.credentials.create({publicKey: v})
                             .then(function (aNewCredentialInfo) {
                                 var response = publicKeyCredentialToJSON(aNewCredentialInfo);
-                                console.info("response = " + response)
-                                console.info("response = " + JSON.stringify(response))
+								response.credentialId = response.rawId;
+								console.info("response = " + JSON.stringify(response))
 								alert("response = " + JSON.stringify(response))
 								let formBody = {
 									"ewSID": ewSID,
@@ -471,8 +448,7 @@ function processRegisterForm(e) {
 }
 
 function getTmpGuid() {	
-	let tmp = 'MzM2MGE2ZDcjN2YxNSM0NzM5I2JiOTUjMmZhNDAyZTBjNGVl';
-	return new TextDecoder("utf8").decode(base64url.decode(tmp)).replace(/#/g, "-");	
+	return 'TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT';	
 }
 
 function processLoginForm(e) {
