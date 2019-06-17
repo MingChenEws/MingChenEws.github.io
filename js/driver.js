@@ -178,13 +178,17 @@ function processRegisterFormLocal(e) {
 			var ncresponse = publicKeyCredentialToJSON(nc);
 			
 alert("ncresponse = " + JSON.stringify(ncresponse))
+	let tmpGuid = getTmpGuid();
+	var ewSID = "324324324-643534543-345345";
+
+	
 let formBody = {
 	"ewSID": ewSID,
 	"clientId": "Authentify_Test",
 	"clientAcctId": "Allstate",
 	"app": "fidoRegistration",
 	"license": tmpGuid,
-	"data": JSON.stringify(ncresponse)
+	"data": ncresponse
 }
 alert("formBody = " + JSON.stringify(formBody))	;
 return false;								
