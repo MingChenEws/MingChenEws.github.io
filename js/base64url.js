@@ -21,6 +21,7 @@ function padString(input) {
 
 
 function encode(input, encoding) {
+	alert("HERE");
     if (encoding === void 0) { encoding = "utf8"; }
     if (Buffer.isBuffer(input)) {
         return fromBase64(input.toString("base64"));
