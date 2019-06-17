@@ -184,7 +184,7 @@ let formBody = {
 	"clientAcctId": "Allstate",
 	"app": "fidoRegistration",
 	"license": tmpGuid,
-	"data": ncresponse
+	"data": JSON.stringify(ncresponse)
 }
 alert("formBody = " + JSON.stringify(formBody))	;
 return false;								
