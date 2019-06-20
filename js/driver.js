@@ -138,6 +138,11 @@ function processRegisterFormLocal(e) {
     var newUser = { "userid": binToStr(getRandomNumbers(16)), "username": $("#username").val(), "displayName": $("#alias").val() };
 	let lst = "";
 	alert("Hello1::lst="+lst);
+	
+	if ((lst === "") || (lst === null)){
+	    lst = [];
+	}
+	
     var publicKey = {
         // The challenge is produced by the server; see the Security Considerations
         challenge: getRandomNumbers(32),
@@ -164,9 +169,12 @@ function processRegisterFormLocal(e) {
             }
         ],
 
-        timeout: 60000,  // 1 minute
-        //excludeCredentials: lst, // No exclude list of PKCredDescriptors
-        extensions: { "loc": true }  // Include location information
+
+        excludeCredentials: lst, // No exclude list of PKCredDescriptors
+		
+        //extensions: { "loc": true }, // Include location information
+		
+		timeout: 60000  // 1 minute
         // in attestation
     };
 	alert("Hello2");
@@ -345,21 +353,26 @@ function processLoginFormLocal(e) {
         // The challenge is produced by the server; see the Security Considerations
         challenge: getRandomNumbers(32),
 
+		rpId: rpid,
+		
         // Relying Party:
-        rp: {
-            id: rpid,
-            name: "EWS WebAuthn Demo"
-        },
+        //rp: {
+        //    id: rpid,
+        //    name: "EWS WebAuthn Demo"
+        //},
 
         // User:
-        user: {
-            id: strToBin(thisUser.userid),
-            name: thisUser.username,
-            displayName: thisUser.displayName
-        },
+        //user: {
+        //    id: strToBin(thisUser.userid),
+        //    name: thisUser.username,
+        //    displayName: thisUser.displayName
+        //},
 
-        timeout: 60000,  // 1 minute
-        allowCredentials: [{ type: "public-key", id: strToBin(thisUser.keyHandle) }]
+		userVerification: "preferred",
+		
+        allowCredentials: [{ type: "public-key", id: strToBin(thisUser.keyHandle) }],
+		
+		timeout: 60000  // 1 minute
     };
 	
     hideForms();
