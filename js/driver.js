@@ -134,7 +134,8 @@ function processRegisterFormLocal(e) {
         }
     }
 
-    let rpid = window.location.hostname;
+    let rpid = "https://webauthndemo.ews.com";
+    //let rpid = window.location.hostname;
     var newUser = { "userid": binToStr(getRandomNumbers(16)), "username": $("#username").val(), "displayName": $("#alias").val() };
 	let lst = "";
 	alert("Hello1::lst="+lst);
@@ -227,8 +228,8 @@ function processRegisterFormRemote(e) {
     clearSuccess();
     displayLoading("Contacting Server, please wait...\n\n");
 
-    //let rpid = "https://webauthndemo.ews.com";
-	let rpid = window.location.hostname;
+    let rpid = "https://webauthndemo.ews.com";
+	//let rpid = window.location.hostname;
 	let tmpGuid = getTmpGuid();
 	var ewSID = null;
 	var replyTo = null;
@@ -349,8 +350,8 @@ function processLoginFormLocal(e) {
         return;
     }
 
-    //let rpid = "https://webauthndemo.ews.com";
-    let rpid = window.location.hostname;
+    let rpid = "https://webauthndemo.ews.com";
+    //let rpid = window.location.hostname;
     var options = {
         // The challenge is produced by the server; see the Security Considerations
         challenge: getRandomNumbers(32),
@@ -417,8 +418,8 @@ function processLoginFormRemote(e) {
     clearSuccess();
     displayLoading("Contacting Server, please wait...\n\n");
 
-    //let rpid = "https://webauthndemo.ews.com";
-	let rpid = window.location.hostname;
+    let rpid = "https://webauthndemo.ews.com";
+	//let rpid = window.location.hostname;
 	let tmpGuid = getTmpGuid();
 	var ewSID = null;
 	var replyTo = null;
@@ -540,8 +541,8 @@ function processRegisterForm(e) {
     clearSuccess();
     displayLoading("Contacting token... please perform your verification gesture (e.g., touch it, or plug it in)\n\n");
 
-    //let rpid = "https://webauthndemo.ews.com";
-	let rpid = window.location.hostname;
+    let rpid = "https://webauthndemo.ews.com";
+	//let rpid = window.location.hostname;
     let formBody = { "username": $("#username").val(), "displayName": $("#alias").val(), keyHandle:"" };
 
     fetch('/attestation/options', {
@@ -618,8 +619,8 @@ function processLoginForm(e) {
     $("#getOut").text("Contacting token... please perform your verification gesture (e.g., touch it, or plug it in)\n\n");
 
     //let rpid = document.domain;
-    //let rpid = "https://webauthndemo.ews.com";
-	let rpid = window.location.hostname;
+    let rpid = "https://webauthndemo.ews.com";
+	//let rpid = window.location.hostname;
     let formBody = {"username": $("#loginUsername").val(), "documentDomain": rpid};
 
     fetch('/assertion/options', {
