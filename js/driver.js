@@ -165,8 +165,8 @@ function processRegisterFormLocal(e) {
         ],
 
         timeout: 60000,  // 1 minute
-        excludeCredentials: lst, // No exclude list of PKCredDescriptors
-        extensions: { "loc": true }  // Include location information
+        //excludeCredentials: lst, // No exclude list of PKCredDescriptors
+        //extensions: { "loc": true }  // Include location information
         // in attestation
     };
 	alert("Hello2");
@@ -213,6 +213,7 @@ var translateMakeCredReq = (makeCredReq) => {
 }
 
 function processRegisterFormRemote(e) {
+	if (e.preventDefault) e.preventDefault();
 	hideForms();
     clearSuccess();
     displayLoading("Contacting Server, please wait...\n\n");
@@ -365,6 +366,161 @@ function processLoginFormLocal(e) {
     clearSuccess();
     displayLoading("Contacting token... please perform your verification gesture (e.g., touch it, or plug it in)\n\n");
 
+    navigator.credentials.get({ "publicKey": options })
+        .then(function (assertion) {
+			var nc = assertion;
+			//alert("nc.rawId.length="+nc.rawId.byteLength);
+			var iid = base64url.decode(nc.id);
+			//alert("iid.length="+iid.byteLength);
+			var ncresponse = publicKeyCredentialToJSON(nc);
+			console.info("response = " + JSON.stringify(ncresponse));
+			alert("response = " + JSON.stringify(ncresponse));
+            // Send assertion to server for verification
+			displaySuccess("Account '"+thisUser.displayName+"' authenticated!!\n");
+            $('#successMessage').append('<a href="./index.html">Click here to go HOME</a>');
+            return true;
+        }).catch(function (e) {
+            // No acceptable credential or user refused consent. Handle appropriately.
+            displayError("ERROR: " + e.message);
+        });
+    return false;
+}
+
+var translateGetAssertReq = (getAssert) => {
+    getAssert.challenge = base64url.decode(getAssert.challenge);
+    for (let allowCred of getAssert.allowCredentials) {
+        allowCred.id = base64url.decode(allowCred.id);
+    }
+    return getAssert
+}
+
+function processLoginFormRemote(e) {
+    if (e.preventDefault) e.preventDefault();
+
+    //let rpid = "https://webauthndemo.ews.com";
+    let rpid = window.location.hostname;
+    var options = {
+        // The challenge is produced by the server; see the Security Considerations
+        challenge: getRandomNumbers(32),
+
+        // Relying Party:
+        rp: {
+            id: rpid,
+            name: "EWS WebAuthn Demo"
+        },
+
+        // User:
+        user: {
+            id: strToBin(thisUser.userid),
+            name: thisUser.username,
+            displayName: thisUser.displayName
+        },
+
+        timeout: 60000,  // 1 minute
+        allowCredentials: [{ type: "public-key", id: strToBin(thisUser.keyHandle) }]
+    };
+	
+	
+	hideForms();
+    clearSuccess();
+    displayLoading("Contacting Server, please wait...\n\n");
+
+    let rpid = "https://webauthndemo.ews.com";
+	let tmpGuid = getTmpGuid();
+	var ewSID = null;
+	var replyTo = null;
+	
+	let formBody = {
+		"clientId": "Authentify_Test",
+		"clientAcctId": "Allstate",
+		"app": "fidoRegistration",
+		"license": tmpGuid,
+		"data": {
+			"rp": {
+				  "id": rpid
+			},
+			"user": {
+				  "name": $("#username").val(),
+			},
+		}
+	}
+	
+	fetch('https://achqdinf03.authentify.inc/', {
+        method: 'POST',
+        //credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formBody)
+    }).then(response => {
+            response.json().then(
+                data => {
+                    if (response.status === 200) {
+                        console.log(data);
+						ewSID = data.ewSID;
+						replyTo = data.replyTo;
+                        let v = translateGetAssertReq(data);
+						v.timeout = 6000;
+                        console.info("Updated Response from FIDO RP server ", v);
+						alert("Updated Response from FIDO RP server::: "+v)
+                        navigator.credentials.create({publicKey: v})
+                            .then(function (aNewCredentialInfo) {
+                                var response = publicKeyCredentialToJSON(aNewCredentialInfo);
+								response.credentialId = response.rawId;
+								console.info("response = " + JSON.stringify(response))
+								alert("response = " + JSON.stringify(response))
+								let formBody = {
+									"ewSID": ewSID,
+									"clientId": "Authentify_Test",
+									"clientAcctId": "Allstate",
+									"app": "fidoRegistration",
+									"license": tmpGuid,
+									"data": response
+								}
+								
+                                fetch(replyTo, {
+                                        method: 'POST',
+                                        //credentials: 'include',
+                                        headers: {
+                                            'Content-Type': 'application/json'
+                                        },
+                                        body: JSON.stringify(formBody)
+                                    }
+                                ).then(
+                                    response => {
+                                        response.json().then(
+                                            data => {
+												alert("response::: "+JSON.stringify(response));
+                                                if (response.status === 200) {
+													if (data.data.registered === true) {
+                                                    displaySuccess("Successful registration! ")
+                                                    $('#successMessage').append('<a href="./login.html">Click here to log in</a>');
+													} else {
+														displayError("Not Registered!!!");
+													}
+                                                } else {
+                                                    displayError(data)
+                                                }
+                                            }
+                                        )
+                                    }
+                                )
+                            }).catch(function (error) {
+                                console.error("respones = " + error)
+                            }
+                        )
+                    }
+                    else {
+                        displayError(`Server responed with error. The message is: ${response.message}`);
+                    }
+                }
+            )
+        }
+    )
+	
+	
+	
+	
     navigator.credentials.get({ "publicKey": options })
         .then(function (assertion) {
 			var nc = assertion;
