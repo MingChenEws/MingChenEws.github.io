@@ -194,6 +194,12 @@ function processRegisterFormLocal(e) {
 			var nc = newCredentialInfo;
 			var ncresponse = publicKeyCredentialToJSON(nc);
 			console.info("response = " + JSON.stringify(ncresponse));
+			//////
+			var myresponse = publicKeyCredentialToJSON(nc);
+			myresponse.credentialId = myresponse.rawId;
+			myresponse.rawId = undefined;
+			console.info("response = " + JSON.stringify(myresponse))
+						////////////		
 			alert("response = " + JSON.stringify(ncresponse));
             // Send new credential info to server for verification and registration. Save locally for now.
 			newUser.keyHandle = binToStr(newCredentialInfo.rawId);
@@ -216,8 +222,10 @@ var translateMakeCredReq = (makeCredReq) => {
 	alert("Updating credentials:::"+makeCredReq);
     makeCredReq.challenge = base64url.decode(makeCredReq.challenge);
     makeCredReq.user.id = base64url.decode(makeCredReq.user.id);
-	if ((makeCredReq.excludeCredentials === "") || (makeCredReq.excludeCredentials === null)){
-	    makeCredReq.excludeCredentials = [];
+	if (makeCredReq.excludeCredentials !== undefined) {
+		if ((makeCredReq.excludeCredentials === "") || (makeCredReq.excludeCredentials === null)){
+			makeCredReq.excludeCredentials = [];
+		}
 	}
     return makeCredReq;
 }
