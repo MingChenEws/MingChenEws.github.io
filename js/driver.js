@@ -136,6 +136,7 @@ function processRegisterFormLocal(e) {
 
     let rpid = window.location.hostname;
     var newUser = { "userid": binToStr(getRandomNumbers(16)), "username": $("#username").val(), "displayName": $("#alias").val() };
+	let lst = [];
     var publicKey = {
         // The challenge is produced by the server; see the Security Considerations
         challenge: getRandomNumbers(32),
@@ -163,7 +164,7 @@ function processRegisterFormLocal(e) {
         ],
 
         timeout: 60000,  // 1 minute
-        excludeCredentials: [], // No exclude list of PKCredDescriptors
+        excludeCredentials: lst, // No exclude list of PKCredDescriptors
         extensions: { "loc": true }  // Include location information
         // in attestation
     };
