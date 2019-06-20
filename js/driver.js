@@ -136,7 +136,7 @@ function processRegisterFormLocal(e) {
 
     let rpid = window.location.hostname;
     var newUser = { "userid": binToStr(getRandomNumbers(16)), "username": $("#username").val(), "displayName": $("#alias").val() };
-	let lst = [];
+	let lst = null;
     var publicKey = {
         // The challenge is produced by the server; see the Security Considerations
         challenge: getRandomNumbers(32),
