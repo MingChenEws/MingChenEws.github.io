@@ -138,6 +138,11 @@ function processRegisterFormLocal(e) {
     var newUser = { "userid": binToStr(getRandomNumbers(16)), "username": $("#username").val(), "displayName": $("#alias").val() };
 	let lst = "";
 	alert("Hello1::lst="+lst);
+	
+	if ((lst === "") || (lst === null)){
+	    lst = [];
+	}
+	alert("Hello1.0::lst="+lst);
     var publicKey = {
         // The challenge is produced by the server; see the Security Considerations
         challenge: getRandomNumbers(32),
@@ -166,7 +171,7 @@ function processRegisterFormLocal(e) {
 
         timeout: 60000,  // 1 minute
         //excludeCredentials: lst, // No exclude list of PKCredDescriptors
-        //extensions: { "loc": true }  // Include location information
+        extensions: { "loc": true }  // Include location information
         // in attestation
     };
 	alert("Hello2");
@@ -206,7 +211,7 @@ var translateMakeCredReq = (makeCredReq) => {
 	alert("Updating credentials:::"+makeCredReq);
     makeCredReq.data.challenge = base64url.decode(makeCredReq.data.challenge);
     makeCredReq.data.user.id = base64url.decode(makeCredReq.data.user.id);
-	if (makeCredReq.data.excludeCredentials === "") {
+	if ((makeCredReq.data.excludeCredentials === "") || (makeCredReq.data.excludeCredentials === null)){
 	    makeCredReq.data.excludeCredentials = [];
 	}
     return makeCredReq.data;
@@ -388,39 +393,15 @@ function processLoginFormLocal(e) {
 }
 
 var translateGetAssertReq = (getAssert) => {
-    getAssert.challenge = base64url.decode(getAssert.challenge);
-    for (let allowCred of getAssert.allowCredentials) {
+    getAssert.data.challenge = base64url.decode(getAssert.data.challenge);
+    for (let allowCred of getAssert.data.allowCredentials) {
         allowCred.id = base64url.decode(allowCred.id);
     }
-    return getAssert
+    return getAssert.data;
 }
 
 function processLoginFormRemote(e) {
     if (e.preventDefault) e.preventDefault();
-
-    //let rpid = "https://webauthndemo.ews.com";
-    let rpid = window.location.hostname;
-    var options = {
-        // The challenge is produced by the server; see the Security Considerations
-        challenge: getRandomNumbers(32),
-
-        // Relying Party:
-        rp: {
-            id: rpid,
-            name: "EWS WebAuthn Demo"
-        },
-
-        // User:
-        user: {
-            id: strToBin(thisUser.userid),
-            name: thisUser.username,
-            displayName: thisUser.displayName
-        },
-
-        timeout: 60000,  // 1 minute
-        allowCredentials: [{ type: "public-key", id: strToBin(thisUser.keyHandle) }]
-    };
-	
 	
 	hideForms();
     clearSuccess();
