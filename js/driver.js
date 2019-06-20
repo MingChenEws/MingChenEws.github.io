@@ -137,13 +137,6 @@ function processRegisterFormLocal(e) {
     //let rpid = "https://webauthndemo.ews.com";
     let rpid = window.location.hostname;
     var newUser = { "userid": binToStr(getRandomNumbers(16)), "username": $("#username").val(), "displayName": $("#alias").val() };
-	let lst = "";
-	alert("Hello1::lst="+lst);
-	
-	if ((lst === "") || (lst === null)){
-	    lst = [];
-	}
-	alert("Hello12::NEW lst="+lst);
 	
     var publicKey = {
         // The challenge is produced by the server; see the Security Considerations
@@ -172,17 +165,15 @@ function processRegisterFormLocal(e) {
         ],
 
 
-        excludeCredentials: lst, // No exclude list of PKCredDescriptors
+        excludeCredentials: [], // No exclude list of PKCredDescriptors
 		
         //extensions: { "loc": true }, // Include location information
 		
 		timeout: 60000  // 1 minute
         // in attestation
     };
-	alert("Hello2");
 	
 	alert("publicKey="+JSON.stringify(publicKey));
-	
 	
     hideForms();
     clearSuccess();
@@ -195,16 +186,7 @@ function processRegisterFormLocal(e) {
 			var ncresponse = publicKeyCredentialToJSON(nc);
 			console.info("response = " + JSON.stringify(ncresponse));
 			alert("response = " + JSON.stringify(ncresponse));
-			
-			//////
-			var myresponse = publicKeyCredentialToJSON(nc);
-			myresponse.credentialId = myresponse.rawId;
-			myresponse.rawId = undefined;
-			console.info("response = " + JSON.stringify(myresponse))
-			alert("myresponse = " + JSON.stringify(myresponse));
-			////////////		
-
-			
+						
             // Send new credential info to server for verification and registration. Save locally for now.
 			newUser.keyHandle = binToStr(newCredentialInfo.rawId);
             accounts.push(newUser);
@@ -246,6 +228,7 @@ function processRegisterFormRemote(e) {
 	var ewSID = null;
 	var replyTo = null;
 	
+	let rpName = "EWS WebAuthn Demo";
 	let formBody = {
 		"clientId": "Authentify_Test",
 		"clientAcctId": "Allstate",
@@ -253,16 +236,18 @@ function processRegisterFormRemote(e) {
 		"license": tmpGuid,
 		"data": {
 			"rp": {
-				  "name": "EWS WebAuthn Demo",
+				  "name": rpName,
 				  "id": rpid
 			},
 			"user": {
 				  "name": $("#username").val(),
 				  "displayName": $("#alias").val()
 			},
-			"credentialName":"EWS WebAuthn Demo "+$("#username").val()+" FIDO Token"
+			"credentialName": rpName + " " +$("#username").val()+" FIDO Token"
 		}
 	}
+	
+	console.log("formBody="+JSON.stringify(formBody));
 
     fetch('https://achqdinf03.authentify.inc/', {
         method: 'POST',
@@ -286,6 +271,7 @@ function processRegisterFormRemote(e) {
                             .then(function (aNewCredentialInfo) {
                                 var response = publicKeyCredentialToJSON(aNewCredentialInfo);
 								response.credentialId = response.rawId;
+								//response.rawId = undefined;
 								console.info("response = " + JSON.stringify(response))
 								alert("response = " + JSON.stringify(response))
 								let formBody = {
@@ -370,19 +356,6 @@ function processLoginFormLocal(e) {
 
 		rpId: rpid,
 		
-        // Relying Party:
-        //rp: {
-        //    id: rpid,
-        //    name: "EWS WebAuthn Demo"
-        //},
-
-        // User:
-        //user: {
-        //    id: strToBin(thisUser.userid),
-        //    name: thisUser.username,
-        //    displayName: thisUser.displayName
-        //},
-
 		userVerification: "preferred",
 		
         allowCredentials: [{ type: "public-key", id: strToBin(thisUser.keyHandle) }],
@@ -451,6 +424,8 @@ function processLoginFormRemote(e) {
 		}
 	}
 	
+	console.log("formBody="+JSON.stringify(formBody));
+		
 	fetch('https://achqdinf03.authentify.inc/', {
         method: 'POST',
         //credentials: 'include',
@@ -473,6 +448,7 @@ function processLoginFormRemote(e) {
                             .then(function (aNewCredentialInfo) {
                                 var response = publicKeyCredentialToJSON(aNewCredentialInfo);
 								response.credentialId = response.rawId;
+								//response.rawId = undefined;
 								console.info("response = " + JSON.stringify(response))
 								alert("response = " + JSON.stringify(response))
 								let formBody = {
