@@ -138,11 +138,6 @@ function processRegisterFormLocal(e) {
     var newUser = { "userid": binToStr(getRandomNumbers(16)), "username": $("#username").val(), "displayName": $("#alias").val() };
 	let lst = "";
 	alert("Hello1::lst="+lst);
-	
-	if ((lst === "") || (lst === null)){
-	    lst = [];
-	}
-	alert("Hello1.0::lst="+lst);
     var publicKey = {
         // The challenge is produced by the server; see the Security Considerations
         challenge: getRandomNumbers(32),
@@ -170,7 +165,7 @@ function processRegisterFormLocal(e) {
         ],
 
         timeout: 60000,  // 1 minute
-        //excludeCredentials: lst, // No exclude list of PKCredDescriptors
+        excludeCredentials: lst, // No exclude list of PKCredDescriptors
         extensions: { "loc": true }  // Include location information
         // in attestation
     };
@@ -211,7 +206,7 @@ var translateMakeCredReq = (makeCredReq) => {
 	alert("Updating credentials:::"+makeCredReq);
     makeCredReq.data.challenge = base64url.decode(makeCredReq.data.challenge);
     makeCredReq.data.user.id = base64url.decode(makeCredReq.data.user.id);
-	if ((makeCredReq.data.excludeCredentials === "") || (makeCredReq.data.excludeCredentials === null)){
+	if (makeCredReq.data.excludeCredentials === "") {
 	    makeCredReq.data.excludeCredentials = [];
 	}
     return makeCredReq.data;
@@ -357,17 +352,16 @@ function processLoginFormLocal(e) {
         },
 
         // User:
-        //user: {
-        //    id: strToBin(thisUser.userid),
-        //    name: thisUser.username,
-        //    displayName: thisUser.displayName
-        //},
+        user: {
+            id: strToBin(thisUser.userid),
+            name: thisUser.username,
+            displayName: thisUser.displayName
+        },
 
         timeout: 60000,  // 1 minute
         allowCredentials: [{ type: "public-key", id: strToBin(thisUser.keyHandle) }]
     };
-	alert("options="+JSON.stringify(options));
-		
+	
     hideForms();
     clearSuccess();
     displayLoading("Contacting token... please perform your verification gesture (e.g., touch it, or plug it in)\n\n");
@@ -392,16 +386,32 @@ function processLoginFormLocal(e) {
     return false;
 }
 
-var translateGetAssertReq = (getAssert) => {
-    getAssert.data.challenge = base64url.decode(getAssert.data.challenge);
-    for (let allowCred of getAssert.data.allowCredentials) {
-        allowCred.id = base64url.decode(allowCred.id);
-    }
-    return getAssert.data;
-}
-
 function processLoginFormRemote(e) {
     if (e.preventDefault) e.preventDefault();
+
+    //let rpid = "https://webauthndemo.ews.com";
+    let rpid = window.location.hostname;
+    var options = {
+        // The challenge is produced by the server; see the Security Considerations
+        challenge: getRandomNumbers(32),
+
+        // Relying Party:
+        rp: {
+            id: rpid,
+            name: "EWS WebAuthn Demo"
+        },
+
+        // User:
+        user: {
+            id: strToBin(thisUser.userid),
+            name: thisUser.username,
+            displayName: thisUser.displayName
+        },
+
+        timeout: 60000,  // 1 minute
+        allowCredentials: [{ type: "public-key", id: strToBin(thisUser.keyHandle) }]
+    };
+	
 	
 	hideForms();
     clearSuccess();
@@ -441,7 +451,7 @@ function processLoginFormRemote(e) {
                         console.log(data);
 						ewSID = data.ewSID;
 						replyTo = data.replyTo;
-                        let v = translateGetAssertReq(data);
+                        let v = translateMakeCredReq(data);
 						v.timeout = 6000;
                         console.info("Updated Response from FIDO RP server ", v);
 						alert("Updated Response from FIDO RP server::: "+v)
