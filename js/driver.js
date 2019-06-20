@@ -227,7 +227,8 @@ function processRegisterFormRemote(e) {
     clearSuccess();
     displayLoading("Contacting Server, please wait...\n\n");
 
-    let rpid = "https://webauthndemo.ews.com";
+    //let rpid = "https://webauthndemo.ews.com";
+	let rpid = window.location.hostname;
 	let tmpGuid = getTmpGuid();
 	var ewSID = null;
 	var replyTo = null;
@@ -416,7 +417,8 @@ function processLoginFormRemote(e) {
     clearSuccess();
     displayLoading("Contacting Server, please wait...\n\n");
 
-    let rpid = "https://webauthndemo.ews.com";
+    //let rpid = "https://webauthndemo.ews.com";
+	let rpid = window.location.hostname;
 	let tmpGuid = getTmpGuid();
 	var ewSID = null;
 	var replyTo = null;
@@ -538,8 +540,8 @@ function processRegisterForm(e) {
     clearSuccess();
     displayLoading("Contacting token... please perform your verification gesture (e.g., touch it, or plug it in)\n\n");
 
-    let rpid = "https://webauthndemo.ews.com";
-    //let rpid = document.domain;
+    //let rpid = "https://webauthndemo.ews.com";
+	let rpid = window.location.hostname;
     let formBody = { "username": $("#username").val(), "displayName": $("#alias").val(), keyHandle:"" };
 
     fetch('/attestation/options', {
@@ -616,7 +618,8 @@ function processLoginForm(e) {
     $("#getOut").text("Contacting token... please perform your verification gesture (e.g., touch it, or plug it in)\n\n");
 
     //let rpid = document.domain;
-    let rpid = "https://webauthndemo.ews.com";
+    //let rpid = "https://webauthndemo.ews.com";
+	let rpid = window.location.hostname;
     let formBody = {"username": $("#loginUsername").val(), "documentDomain": rpid};
 
     fetch('/assertion/options', {
