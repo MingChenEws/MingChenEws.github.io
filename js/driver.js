@@ -361,7 +361,8 @@ function processLoginFormLocal(e) {
         timeout: 60000,  // 1 minute
         allowCredentials: [{ type: "public-key", id: strToBin(thisUser.keyHandle) }]
     };
-	
+	alert("options="+JSON.stringify(options));
+		
     hideForms();
     clearSuccess();
     displayLoading("Contacting token... please perform your verification gesture (e.g., touch it, or plug it in)\n\n");
