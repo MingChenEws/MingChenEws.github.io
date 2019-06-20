@@ -165,7 +165,7 @@ function processRegisterFormLocal(e) {
         ],
 
         timeout: 60000,  // 1 minute
-        excludeCredentials: lst, // No exclude list of PKCredDescriptors
+        //excludeCredentials: lst, // No exclude list of PKCredDescriptors
         extensions: { "loc": true }  // Include location information
         // in attestation
     };
@@ -204,12 +204,12 @@ function processRegisterFormLocal(e) {
 var translateMakeCredReq = (makeCredReq) => {
     console.info("Updating credentials ", makeCredReq);
 	alert("Updating credentials:::"+makeCredReq);
-    makeCredReq.data.challenge = base64url.decode(makeCredReq.data.challenge);
-    makeCredReq.data.user.id = base64url.decode(makeCredReq.data.user.id);
-	if (makeCredReq.data.excludeCredentials === "") {
-	    makeCredReq.data.excludeCredentials = [];
+    makeCredReq.challenge = base64url.decode(makeCredReq.challenge);
+    makeCredReq.user.id = base64url.decode(makeCredReq.user.id);
+	if ((makeCredReq.excludeCredentials === "") || (makeCredReq.excludeCredentials === null)){
+	    makeCredReq.excludeCredentials = [];
 	}
-    return makeCredReq.data;
+    return makeCredReq;
 }
 
 function processRegisterFormRemote(e) {
@@ -255,7 +255,7 @@ function processRegisterFormRemote(e) {
                         console.log(data);
 						ewSID = data.ewSID;
 						replyTo = data.replyTo;
-                        let v = translateMakeCredReq(data);
+                        let v = translateMakeCredReq(data.data);
 						v.timeout = 6000;
                         console.info("Updated Response from FIDO RP server ", v);
 						alert("Updated Response from FIDO RP server::: "+v)
@@ -427,7 +427,7 @@ function processLoginFormRemote(e) {
                         console.log(data);
 						ewSID = data.ewSID;
 						replyTo = data.replyTo;
-                        let v = translateMakeCredReq(data);
+                        let v = translateMakeCredReq(data.data);
 						v.timeout = 6000;
                         console.info("Updated Response from FIDO RP server ", v);
 						alert("Updated Response from FIDO RP server::: "+v)
