@@ -352,11 +352,11 @@ function processLoginFormLocal(e) {
         },
 
         // User:
-        user: {
-            id: strToBin(thisUser.userid),
-            name: thisUser.username,
-            displayName: thisUser.displayName
-        },
+        //user: {
+        //    id: strToBin(thisUser.userid),
+        //    name: thisUser.username,
+        //    displayName: thisUser.displayName
+        //},
 
         timeout: 60000,  // 1 minute
         allowCredentials: [{ type: "public-key", id: strToBin(thisUser.keyHandle) }]
