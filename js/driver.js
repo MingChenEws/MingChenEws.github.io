@@ -137,6 +137,7 @@ function processRegisterFormLocal(e) {
     let rpid = window.location.hostname;
     var newUser = { "userid": binToStr(getRandomNumbers(16)), "username": $("#username").val(), "displayName": $("#alias").val() };
 	let lst = null;
+	alert("Hello1");
     var publicKey = {
         // The challenge is produced by the server; see the Security Considerations
         challenge: getRandomNumbers(32),
@@ -168,8 +169,11 @@ function processRegisterFormLocal(e) {
         extensions: { "loc": true }  // Include location information
         // in attestation
     };
+	alert("Hello2");
 	
 	alert("publicKey="+JSON.stringify(publicKey));
+	
+	
     hideForms();
     clearSuccess();
     displayLoading("Contacting token... please perform your verification gesture (e.g., touch it, or plug it in)\n\n");
