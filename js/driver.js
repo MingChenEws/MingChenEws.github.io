@@ -194,13 +194,17 @@ function processRegisterFormLocal(e) {
 			var nc = newCredentialInfo;
 			var ncresponse = publicKeyCredentialToJSON(nc);
 			console.info("response = " + JSON.stringify(ncresponse));
+			alert("response = " + JSON.stringify(ncresponse));
+			
 			//////
 			var myresponse = publicKeyCredentialToJSON(nc);
 			myresponse.credentialId = myresponse.rawId;
 			myresponse.rawId = undefined;
 			console.info("response = " + JSON.stringify(myresponse))
-						////////////		
-			alert("response = " + JSON.stringify(ncresponse));
+			alert("myresponse = " + JSON.stringify(myresponse));
+			////////////		
+
+			
             // Send new credential info to server for verification and registration. Save locally for now.
 			newUser.keyHandle = binToStr(newCredentialInfo.rawId);
             accounts.push(newUser);
