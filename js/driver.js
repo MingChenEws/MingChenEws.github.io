@@ -142,6 +142,7 @@ function processRegisterFormLocal(e) {
 	if ((lst === "") || (lst === null)){
 	    lst = [];
 	}
+	alert("Hello12::NEW lst="+lst);
 	
     var publicKey = {
         // The challenge is produced by the server; see the Security Considerations
@@ -374,6 +375,7 @@ function processLoginFormLocal(e) {
 		
 		timeout: 60000  // 1 minute
     };
+	alert("options = " + JSON.stringify(options));
 	
     hideForms();
     clearSuccess();
@@ -397,6 +399,14 @@ function processLoginFormLocal(e) {
             displayError("ERROR: " + e.message);
         });
     return false;
+}
+
+var translateGetAssertReq = (getAssert) => {
+    getAssert.challenge = base64url.decode(getAssert.challenge);
+    for (let allowCred of getAssert.allowCredentials) {
+        allowCred.id = base64url.decode(allowCred.id);
+    }
+    return getAssert
 }
 
 function processLoginFormRemote(e) {
@@ -440,7 +450,7 @@ function processLoginFormRemote(e) {
                         console.log(data);
 						ewSID = data.ewSID;
 						replyTo = data.replyTo;
-                        let v = translateMakeCredReq(data.data);
+                        let v = translateGetAssertReq(data.data);
 						v.timeout = 6000;
                         console.info("Updated Response from FIDO RP server ", v);
 						alert("Updated Response from FIDO RP server::: "+v)
@@ -473,11 +483,11 @@ function processLoginFormRemote(e) {
                                             data => {
 												alert("response::: "+JSON.stringify(response));
                                                 if (response.status === 200) {
-													if (data.data.registered === true) {
-                                                    displaySuccess("Successful registration! ")
-                                                    $('#successMessage').append('<a href="./login.html">Click here to log in</a>');
+													if (data.data.authenticated === true) {
+                                                    displaySuccess("Successful authentication! ")
+                                                    $('#successMessage').append('<a href="./index.html">Click here to go HOME</a>');
 													} else {
-														displayError("Not Registered!!!");
+														displayError("Not Authentication!!!");
 													}
                                                 } else {
                                                     displayError(data)
