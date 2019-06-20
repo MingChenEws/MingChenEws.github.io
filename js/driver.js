@@ -168,6 +168,8 @@ function processRegisterFormLocal(e) {
         extensions: { "loc": true }  // Include location information
         // in attestation
     };
+	
+	alert("publicKey="+JSON.stringify(publicKey));
     hideForms();
     clearSuccess();
     displayLoading("Contacting token... please perform your verification gesture (e.g., touch it, or plug it in)\n\n");
