@@ -389,30 +389,6 @@ function processLoginFormLocal(e) {
 function processLoginFormRemote(e) {
     if (e.preventDefault) e.preventDefault();
 
-    //let rpid = "https://webauthndemo.ews.com";
-    let rpid = window.location.hostname;
-    var options = {
-        // The challenge is produced by the server; see the Security Considerations
-        challenge: getRandomNumbers(32),
-
-        // Relying Party:
-        rp: {
-            id: rpid,
-            name: "EWS WebAuthn Demo"
-        },
-
-        // User:
-        user: {
-            id: strToBin(thisUser.userid),
-            name: thisUser.username,
-            displayName: thisUser.displayName
-        },
-
-        timeout: 60000,  // 1 minute
-        allowCredentials: [{ type: "public-key", id: strToBin(thisUser.keyHandle) }]
-    };
-	
-	
 	hideForms();
     clearSuccess();
     displayLoading("Contacting Server, please wait...\n\n");
@@ -432,7 +408,7 @@ function processLoginFormRemote(e) {
 				  "id": rpid
 			},
 			"user": {
-				  "name": $("#username").val(),
+				  "name": $("#loginUsername").val()
 			},
 		}
 	}
