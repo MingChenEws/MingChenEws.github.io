@@ -122,10 +122,14 @@ function clearSuccess() {
 
 function processRegisterFormLocal(e) {
     if (e.preventDefault) e.preventDefault();
+    /***
     let accounts = [];
     if (!!localStorage.accounts) {
+        //alert("accounts found!");
         accounts = JSON.parse(localStorage.accounts); // Convert the object string back to a JavaScript object.
-    } 
+    } else {
+        alert("no accounts found!!");
+    }
     let userName = $("#username").val();
     for (let a of accounts) {
         if (a.username === userName) {
@@ -133,11 +137,14 @@ function processRegisterFormLocal(e) {
             return;
         }
     }
+    ***/
+    //alert(userName + " not found!!");
 
-    //let rpid = "https://webauthndemo.ews.com";
-    let rpid = window.location.hostname;
+    let rpid = "https://webauthndemo.ews.com/";
+    //let rpid = "https://webauthntest.azurewebsites.net";
+    //let rpid = document.domain;
     var newUser = { "userid": binToStr(getRandomNumbers(16)), "username": $("#username").val(), "displayName": $("#alias").val() };
-	
+    alert(">>1 rpid:"+rpid);
     var publicKey = {
         // The challenge is produced by the server; see the Security Considerations
         challenge: getRandomNumbers(32),
@@ -164,17 +171,12 @@ function processRegisterFormLocal(e) {
             }
         ],
 
-
+        timeout: 60000,  // 1 minute
         excludeCredentials: [], // No exclude list of PKCredDescriptors
-		
-        //extensions: { "loc": true }, // Include location information
-		
-		timeout: 60000  // 1 minute
+        extensions: { "loc": true }  // Include location information
         // in attestation
     };
-	
-	alert("publicKey="+JSON.stringify(publicKey));
-	
+    alert(">>2, rpid="+publicKey.rp.id);
     hideForms();
     clearSuccess();
     displayLoading("Contacting token... please perform your verification gesture (e.g., touch it, or plug it in)\n\n");
@@ -182,146 +184,19 @@ function processRegisterFormLocal(e) {
     // Note: The following call will cause the authenticator to display UI.
     navigator.credentials.create({ publicKey })
         .then(function (newCredentialInfo) {
-			var nc = newCredentialInfo;
-			var ncresponse = publicKeyCredentialToJSON(nc);
-			console.info("response = " + JSON.stringify(ncresponse));
-			alert("response = " + JSON.stringify(ncresponse));
-						
             // Send new credential info to server for verification and registration. Save locally for now.
-			newUser.keyHandle = binToStr(newCredentialInfo.rawId);
+            alert(">>3");
+            newUser.keyHandle = binToStr(credential.id);
             accounts.push(newUser);
             localStorage.accounts = JSON.stringify(accounts); // Convert the object to a string.
-            displaySuccess("Account '"+newUser.displayName+"' added!!\n");
+            displaySuccess(JSON.stringify(newUser) + " account added!!");
             $('#successMessage').append('<a href="./login.html">Click here to log in</a>');
             return true;
         }).catch(function (e) {
             // No acceptable authenticator or user refused consent. Handle appropriately.
             displayError("ERROR: " + e.message);
+            //toast("ERROR: " + e);
         });
-
-    return false;
-}
-
-
-var translateMakeCredReq = (makeCredReq) => {
-    console.info("Updating credentials ", makeCredReq);
-	alert("Updating credentials:::"+makeCredReq);
-    makeCredReq.challenge = base64url.decode(makeCredReq.challenge);
-    makeCredReq.user.id = base64url.decode(makeCredReq.user.id);
-	if (makeCredReq.excludeCredentials !== undefined) {
-		if ((makeCredReq.excludeCredentials === "") || (makeCredReq.excludeCredentials === null)){
-			makeCredReq.excludeCredentials = [];
-		}
-	}
-    return makeCredReq;
-}
-
-function processRegisterFormRemote(e) {
-	if (e.preventDefault) e.preventDefault();
-	hideForms();
-    clearSuccess();
-    displayLoading("Contacting Server, please wait...\n\n");
-
-    //let rpid = "https://webauthndemo.ews.com";
-	let rpid = window.location.hostname;
-	let tmpGuid = getTmpGuid();
-	var ewSID = null;
-	var replyTo = null;
-	
-	let rpName = "EWS WebAuthn Demo";
-	let formBody = {
-		"clientId": "Authentify_Test",
-		"clientAcctId": "Allstate",
-		"app": "fidoRegistration",
-		"license": tmpGuid,
-		"data": {
-			"rp": {
-				  "name": rpName,
-				  "id": rpid
-			},
-			"user": {
-				  "name": $("#username").val(),
-				  "displayName": $("#alias").val()
-			},
-			"credentialName": rpName + " " +$("#username").val()+" FIDO Token"
-		}
-	}
-	
-	console.log("formBody="+JSON.stringify(formBody));
-
-    fetch('https://achqdinf03.authentify.inc/', {
-        method: 'POST',
-        //credentials: 'include',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formBody)
-    }).then(response => {
-            response.json().then(
-                data => {
-                    if (response.status === 200) {
-                        console.log(data);
-						ewSID = data.ewSID;
-						replyTo = data.replyTo;
-                        let v = translateMakeCredReq(data.data);
-						v.timeout = 6000;
-                        console.info("Updated Response from FIDO RP server ", v);
-						alert("Updated Response from FIDO RP server::: "+v)
-                        navigator.credentials.create({publicKey: v})
-                            .then(function (aNewCredentialInfo) {
-                                var response = publicKeyCredentialToJSON(aNewCredentialInfo);
-								response.credentialId = response.rawId;
-								//response.rawId = undefined;
-								console.info("response = " + JSON.stringify(response))
-								alert("response = " + JSON.stringify(response))
-								let formBody = {
-									"ewSID": ewSID,
-									"clientId": "Authentify_Test",
-									"clientAcctId": "Allstate",
-									"app": "fidoRegistration",
-									"license": tmpGuid,
-									"data": response
-								}
-								
-                                fetch(replyTo, {
-                                        method: 'POST',
-                                        //credentials: 'include',
-                                        headers: {
-                                            'Content-Type': 'application/json'
-                                        },
-                                        body: JSON.stringify(formBody)
-                                    }
-                                ).then(
-                                    response => {
-                                        response.json().then(
-                                            data => {
-												alert("response::: "+JSON.stringify(response));
-                                                if (response.status === 200) {
-													if (data.data.registered === true) {
-                                                    displaySuccess("Successful registration! ")
-                                                    $('#successMessage').append('<a href="./login.html">Click here to log in</a>');
-													} else {
-														displayError("Not Registered!!!");
-													}
-                                                } else {
-                                                    displayError(data)
-                                                }
-                                            }
-                                        )
-                                    }
-                                )
-                            }).catch(function (error) {
-                                console.error("respones = " + error)
-                            }
-                        )
-                    }
-                    else {
-                        displayError(`Server responed with error. The message is: ${response.message}`);
-                    }
-                }
-            )
-        }
-    )
 
     return false;
 }
@@ -330,195 +205,63 @@ function processLoginFormLocal(e) {
     if (e.preventDefault) e.preventDefault();
     let accounts = [];
     if (!!localStorage.accounts) {
+        //alert("accounts found!");
         accounts = JSON.parse(localStorage.accounts); // Convert the object string back to a JavaScript object.
-    } 
+    } else {
+        alert("no accounts found!!");
+    }
     let userName = $("#loginUsername").val();
     var thisUser = null;
     for (let a of accounts) {
-		if (!thisUser) {
-			if (a.username === userName) {
-				$("#successMessage").text(userName + " found!!");
-				$("#success").show();
-				thisUser = a;
-			}
-		}
+        if (a.username === userName) {
+            $("#successMessage").text(userName + " found!!");
+            $("#success").show();
+            thisUser = a;
+            break;
+        }
     }
     if (!thisUser) {
         displayError(userName + " not found!!");
         return;
     }
 
-    //let rpid = "https://webauthndemo.ews.com";
-    let rpid = window.location.hostname;
+    let rpid = "https://webauthndemo.ews.com";
+    //let rpid = window.location.hostname;
     var options = {
         // The challenge is produced by the server; see the Security Considerations
         challenge: getRandomNumbers(32),
 
-		rpId: rpid,
-		
-		userVerification: "preferred",
-		
-        allowCredentials: [{ type: "public-key", id: strToBin(thisUser.keyHandle) }],
-		
-		timeout: 60000  // 1 minute
+        // Relying Party:
+        rp: {
+            id: rpid,
+            name: "EWS WebAuthn Demo"
+        },
+
+        // User:
+        user: {
+            id: strToBin(newUser.userid),
+            name: newUser.username,
+            displayName: newUser.displayName
+        },
+
+        timeout: 60000,  // 1 minute
+        allowCredentials: [{ type: "public-key", id: strToBin(thisUser.id) }]
     };
-	alert("options = " + JSON.stringify(options));
-	
+
     hideForms();
     clearSuccess();
     displayLoading("Contacting token... please perform your verification gesture (e.g., touch it, or plug it in)\n\n");
 
     navigator.credentials.get({ "publicKey": options })
         .then(function (assertion) {
-			var nc = assertion;
-			//alert("nc.rawId.length="+nc.rawId.byteLength);
-			var iid = base64url.decode(nc.id);
-			//alert("iid.length="+iid.byteLength);
-			var ncresponse = publicKeyCredentialToJSON(nc);
-			console.info("response = " + JSON.stringify(ncresponse));
-			alert("response = " + JSON.stringify(ncresponse));
             // Send assertion to server for verification
-			displaySuccess("Account '"+thisUser.displayName+"' authenticated!!\n");
+            displaySuccess(JSON.stringify(thisUser) + " account authenticated!!");
             $('#successMessage').append('<a href="./index.html">Click here to go HOME</a>');
             return true;
         }).catch(function (e) {
             // No acceptable credential or user refused consent. Handle appropriately.
             displayError("ERROR: " + e.message);
-        });
-    return false;
-}
-
-var translateGetAssertReq = (getAssert) => {
-    getAssert.challenge = base64url.decode(getAssert.challenge);
-    for (let allowCred of getAssert.allowCredentials) {
-        allowCred.id = base64url.decode(allowCred.id);
-    }
-    return getAssert
-}
-
-function processLoginFormRemote(e) {
-    if (e.preventDefault) e.preventDefault();
-
-	hideForms();
-    clearSuccess();
-    displayLoading("Contacting Server, please wait...\n\n");
-
-    //let rpid = "https://webauthndemo.ews.com";
-	let rpid = window.location.hostname;
-	let tmpGuid = getTmpGuid();
-	var ewSID = null;
-	var replyTo = null;
-	
-	let formBody = {
-		"clientId": "Authentify_Test",
-		"clientAcctId": "Allstate",
-		"app": "fidoRegistration",
-		"license": tmpGuid,
-		"data": {
-			"rp": {
-				  "id": rpid
-			},
-			"user": {
-				  "name": $("#loginUsername").val()
-			},
-		}
-	}
-	
-	console.log("formBody="+JSON.stringify(formBody));
-		
-	fetch('https://achqdinf03.authentify.inc/', {
-        method: 'POST',
-        //credentials: 'include',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formBody)
-    }).then(response => {
-            response.json().then(
-                data => {
-                    if (response.status === 200) {
-                        console.log(data);
-						ewSID = data.ewSID;
-						replyTo = data.replyTo;
-                        let v = translateGetAssertReq(data.data);
-						v.timeout = 6000;
-                        console.info("Updated Response from FIDO RP server ", v);
-						alert("Updated Response from FIDO RP server::: "+v)
-                        navigator.credentials.create({publicKey: v})
-                            .then(function (aNewCredentialInfo) {
-                                var response = publicKeyCredentialToJSON(aNewCredentialInfo);
-								response.credentialId = response.rawId;
-								//response.rawId = undefined;
-								console.info("response = " + JSON.stringify(response))
-								alert("response = " + JSON.stringify(response))
-								let formBody = {
-									"ewSID": ewSID,
-									"clientId": "Authentify_Test",
-									"clientAcctId": "Allstate",
-									"app": "fidoRegistration",
-									"license": tmpGuid,
-									"data": response
-								}
-								
-                                fetch(replyTo, {
-                                        method: 'POST',
-                                        //credentials: 'include',
-                                        headers: {
-                                            'Content-Type': 'application/json'
-                                        },
-                                        body: JSON.stringify(formBody)
-                                    }
-                                ).then(
-                                    response => {
-                                        response.json().then(
-                                            data => {
-												alert("response::: "+JSON.stringify(response));
-                                                if (response.status === 200) {
-													if (data.data.authenticated === true) {
-                                                    displaySuccess("Successful authentication! ")
-                                                    $('#successMessage').append('<a href="./index.html">Click here to go HOME</a>');
-													} else {
-														displayError("Not Authentication!!!");
-													}
-                                                } else {
-                                                    displayError(data)
-                                                }
-                                            }
-                                        )
-                                    }
-                                )
-                            }).catch(function (error) {
-                                console.error("respones = " + error)
-                            }
-                        )
-                    }
-                    else {
-                        displayError(`Server responed with error. The message is: ${response.message}`);
-                    }
-                }
-            )
-        }
-    )
-	
-	
-	
-	
-    navigator.credentials.get({ "publicKey": options })
-        .then(function (assertion) {
-			var nc = assertion;
-			//alert("nc.rawId.length="+nc.rawId.byteLength);
-			var iid = base64url.decode(nc.id);
-			//alert("iid.length="+iid.byteLength);
-			var ncresponse = publicKeyCredentialToJSON(nc);
-			console.info("response = " + JSON.stringify(ncresponse));
-			alert("response = " + JSON.stringify(ncresponse));
-            // Send assertion to server for verification
-			displaySuccess("Account '"+thisUser.displayName+"' authenticated!!\n");
-            $('#successMessage').append('<a href="./index.html">Click here to go HOME</a>');
-            return true;
-        }).catch(function (e) {
-            // No acceptable credential or user refused consent. Handle appropriately.
-            displayError("ERROR: " + e.message);
+            //toast("ERROR: " + e);
         });
     return false;
 }
@@ -529,9 +272,14 @@ function processRegisterForm(e) {
     clearSuccess();
     displayLoading("Contacting token... please perform your verification gesture (e.g., touch it, or plug it in)\n\n");
 
-    //let rpid = "https://webauthndemo.ews.com";
-	let rpid = window.location.hostname;
-    let formBody = { "username": $("#username").val(), "displayName": $("#alias").val(), keyHandle:"" };
+    let rpid = "https://webauthndemo.ews.com";
+    //let rpid = document.domain;
+    let formBody = { "username": $("#username").val(), "displayName": $("#alias").val(), publicKey:"", keyHandle:"" };
+
+            //var account = { username: 'John', displayName: 'Anderson' }; // Create a JavaScript object literal.
+        //window.localStorage.person = JSON.stringify(person); // Convert the object to a string.
+        //person = JSON.parse(window.localStorage.person); // Convert the object string back to a JavaScript object.
+
 
     fetch('/attestation/options', {
         method: 'POST',
@@ -592,9 +340,6 @@ function processRegisterForm(e) {
     return false;
 }
 
-function getTmpGuid() {	
-	return 'TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT';	
-}
 
 function processLoginForm(e) {
     if (e.preventDefault) e.preventDefault();
@@ -607,8 +352,7 @@ function processLoginForm(e) {
     $("#getOut").text("Contacting token... please perform your verification gesture (e.g., touch it, or plug it in)\n\n");
 
     //let rpid = document.domain;
-    //let rpid = "https://webauthndemo.ews.com";
-	let rpid = window.location.hostname;
+    let rpid = "https://webauthndemo.ews.com";
     let formBody = {"username": $("#loginUsername").val(), "documentDomain": rpid};
 
     fetch('/assertion/options', {
@@ -668,8 +412,6 @@ function isBrowserCompatible() {
     return navigator && navigator.credentials && typeof (navigator.credentials.create) === 'function';
 }
 
-//// Google
-
 function strToBin(str) {
     return Uint8Array.from(atob(str), c => c.charCodeAt(0));
 }
@@ -697,7 +439,7 @@ function getRandomNumbers(siz) {
     for (var i = 0; i < 32; i++) {
         challenge[i] = Math.floor(Math.random() * 256);
     }
-
+    //alert("challenge len=" + challenge.length + ", string=" + binToStr(challenge));
     return challenge;
 
     /**
@@ -717,7 +459,7 @@ function getRandomNumbers(siz) {
     **/
 }
 
-function createCredential(challenge) {
+function makeCredential(challenge) {
     if (!navigator.credentials)
         return Promise.reject("Error: WebAuthn APIs are not present on this device");
 
@@ -967,200 +709,3 @@ $(document).ready(function () {
 
     });
 });
-
-
-/*************************
-Resource: platform
-
-Method: POST
-
- 
-
-Request
-
- 
-
-{
-
-  "clientId": "Authentify_Test",
-
-  "clientAcctId": "Allstate",
-
-  "app": "fidoRegistration",
-
-  "license": "3360a6d7-7f15-4739-bb95-2fa402e0c4ee",
-
-  "data": {
-
-    "rp": {
-
-      "name": "Yubico WebAuthn demo",
-
-      "id": "localhost"
-
-    },
-
-    "user": {
-
-      "name": "Julie",
-
-      "displayName": "some name"
-
-    },
-
-    "credentialName": "JulieIsAwesome"
-
-  }
-
-}
-
- 
-
- 
-
-Response
-
- 
-
-{
-
-  "clientId": "Authentify_Test",
-
-  "app": "fidoRegistration",
-
-  "clientAcctId": "Allstate",
-
-  "ewSID": "55e5dc2c-cc06-4e2e-9667-a0eee83291e8",
-
-  "replyTo": "https://achqdinf03.authentify.inc/getSessionStatus?id=12d444b4eac20175de8746a42f0bf051664f3064",
-
-  "timestampISO8601": "2019-05-31T15:16:42Z",
-
-  "event": "ParmsOK",
-
-  "statusCode": "7000",
-
-  "data": {
-
-    "rp": {
-
-      "id": "localhost",
-
-      "name": "Yubico WebAuthn demo"
-
-   },
-
-    "user": {
-
-      "displayName": "some name",
-
-      "icon": "https://example.com/profiles/userLogo.png",
-
-      "id": "authentify_test_sflasdlkajsdfl;ak",
-
-      "name": "Julie"
-
-    },
-
-    "credentialName": "JulieIsAwesome",
-
-    "pubKeyCredParams": [
-
-      {
-
-        "alg": "-7",
-
-        "type": "public-key"
-
-      },
-
-      {
-
-        "alg": "-257",
-
-        "type": "public-key"
-
-      }
-
-    ],
-
-    "excludeCredentials": "",
-
-    "attestation": "direct",
-
-    "challenge": "QuAY4y3kgS-WnJcIXBi9SAY7_HfRnS8zou96duWWrG8"
-
-  }
-
-}
-
- 
-
- 
-
- 
-
-Registration finish
-
-Resource: getSessionStatus?id=<xxxxxxxxxxxxxxxxxxxxxxxx>  //from registration start response
-
-Method: POST
-
- 
-
-Request
-
- 
-
-{
-
-"ewSID": "55e5dc2c-cc06-4e2e-9667-a0eee83291e8",
-
-  "clientId": "Authentify_Test",
-
-  "clientAcctId": "Allstate",
-
-  "app": "fidoRegistration",
-
-  "license": "3360a6d7-7f15-4739-bb95-2fa402e0c4ee",
-
-  "data": {
-
-  "credentialId": "V14GKV1kEK8focddHun787NHkAgzxRN5VeOwJpOyh4CkXAWOl3tk9zLnC74cKdod1MLEhDsniQITo_4Qx0-RdQ",
-
-  "response": {
-
-    "attestationObject": "o2NmbXRoZmlkby11MmZnYXR0U3RtdKJjc2lnWEgwRgIhALMz48bJR0ph1nUEd48ST__OXQUFqIaHl2TDvVwLWN5WAiEA6tECjW7t_7kk7Hmu3bZn9Adfj0hXq1Cxc3hz2vRg_BZjeDVjgVkCUzCCAk8wggE3oAMCAQICBDxoKU0wDQYJKoZIhvcNAQELBQAwLjEsMCoGA1UEAxMjWXViaWNvIFUyRiBSb290IENBIFNlcmlhbCA0NTcyMDA2MzEwIBcNMTQwODAxMDAwMDAwWhgPMjA1MDA5MDQwMDAwMDBaMDExLzAtBgNVBAMMJll1YmljbyBVMkYgRUUgU2VyaWFsIDIzOTI1NzM0ODExMTE3OTAxMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEvd9nk9t3lMNQMXHtLE1FStlzZnUaSLql2fm1ajoggXlrTt8rzXuSehSTEPvEaEdv_FeSqX22L6Aoa8ajIAIOY6M7MDkwIgYJKwYBBAGCxAoC…-3_o7yR7ZP_GpiFKwdm-czb94POoGD-TS1IYdfXj94mAr5cKWx4EKjh210uovu_pLdLjc8xkQciUrXzZpPR9rT2k_q9HkZhHU-NaCJzky-PTyDbq0KKnzqVhWtfkSBCGw3ezZkTS-5lrvOKbIa24lfeTgu7FST5OwTPCFn8HcfWZMXMSD_KNU-iBqJdAwTLPPDRoLLvPTl29weCAIh-HUpmBQd0UltcPOrA_LFvAf61oYXV0aERhdGFYxEmWDeWIDoxodDQXD2R2YFuP5K65ooYyx5lc87qDHZdjQQAAAAAAAAAAAAAAAAAAAAAAAAAAAEBXXgYpXWQQrx-hx10e6fvzs0eQCDPFE3lV47Amk7KHgKRcBY6Xe2T3MucLvhwp2h3UwsSEOyeJAhOj_hDHT5F1pQECAyYgASFYIMM6KtZGFfNGeMtaa84TIqXr5zyXJu-aWOn6QHLnAfeyIlgg0WHFcgQ0J9aBjYph2FhhJCC3K0H134gdsk73OQYcde8",
-
-    "clientDataJSON": "eyJjaGFsbGVuZ2UiOiJlWXUzZ0t2bmxVamFMTDRmTFB5Ry16Uk5GUVhubEtRWVZwTERDWnFpOGVNIiwiY2xpZW50RXh0ZW5zaW9ucyI6e30sImhhc2hBbGdvcml0aG0iOiJTSEEtMjU2Iiwib3JpZ2luIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6ODQ0MyIsInR5cGUiOiJ3ZWJhdXRobi5jcmVhdGUifQ",
-
-    "type": "public-key"
-
-  }
-
-}
-
-}
-
- 
-
- 
-
-Response
-
- 
-
-{
-  "clientId": "Authentify_Test",
-  "app": "fidoRegistration",
-  "clientAcctId": "Allstate",
-  "ewSID": "55e5dc2c-cc06-4e2e-9667-a0eee83291e8",
-  "replyTo": "https://achqdinf03.authentify.inc/getSessionStatus?id=12d444b4eac20175de8746a42f0bf051664f3064",
-  "timestampISO8601": "2019-05-31T15:31:16Z",
-  "statusCode": "0",
-  "data": {
-    "credentialId": "V14GKV1kEK8focddHun787NHkAgzxRN5VeOwJpOyh4CkXAWOl3tk9zLnC74cKdod1MLEhDsniQITo_4Qx0-RdQ",  //I just have this in here for testing purposes
-    "registered": "true"
-  }
-}
-**************************/

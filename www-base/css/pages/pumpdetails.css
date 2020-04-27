@@ -1,0 +1,216 @@
+.pumpDetailsMain {
+	width:100%;
+	height:100%;
+	
+	position:relative;
+}
+
+.pumpDetailsHeader {
+	width:100%;
+	height:23%;
+	
+	position:relative;
+	
+	background-color:#75c043;
+}
+
+.pumpDetailsContent {
+	width:100%;
+	height:77%;
+	
+	position:relative;
+	
+	overflow-x:hidden;
+	overflow-y:scroll;
+	
+	background-color:#e7e7e8;
+}
+
+.pumpDetailsIcon {
+	width:20%;
+	height:40%;
+	
+	position:absolute;
+	top:5%;
+	left:40%;
+}
+
+.pumpDetailsIcon svg {
+}
+
+.pumpDetailsInfo {
+	width:100%;
+	height:35%;
+	
+	position:absolute;
+	top:56%;
+	left:0;
+	
+	color:white;
+}
+
+.pumpDetailsName {
+	font-weight:bold;
+	font-size:105%;
+}
+
+.pumpDetailsDescription {
+	font-size:88%;
+}
+
+.pumpDetailsFwVer {
+	font-size:88%;
+}
+
+.pumpDetailsStatus {
+	width:90%;
+	
+	position:relative;
+	top:0;
+	left:5%;
+	
+	margin-top:3%;
+	margin-bottom:5%;
+}
+
+.pumpDetailsItem {
+	width:90%;
+	
+	position:relative;
+	top:0;
+	left:5%;
+	
+	margin-top:1.5%;
+	
+	font-size:85%;
+	
+	background-color:white;
+}
+
+.pumpDetailsItemSummary {
+	width:100%;
+	height:100%;
+	position:relative;
+}
+
+.pumpDetailsItemDetails {
+	width:100%;
+	height:400%;
+	position:relative;
+	
+	overflow:hidden;
+}
+
+.pumpDetailsItemInner {
+	width:100%;
+	height:100%;
+	position:relative;
+}
+
+.pumpDetailsItemLeft {
+	width:90%;
+	height:100%;
+	
+	position:absolute;
+	
+	z-index:1;
+}
+
+.pumpDetailsItemRight {
+	width:10%;
+	height:100%;
+	
+	position:absolute;
+	right:0;
+	
+	z-index:2;
+}
+
+.pumpDetailsItemTitle {
+	width:95%;
+	height:100%;
+	
+	position:absolute;
+	top:0;
+	left:5%;
+	
+	font-weight:bold;
+	color:#58585a;
+}
+
+.pumpDetailsItemValue {
+	width:100%;
+	height:100%;
+	
+	position:absolute;
+	top:0;
+	right:0;
+	
+	font-weight:bold;
+	color:#75c043;
+	text-align:right;
+}
+
+.pumpDetailsItemExpand {
+	height:100%;
+	
+	color:#58585a;
+}
+
+.pumpDetailsItemExpand .verticalCenter {
+	top:52%;
+}
+
+.pumpDetailsContent .pumpDetailsItemFirst {
+	margin-top:4.5%;
+}
+
+.pumpStatusItem {
+	width:100%;
+	
+	position:relative;
+	
+	background-color:white;
+}
+
+.pumpStatusItemInner {
+	width:92%;
+	height:calc(100% - 1px);
+	
+	position:relative;
+	left:5%;
+	
+	border-bottom:1px solid #58585a;
+}
+
+.pumpStatusItem:last-child .pumpStatusItemInner {
+	border:0;
+}
+
+.pumpStatusItemLeft {
+	width:93%;
+	height:100%;
+	
+	position:absolute;
+	top:0;
+	left:0;
+	
+	font-size:85%;
+	font-weight:bold;
+	color:#58585a;
+}
+
+.pumpStatusItemRight {
+	width:10%;
+	height:100%;
+	
+	position:absolute;
+	top:0;
+	left:93%;
+}
+
+.pumpStatusItemRight svg {
+	height:100%;
+	
+	margin-top:45%;
+}

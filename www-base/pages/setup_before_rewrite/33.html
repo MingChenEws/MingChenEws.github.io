@@ -1,0 +1,44 @@
+<div class="setup-app">
+	<h1>Enable phone notifications!</h1>
+	<p class="cellmiddle" style="width:100%; padding-top:2%; padding-bottom:2%;">Review your pump information: </p>
+	<div style="margin-top:5px;">
+	<b>MAC Address:</b> <p style="font-size:100%;margin:0;display:unset;margin-left:5px;" id="macAddress">A020A63455D5</p>
+	</div>
+	<div style="margin-top:5px;">
+	<b>Serial No:</b> <p style="font-size:100%;margin:0;display:unset;margin-left:5px;" id="serialNo">179D-0001009</p>
+	</div>
+	<div style="margin-top:5px;">
+	<b>SW Version:</b> <p style="font-size:100%;margin:0;display:unset;margin-left:5px;" id="swVersion">04.06.01.02</p>
+	</div>
+	<div style="margin-top:5px;">
+	<b>Pump Name:</b> <p style="font-size:100%;margin:0;display:unset;margin-left:5px;" id="pumpName">EVERBILT-1009</p>
+	</div>
+	<div style="margin-top:5px;margin-bottom:5px;">
+	<b>Description:</b> <p style="font-size:100%;margin:0;display:unset;margin-left:5px;" id="pumpDescription">John’s basement</p><br />
+	</div>
+	<form action="#" class="cmxform">
+			  <label for="phoneName" style="width:40%"><b>Phone Name:</b><em>*</em></label>
+			  <input id="phoneName" class="pumpInput" /><br/>
+	</form>
+	<br>
+	<div style="float:left;width:100%;text-align:center;vertical-align:middle;">
+		<button id="actionButton" class="buttonlarge" ng-click="performAction(enablePhoneNotifications)">ENABLE</button>
+	</div>
+	<div>
+		<img class="progressSpinner" style="width:12%;float:right;margin-top:-13%;margin-right:3%;">
+		<i class="fa fa-check" style="width:12%;float:right;margin-top:-13%;margin-right:3%;" aria-hidden="true"></i>
+		<i class="fa fa-times" style="width:12%;float:right;margin-top:-13%;margin-right:3%;" aria-hidden="true"></i>
+	</div>
+	<div class="clearfix"></div>
+	<div id="failureText" style="margin-top:10px;">
+		<p>Failed to enable notifications! Please try pressing <b>ENABLE</b> again.</p>
+	</div>
+</div>
+<div class="setup-footer">
+	<a ng-click="goToSetupPage(32)" class="backButton" style="float:left">
+		<i class="fa fa-chevron-left" aria-hidden="true"></i>
+	</a>
+	<div style="margin:0;padding:0;width:100%;text-align:right;">
+		<button id="nextButton" ng-click="goToSetupPage(34)" class="buttonsmall">NEXT</button>
+	</div>
+</div>

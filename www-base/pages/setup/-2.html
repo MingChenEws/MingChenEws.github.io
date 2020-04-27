@@ -1,0 +1,17 @@
+<div class="setup-app" ng-init="initSetupChecks()" >
+	<h1>Have you installed your pump?</h1>
+	<div style="width:100%; text-align:center;padding-top:5%; padding-bottom:10%;">
+		<div class="checkboxFive" ng-repeat="item in setupChecks">
+			<div style="position: relative;left: 0;width: 10%;"> 		
+				<input type="checkbox" ng-model="setupChecks[$index].selected" id="{{'setupCheckbox'+$index}}" name="{{'setupCheckbox'+$index}}" />
+				<label for="{{'setupCheckbox'+$index}}"></label>
+			</div>
+			<div style="position: relative;left: 10%;width:90%;text-align: left;margin-top: -7%;">{{setupChecks[$index].title}}</div>
+		</div>
+	</div>
+</div>
+<div class="setup-footer">
+	<div style="margin:0;padding:0;width:100%;text-align:right;">
+		<button id="nextButton" onclick="javascript:;" ng-click="setupChecksNext()" ng-style="{ 'background-color': (allSetupChecksSelected()) ? '' : 'gray' }" class="buttonsmall forceshow">NEXT</button>
+	</div>
+</div>

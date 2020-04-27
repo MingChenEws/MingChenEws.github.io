@@ -1,0 +1,377 @@
+.setup-app {
+	width:80%;
+	height:90%;
+	
+	position:absolute;
+	top:5%;
+	left:10%;
+}
+
+.setup-app .greenColor {
+	color: #75c043;
+}
+
+.setup-app b {
+	font-weight: 600;
+}
+
+.setup-footer {
+	width:85%;
+	height:10%;
+	
+	position:absolute;
+	bottom:0;
+	left:7.5%;
+	
+	padding-bottom:5%;
+}
+
+.setup-app h1 {
+	color: #75c043;
+	margin-top:0px;
+	font-size:170%;
+	font-weight: 600;
+	line-height: 1.2;
+}
+
+.setup-app p {
+	color: #58585a;
+	font-weight: 300;
+	font-size:120%;
+	line-height: 1.2;
+}
+
+.setup-app button,
+.setup-footer button {
+	background-color: #75c043;
+    border: none;
+    color: white;
+	padding: 3%;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 130%;
+	font-weight: 300;
+}
+
+.setup-app .fa-chevron-left,
+.setup-footer .fa-chevron-left {
+	background-color: none;
+    border: none;
+    color: #75c043;
+	padding: 3%;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 250%;
+	font-weight: 300;
+}
+
+.setup-app .fa-check, .fa-times {
+    color: #75c043;
+    font-size: 250%;
+	font-weight: 300;
+	display:none;
+}
+
+.setup-app .fa-times {
+	color: red;
+}
+
+.setup-app #actionButton:disabled,
+.setup-footer #actionButton:disabled {
+	background-color: gray;
+}
+
+.setup-app #successText, #failureText,
+.setup-footer #successText, #failureText {
+	display: none;
+}
+
+.setup-footer #nextButton {
+	display: none;
+}
+
+.setup-app .buttonsmall,
+.setup-footer .buttonsmall {
+	width: 35%;
+}
+
+.setup-app .buttonlarge,
+.setup-footer .buttonlarge {
+	width: 60%;
+}
+
+.setup-app hr,
+.setup-footer hr {
+	width: 70%;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: #75c043;
+	height: 3px;
+	border: 0;
+	margin-bottom: 10%;
+}
+
+.setup-app .serialNumInputLine {
+    margin-left:51%;
+    width:42%;
+}
+
+.setup-app .text-line {
+	width: 70%;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: transparent;
+    outline: none;
+    outline-style: none;
+    outline-offset: 0;
+    border: 0;
+	font-weight: 300;
+	font-size:180%;
+	line-height: 1.2;
+}
+
+.setup-app .text-line2 {
+	width: 50%;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: none;
+    outline: none;
+    outline-style: none;
+    outline-offset: 0;
+    border: 0;
+	font-weight: 100;
+	font-size:130%;
+	line-height: 1.2;
+	color:#58585a;
+    border-bottom: 3px solid #75c043;
+    margin-top:1%;
+}
+
+.setup-app .text-line-prefix {
+	background-color: none;
+    outline: none;
+    outline-style: none;
+    outline-offset: 0;
+    border: 0;
+	font-weight: 300;
+	font-size:160%;
+	line-height: 1.2;
+    width:50%;
+}
+
+.setup-app .text-line-new {
+	width:100%;
+	border-bottom:1px solid #75c043;
+	font-size:120%;
+	padding-bottom:1px;
+}
+
+.setup-app .clearfix::after,
+.setup-footer .clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.setup-app .progressSpinner {
+	display:none;
+}
+
+.setup-app form.cmxform fieldset {
+  margin-bottom: 10px;
+}
+.setup-app form.cmxform legend {
+  padding: 0 2px;
+  font-weight: bold;
+}
+.setup-app form.cmxform label {
+  display: inline-block;
+  line-height: 1.8;
+  vertical-align: top;
+}
+.setup-app form.cmxform fieldset ol {
+  margin: 0;
+  padding: 0;
+}
+.setup-app form.cmxform fieldset li {
+  list-style: none;
+  padding: 5px;
+  margin: 0;
+}
+.setup-app form.cmxform fieldset fieldset {
+  border: none;
+  margin: 3px 0 0;
+}
+.setup-app form.cmxform fieldset fieldset legend {
+  padding: 0 0 5px;
+  font-weight: normal;
+}
+.setup-app form.cmxform fieldset fieldset label {
+  display: block;
+  width: auto;
+}
+.setup-app form.cmxform em {
+  font-weight: bold;
+  font-style: normal;
+  color: #f00;
+}
+.setup-app form.cmxform label {
+  width: 35%; /* Width of labels */
+  margin-top:-3px;
+}
+.setup-app form.cmxform input {
+  width: 60%; /* Width of labels */
+  margin-bottom:5px;
+}
+.setup-app form.cmxform fieldset fieldset label {
+  margin-left: 123px; /* Width plus 3 (html space) */
+}
+
+.setup-app form.cmxform .useLocation {
+	width:20px;
+	margin-top:20px;
+	margin-bottom:20px;
+	margin-left:0;
+}
+
+.setup-app form.cmxform .pumpInput {
+    width:55%;
+}
+
+.setup-app .rescanNetworks {
+	text-decoration:none;
+	color:#75c043;
+	font-weight: 600;
+	margin-bottom:2%;
+}
+
+.setup-app .networkList td {
+	padding: 5px;
+	padding-left:10px;
+	margin:0;
+}
+.setup-app .networkList tr:nth-child(even) {background: #DDD}
+.setup-app .networkList tr:nth-child(odd) {background: #EEE}
+
+.setup-app .networkList .selected {
+    background: #8CC63F !important;
+}
+
+.setup-app .networkList {
+	width:  100%;
+	border-collapse: collapse;
+}
+
+.setup-app .scrollingTable {
+	overflow-y: scroll !important;
+	margin-bottom:8%;
+    -webkit-overflow-scrolling: touch;
+}
+
+/*.setup-app .scrollingTable::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 7px;
+}
+
+.setup-app .scrollingTable::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: rgba(0,0,0,.5);
+    -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
+}*/
+
+.setup-app .forceshow,
+.setup-footer .forceshow {
+	display: unset !important;
+}
+
+.setup-app .pumpInput {
+	background-color:#EEE;
+	border:0;
+	font-size:100%;
+	font-weight: 100;
+	color: #58585a;
+	padding-left: 7px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+
+.checkboxFive {
+	width: 100%;
+	position: relative;
+	margin-top:15px;
+	margin-bottom:25px;
+}
+
+.checkboxFive input {
+	opacity: 0;
+	width: 20px !important;
+	margin-top:0 !important;
+}
+
+.checkboxFive label {
+	cursor: pointer;
+	position: absolute;
+	width: 18px !important;
+	height: 17px !important;
+	top: 0;
+  	left: 0;
+	background: transparent;
+	border:3px solid #75c043;
+	margin-top:0 !important;
+}
+
+.checkboxFive label:after {
+	opacity: 0;
+	content: '';
+	position: absolute;
+	width: 9px !important;
+	height: 5px !important;
+	background: transparent;
+	top: 2.5px;
+	left: 3.5px;
+	border: 3px solid #58585a;
+	border-top: none;
+	border-right: none;
+
+	transform: rotate(-45deg);
+}
+
+.checkboxFive label:hover::after {
+	opacity: 0;
+}
+
+.checkboxFive input[type=checkbox]:checked + label:after {
+	opacity: 1;
+}
+
+.setup-app .passwordIcon {
+	float:left;
+	font-size:130%;
+	margin-top:2%;
+	margin-left:2%;
+	color:#75c043;
+}
+
+.setup-app #passwordIconShow {
+	
+}
+
+.setup-app #passwordIconHide {
+	display:none;
+}
+
+.setup-app .savePumpInfoDiv {
+    margin-top:10%;
+    float:left;
+    width:100%;
+    text-align:center;
+    vertical-align:middle;
+}
+
+.setup-app .aniLeafCycleStep {
+	color:#75c043;
+	font-weight:800;
+	font-family:'Open Sans';
+}

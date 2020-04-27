@@ -1,0 +1,255 @@
+.messagesMainContainter {
+	width:100%;
+	height:82%;
+	
+	position:relative;
+	
+	background-color:#e7e7e8;
+}
+
+.messagesListContainer {
+	width:100%;
+	height:90%;
+	
+	position:absolute;
+	top:0;
+	left:0;
+	
+	overflow-x:hidden;
+	overflow-y:auto;
+}
+
+.messagesListContainerInner {
+	width:100%;
+	height:10%;
+	
+	position:relative;
+}
+
+.messagesInputContainer {
+	width:100%;
+	height:10%;
+	
+	position:absolute;
+	bottom:0;
+	left:0;
+}
+
+.messagesInputTop {
+	width:100%;
+	height:100%;
+	position:relative;
+	
+	background-color:white;
+}
+
+.messageInputContainer {
+	width:80%;
+	height:100%;
+	
+	position:absolute;
+	bottom:5%;
+	left:5%;
+}
+
+.messageInputContainer > div {
+	top:56%;
+	width:100%;
+}
+
+.messageInput {
+	border:0;
+	width:95%;
+	margin:0;
+	padding:0;
+	padding-bottom:2px;
+	
+	color:#58585a;
+	background-color:transparent;
+	border-bottom:1px solid #96999c;
+}
+
+.messageInputButtonOld {
+	width:17%;
+	height:100%;
+	position:absolute;
+	top:0;
+	right:0;
+	font-size:150%;
+	color:#75c043;
+}
+
+.messageInputButton {
+	width:17%;
+	height:100%;
+	background-color:#444444;
+	position:absolute;
+	top:0;
+	right:0;
+	font-size:150%;
+	color:#75c043;
+}
+
+.messagesShortcuts {
+	width:100%;
+	height:100px;
+	background-color:#ddddcc;
+	position:relative;
+}
+
+.messagesShortcutsInner {
+	width:90%;
+	height:90%;
+	background-color:transparent;
+	position:absolute;
+	top:5%;
+	left:5%;
+}
+
+.messagesShortcutsCol
+{
+	width:25%;
+	height:100%;
+	
+	position:absolute;
+	top:0;
+}
+
+.messagesShortcutsRow
+{
+	width:100%;
+	height:50%;
+	
+	position::relative;
+}
+
+.messagesShortcutsRow > div {
+	top:57%;
+}
+
+.messagesShortcutTitle {
+	font-size:70%;
+}
+
+.messagesShortcutIconContainer {
+	width:48px;
+	height:48px;
+	margin:auto;
+	
+	border:1px solid #58585a;
+	border-radius:10px;
+	
+	color:#939598;
+	background-color:white;
+}
+
+.messagesShortcutsRow:last-child {
+	margin-top:1%;
+}
+
+.messagesShortcutIconContainer svg {
+	width:50%;
+	
+	height:50%;
+}
+
+.messagesShortcutIconContainer  > div {
+	top:55%;
+}
+
+.messageInputSendContainer {
+}
+
+.messageInputSend {
+	border:1px solid transparent;
+	border-radius:5px;
+	
+    padding:4%;
+    width:70%;
+	
+	font-size:58%;
+	color:white;
+	background-color:#75c043;
+}
+
+.messagesItem {
+	width:90%;
+	
+	position:relative;
+	left:5%;
+	
+	/*overflow:hidden;
+	overflow-wrap: break-word;
+	word-wrap: break-word;*/
+	
+	margin-top:3%;
+}
+
+.messagesItemFromUser {
+	left:7%;
+}
+
+.messagesItem:first-child {
+	margin-top:5%;
+}
+
+.messagesItem:last-child {
+	margin-bottom:5%;
+}
+
+.messagesItemFromUser {
+	color:#939598 !important;
+}
+
+.messagesItemAlert {
+	color:red !important;
+}
+
+.messagesItemTime {
+	font-size:70%;
+}
+
+.messagesItemText {
+	font-size:90%;
+}
+
+.messagesItemIcon {
+	width:20%;
+	height:100%;
+	
+	position:absolute;
+	top:0;
+	left:0;
+}
+
+.messagesItemDetails {
+	width:65%;
+	min-height:100%;
+	
+	position:relative;
+	top:0;
+	left:25%;
+	
+	padding:5%;
+	padding-top:3.5%;
+	padding-bottom:4%;
+	
+	word-wrap: break-word;
+	background-color:white;
+}
+
+.messagesItemIcon .leafIconSvg,
+.messagesItemIcon .messagesPerson {
+	width:80%;
+	
+	position:relative;
+	top:-10%;
+}
+
+.messagesItemIconRight {
+	left:80%;
+}
+
+.messagesItemDetailsLeft {
+	left:0;
+}

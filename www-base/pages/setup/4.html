@@ -1,0 +1,109 @@
+<div class="setup-app">
+	<h1>Pump light indicators:</h1>
+	<div style="width:100%;height:80%;overflow-y:auto;">
+		<div style="width:100%; text-align:left;padding-bottom:6%;position:relative;min-height:11%">
+			<div style="width:7%;position:absolute;">
+				<img src="img/leafgreenred.gif" style="width:100%;">
+			</div>
+			<div style="width:90%;position:relative;left:10%;">
+				<p style="font-size:100%;">Indicates the pump is ready for pump Wi-Fi to cloud connection setup.</p>
+			</div>
+		</div>
+		<div style="width:100%; text-align:left;padding-bottom:6%;position:relative;min-height:11%">
+			<div style="width:7%;position:absolute;">
+				<img src="img/leafgreenyellow.gif" style="width:100%;">
+			</div>
+			<div style="width:90%;position:relative;left:10%;">
+				<p style="font-size:100%;">Indicates the pump is in unlock mode, allowing any smart phone app to communicate with the pump device.</p>
+			</div>
+		</div>
+		<div style="width:100%; text-align:left;padding-bottom:6%;position:relative;min-height:11%">
+			<div style="width:7%;position:absolute;">
+				<img src="img/leafgrey.svg" style="width:100%;">
+			</div>
+			<div style="width:90%;position:relative;left:10%;">
+				<p style="font-size:100%;">No light means the unit either is not installed or failed to operate.</p>
+			</div>
+		</div>
+		<div style="width:100%; text-align:left;padding-bottom:6%;position:relative;min-height:11%">
+			<div style="width:7%;position:absolute;">
+				<img src="img/leafgreen.svg" style="width:100%;">
+			</div>
+			<div style="width:90%;position:relative;left:10%;">
+				<p style="font-size:100%;">Indicates everything is normal, and the pump is connected to the cloud.</p>
+			</div>
+		</div>
+		<div style="width:100%; text-align:left;padding-bottom:6%;position:relative;min-height:11%">
+			<div style="width:7%;position:absolute;">
+				<img src="img/leafgreengrey.gif" style="width:100%;">
+			</div>
+			<div style="width:90%;position:relative;left:10%;">
+				<p style="font-size:100%;">Indicates everything is normal, except the pump has not been setup for cloud connection yet.</p>
+			</div>
+		</div>
+		<div style="width:100%; text-align:left;padding-bottom:6%;position:relative;min-height:11%">
+			<div style="width:7%;position:absolute;">
+				<img src="img/leafgreengrey1s.gif" style="width:100%;">
+			</div>
+			<div style="width:90%;position:relative;left:10%;">
+				<p style="font-size:100%;">Indicates the pump is running and everything is OK.</p>
+			</div>
+		</div>
+		<div style="width:100%; text-align:left;padding-bottom:6%;position:relative;min-height:11%">
+			<div style="width:7%;position:absolute;">
+				<img src="img/leafyellowgrey.gif" style="width:100%;">
+			</div>
+			<div style="width:90%;position:relative;left:10%;">
+				<p style="font-size:100%;">One or more alert conditions exist, and one or more conditions have not been acknowledged.</p>
+			</div>
+		</div>
+		<div style="width:100%; text-align:left;padding-bottom:6%;position:relative;min-height:11%">
+			<div style="width:7%;position:absolute;">
+				<img src="img/leafyellow.svg" style="width:100%;">
+			</div>
+			<div style="width:90%;position:relative;left:10%;">
+				<p style="font-size:100%;">One or more alert conditions exist, and the alerts have been acknowledged.</p>
+			</div>
+		</div>
+		<div style="width:100%; text-align:left;padding-bottom:6%;position:relative;min-height:11%">
+			<div style="width:7%;position:absolute;">
+				<img src="img/leafyellowgrey0s.gif" style="width:100%;">
+			</div>
+			<div style="width:90%;position:relative;left:10%;">
+				<p style="font-size:100%;">One or more alert conditions exist, and the unit is on battery power.</p>
+			</div>
+		</div>
+		<div style="width:100%; text-align:left;padding-bottom:6%;position:relative;min-height:11%">
+			<div style="width:7%;position:absolute;">
+				<img src="img/leafredgrey.gif" style="width:100%;">
+			</div>
+			<div style="width:90%;position:relative;left:10%;">
+				<p style="font-size:100%;">High Water level alarm condition, notification has not been acknowledged.</p>
+			</div>
+		</div>
+		<div style="width:100%; text-align:left;padding-bottom:6%;position:relative;min-height:11%">
+			<div style="width:7%;position:absolute;">
+				<img src="img/leafred.svg" style="width:100%;">
+			</div>
+			<div style="width:90%;position:relative;left:10%;">
+				<p style="font-size:100%;">High Water level alarm condition, notification has been acknowledged.</p>
+			</div>
+		</div>
+		<div style="width:100%; text-align:left;padding-bottom:6%;position:relative;min-height:11%">
+			<div style="width:7%;position:absolute;">
+				<img src="img/leafredgrey0s.gif" style="width:100%;">
+			</div>
+			<div style="width:90%;position:relative;left:10%;">
+				<p style="font-size:100%;">High Water level alarm condition, and the unit is on battery power.</p>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="setup-footer">
+	<a ng-click="goToSetupPage(setupReturnStep)" class="backButton" style="float:left">
+		<i class="fa fa-chevron-left" aria-hidden="true"></i>
+	</a>
+	<div style="margin:0;padding:0;width:100%;text-align:right;">
+		<button id="nextButton" ng-click="goToSetupPage(21)" class="buttonsmall forcehide">NEXT</button>
+	</div>
+</div>

@@ -1,0 +1,168 @@
+.meMain {
+	width:100%;
+	height:100%;
+	
+	position:relative;
+	z-index:1;
+	
+	overflow-x:hidden;
+	overflow-y:scroll;
+}
+
+.meEdit {
+	width:100%;
+	height:100%;
+	
+	position:relative;
+	z-index:1;
+	
+	background-color:white;
+}
+
+.meMainTop {
+	width:100%;
+	height:30%;
+	
+	position:relative;
+	
+	color:white;
+	background-color:#75c043;
+}
+
+.meMainBottom {
+	width:100%;
+	height:70%;
+	
+	position:relative;
+}
+
+.meMainTopInner {
+	top:43%;
+}
+
+.meMainTopIcon {
+	font-size:650%;
+}
+
+.meMainTopText {
+	font-size:120%;
+	margin-top:-1.5%;
+}
+
+.meMainInner {
+	width:90%;
+	height:92%;
+	
+	position:absolute;
+	top:3%;
+	left:5%;
+}
+
+.meMainBox {
+	width:100%;
+	height:15%;
+	
+	position:relative;
+	
+	margin-bottom:1.5%;
+	
+	font-size:90%;
+	
+	color:#58585a;
+	background-color:white;
+}
+
+.meMainBoxInner {
+	width:100%;
+	
+	overflow:hidden;
+	white-space: nowrap;
+}
+
+.meMainBoxLeft {
+	height:100%;
+	
+	position:absolute;
+	top:0;
+	left:4%;
+	z-index:2;
+	
+	text-align:left;
+	
+	font-weight:bold;
+	
+	background-color:white;
+}
+
+.meMainBoxLeft .meMainBoxInner {
+	padding-right:2%;
+}
+
+.meMainBoxMiddle {
+	height:100%;
+	position:absolute;
+	top:0;
+	left:50%;
+	z-index:3;
+}
+
+.meMainBoxRight {
+	width:91%;
+	height:100%;
+	
+	position:absolute;
+	top:0;
+	left:4%;
+	z-index:1;
+	
+	text-align:right;
+}
+
+.meMainBoxwhole {
+	width:100%;
+	height:100%;
+}
+
+.meEditInner {
+	width:84%;
+	height:88%;
+	
+	position:relative;
+	top:6%;
+	left:8%;
+}
+
+.meEditTitle {
+	font-size:118%;
+	font-weight:bold;
+	
+	color:#58585a;
+	
+	margin-bottom:7.5%;
+}
+
+.meEditInputs {
+	margin-bottom:5%;
+}
+
+.meEditInputs input {
+	width:100%;
+	
+	font-family:'Open Sans Light';
+	font-size:110%;
+	padding-bottom:3px;
+	
+	color:#58585a;
+	background-color:transparent;
+	border:0;
+	border-bottom:1px solid #75c043;
+}
+
+.meEditSave {
+	width:100%;
+	text-align:right;
+}
+
+.meEditSave .popupButtonConfirm {
+	font-size:130%;
+}

@@ -1,0 +1,41 @@
+<div class="setup-app" ng-init="setupSetInput()">
+	<h1>Have you installed your pump?</h1>
+
+	<div style="width:100%;margin-top:8%;margin-bottom:4%;">
+		<p id="subHeaderEnter" class="cellmiddle" >Open battery cover, install 9V battery (if not already installed) and input information below.</p>
+	</div>
+
+	<div style="width:100%;height:5%;position:relative;margin-top:5%;margin-bottom:3%;">
+		<div style="width:40%;height:100%;position:absolute;top:0;left:0;text-align:left">
+			Last 6 digits of SN:
+		</div>
+		<div style="width:25%;height:100%;position:absolute;top:0;left:40%;">
+			<input id="pumpSerialNumber" maxlength="6" class="text-line text-line-new" style="margin-top:-1%;" ng-model="setupPump.serialending" />
+		</div>
+	</div>
+
+	<div style="width:100%;height:5%;position:relative;margin-top:2%;margin-bottom:3%;">
+		<div style="width:31%;height:100%;position:absolute;top:0;left:0;text-align:left">
+			MAC address:
+		</div>
+		<div style="width:60%;height:100%;position:absolute;top:0;left:31%;">
+			<input id="macaddress" maxlength="12" ng-model="macaddr" class="text-line text-line-new" style="float:left;width:75%;margin-top:-1%;margin-bottom:5%;font-size:110%;" />
+			<p style="float:right;margin-top:-4%;margin-bottom:5%;font-size:200%;" ng-click="scanMac()"><i class="fa fa-qrcode"></i></p>
+		</div>
+	</div>
+
+	<div style="margin:0;padding:0;width:100%;text-align:center;">
+		<button id="nextButton" onclick="javascript:;" ng-click="setupCheckSNandMAC()" ng-style="{ 'background-color': (setupCheckInput()) ? '' : 'gray' }" class="buttonsmall forceshow">SAVE</button>
+	</div>
+
+
+<div class="setup-footer">
+	<a ng-click="goToSetupPage(-2)" class="backButton" style="float:left">
+		<i class="fa fa-chevron-left" aria-hidden="true"></i>
+	</a>
+	<div style="margin:0;padding:0;width:100%;text-align:right;">
+<!--
+		<button id="nextButton" onclick="javascript:;" ng-click="setupCheckSNandMAC()" ng-style="{ 'background-color': (setupCheckInput()) ? '' : 'gray' }" class="buttonsmall forceshow">NEXT</button>
+-->
+	</div>
+</div>

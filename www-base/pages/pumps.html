@@ -1,0 +1,76 @@
+<div class="pumpsMain">
+	<div class="pumpsMainInner">
+		<!--<div class="pumpLoading textCenter" ng-show="waitingForPumps">
+			<img class="pumpsvg" src="img/progressSpinner.svg" />
+		</div>-->
+		<div class="pumpLoading textCenter" ng-show="pumps.length === undefined || pumps.length <= 0">
+			No pumps setup yet.
+		</div>
+		<div class="pumpsItems" ng-show="!waitingForPumps">
+			<div class="pumpsItem" ng-repeat="pump in pumps" >
+				<div class="pumpsItemLeft" ng-click="gotoPumpDetails(pump)">
+					<div class="pumpsItemLeftInner">
+						<div class="pumpsItemIcon textCenter">
+							<div class="verticalCenter">
+								<i class="pumpsvg leafIconSvg" style="color:{{iconFillColor(pump.idAsNumber, pump.isAccessible, selectedPump.isInPump)}}"></i>
+							</div>
+						</div>
+						<div class="pumpsItemDetails">
+							<div class="verticalCenter">
+								<div class="pumpsItemDetail">
+									<p class="pumpsItemDetailTitle">Name:&nbsp;</p>
+									<p class="pumpsItemDetailText" ng-style="{ 'color': (pump.isFirmwareUpgadeAvailable) ? 'red' : '#58585a' }" >{{pump.name}}</p>
+								</div>
+								<div class="pumpsItemDetail pumpsItemDetailMiddle">
+									<p class="pumpsItemDetailTitle">Desc:&nbsp;</p>
+									<p class="pumpsItemDetailText">{{pump.description}}</p>
+								</div>
+								<div class="pumpsItemDetail">
+									<p class="pumpsItemDetailTitle">Status:&nbsp;</p>
+									<p class="pumpsItemDetailText" class="{'pumpsItemDetailTextError':getPumpError(pump.error)!==undefined}" ng-style="{color:(getPumpError(pump.error)!==undefined)?'red':'#58585a'}" >{{(getPumpError(pump.error)===undefined)?'Normal':getPumpError(pump.error)}}</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="pumpsItemRight textCenter" ng-click="gotoPumpMessages(pump)" ng-class="{'pumpsMessagesUnread':unreadMessageCount(pump[messagesStoreByPumpProperty])[0]>0,'pumpsMessagesAlert':getPumpError(pump.error)!==undefined&&unreadMessageCount(pump[messagesStoreByPumpProperty])[1]>0}">
+					<div class="verticalCenter">
+						<i class="fas fa-comment-alt"></i>
+					</div>
+				</div>
+			</div>
+<!--				<div class="pumpsItem pumpsItemAll" ng-show="pumps.length > 1">		-->
+				<div class="pumpsItem pumpsItemAll" ng-show="false">
+				<div class="pumpsItemLeft">
+					<div class="pumpsItemLeftInner">
+						<div class="pumpsItemIcon textCenter">
+							<div class="verticalCenter">
+								<i class="pumpsvg leafIconSvg"></i>
+							</div>
+						</div>
+						<div class="pumpsItemDetails">
+							<div class="verticalCenter">
+								<div class="pumpsItemDetail">
+									<p class="pumpsItemDetailTitle">ALL PUMPS</p>
+								</div>
+								<div class="pumpsItemDetail pumpsItemDetailMiddle">
+									<p class="pumpsItemDetailTitle">Description:&nbsp;</p>
+									<p class="pumpsItemDetailText">Message all</p>
+								</div>
+								<div class="pumpsItemDetail">
+									<p class="pumpsItemDetailTitle">Status:&nbsp;</p>
+									<p class="pumpsItemDetailText">{{getAllPumpStatus()}}</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="pumpsItemRight textCenter" ng-click="gotoAllPumpMessages()">
+					<div class="verticalCenter">
+						<i class="fas fa-comment"></i>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

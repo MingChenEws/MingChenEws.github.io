@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+    <head>
+        <!--
+        Customize this policy to fit your own app's needs. For more guidance, see:
+            https://github.com/apache/cordova-plugin-whitelist/blob/master/README.md#content-security-policy
+        Some notes:
+            * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+            * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+            * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+                * Enable inline JS: add 'unsafe-inline' to default-src
+        -->
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self' http://13.86.34.108:8090 http://34.228.8.148:8090 data http://207.135.172.62:8090 data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+		
+		<script type="text/javascript" src="js/libs/chart-2.7.2.min.js"></script>
+		<script type="text/javascript" src="js/libs/moment-with-locales.js"></script>
+		<script type="text/javascript" src="js/libs/localforage.js"></script>
+		<script type="text/javascript" src="js/libs/jquery-3.3.1.min.js"></script>
+		
+        <script type="text/javascript" src="js/libs/angular-1.6.7/angular.min.js"></script>
+        <script type="text/javascript" src="js/libs/angular-1.6.7/angular-animate.min.js"></script>
+        <script type="text/javascript" src="js/libs/angular-1.6.7/angular-touch.min.js"></script>
+        <script type="text/javascript" src="js/libs/angular-1.6.7/angular-ui-router.js"></script>
+		
+		<script type="text/javascript" src="js/libs/ui-bootstrap-tpls-2.5.0.min.js"></script>
+		<script type="text/javascript" src="js/libs/angular-localForage.js"></script>
+		<script type="text/javascript" src="js/libs/angular-chart.min.js"></script>
+		
+        <script src="libs/fontawesome-free-5.0.6/svg-with-js/js/fontawesome-all.js"></script>
+        <link rel="stylesheet" type="text/css" href="css/index.css">
+		<link rel="stylesheet" type="text/css" href="css/pages/messages.css">
+		<link rel="stylesheet" type="text/css" href="css/pages/pumpdetails.css">
+		<link rel="stylesheet" type="text/css" href="css/pages/pumps.css">
+		<link rel="stylesheet" type="text/css" href="css/pages/setup.css">
+		<link rel="stylesheet" type="text/css" href="css/pages/me.css">
+        <link rel="stylesheet" type="text/css" href="css/platformfixes.css">
+        <title>WAshland2</title>
+    </head>
+    <body ng-cloak ng-controller="indexController">
+
+		<div class="splash" ng-show="!hasInitialized">
+		</div>
+
+		<div class="app" ng-show="hasInitialized">
+			<div class="header">
+				<div class="headerLeft textCenter" ng-show="checkDisplayCloudIcon()" ng-click="callbackCloudIcon()">
+					<div class="mediumIcon verticalCenter" >
+						<i class="fa fa-cloud" ng-style="{ 'color': (isCloudOnline) ? '#75c043' : 'red' }" ></i>
+					</div>
+				</div>
+				<div class="headerLeft textCenter" ng-show="!checkDisplayCloudIcon()" ng-click="rootBackFuncWarpper()">
+					<div class="largeIcon verticalCenter" ng-show="!isRootBack">
+						<i class="fas fa-arrow-right" ng-style="{ 'color': (page!=='pumpdetails') ? 'white' : (isCloudOnline) ? '#75c043' : 'red' }"></i>
+					</div>
+				</div>
+				<div class="headerMiddle textCenter">
+					<div class="largeIcon verticalCenter">
+						{{pageNames[page]}}
+					</div>
+				</div>
+				<div class="headerRight textCenter" ng-show="menuOptions.length > 0" ng-click="toggleMenu()">
+					<div class="largeIcon verticalCenter">
+						<i class="fas fa-bars" ng-style="{ 'color': (page=='pumpdetails' && selectedPump.isFirmwareUpgadeAvailable) ? 'red' : 'white' }"></i>
+					</div>
+				</div>
+			</div>
+
+			<div class="view" ng-show="!showScanning" ng-class="{'viewNoFooter':!footerVisible}">
+				<ui-view></ui-view>
+			</div>
+
+			<div class="view rootScanning" ng-show="showScanning" ng-class="{'viewNoFooter':!footerVisible}">
+				<div class="rootScanningInner">
+				</div>
+			</div>
+
+			<div class="footer" ng-show="footerVisible">
+				<div class="footerLeft textCenter" ng-click="selectFooter('pumps')" ng-class="{'footerSelected':page.startsWith('pump'), 'footerDisabled':!isMeCompleteAndHasPumps()}">
+					<div class="verticalCenter footerInner">
+						<div class="footerIcon">
+							<i class="fas fa-tint"></i>
+						</div>
+						<div class="footerText">
+							Pumps
+						</div>
+					</div>
+				</div>
+				<div class="footerMiddle textCenter" ng-click="selectFooter('setup')" ng-class="{'footerSelected':page=='setup', 'footerDisabled':!isMeCompleteOrHomeWifiAndCloudOnline()}">
+					<div class="verticalCenter footerInner">
+						<div class="footerIcon">
+							<i class="fas fa-cog"></i>
+						</div>
+						<div class="footerText">
+							Setup
+						</div>
+					</div>
+				</div>
+				<div class="footerRight textCenter" ng-click="selectFooter('me')" ng-class="{'footerSelected':page=='me'}">
+					<div class="verticalCenter footerInner">
+						<div class="footerIcon">
+							<i class="fas fa-user"></i>
+						</div>
+						<div class="footerText">
+							Me
+						</div>
+					</div>
+				</div>
+			</div>
+    </div>
+
+		<div class="menu">
+			<div class="menuItem" ng-repeat="item in menuOptions" menu-Repeat-Directive ng-click="item.callback(item.args)">
+				<div class="menuItemLeft">
+					<div class="verticalCenter menuItemInner">
+						<i class="{{item.icon}}"></i>
+					</div>
+				</div>
+				<div class="menuItemRight">
+					<div class="verticalCenter menuItemInner">
+						{{item.title}}
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="infoArea" ng-show="managePhoneList">
+			<div class="header">
+				<div class="headerLeft textCenter" ng-click="toggleManagePhoneList()">
+					<div class="largeIcon verticalCenter">
+						<i class="fas fa-arrow-right" ng-style="{ 'color': 'white' }"></i>
+					</div>
+				</div>
+				<div class="headerMiddle textCenter">
+					<div class="largeIcon verticalCenter" style="font-weight:bold;">
+						Manage Phone List
+					</div>
+				</div>
+			</div>
+			<div class="infoContent">
+				<div style="width:100%;height:3%;position:relative;margin-top:5%">
+					<div style="width:80%;height:100%;position:absolute;top:0;left:0;font-size:140%;font-weight:bold">
+						Phone Name
+					</div>
+					<div style="width:20%;height:100%;position:absolute;top:0;right:0%;text-align:right;font-size:140%;font-weight:bold">
+						Delete
+					</div>
+				</div>
+				<div style="width:100%;height:3%;position:relative;margin-top:1%;margin-bottom:10%;">
+					<div style="width:100%;height:100%;text-align:left;position:absolute;top:0;left:0;font-size:140%;font-weight:bold">
+						Device Id
+					</div>
+				</div>
+
+				<div ng-repeat="phone in phonelist" ng-if="phone.uuid.length>0" style="width:100%;height:10%;position:relative;">
+					<div style="width:100%;height:3%;position:relative;margin-top:2%;" >
+						<div style="width:90%;height:100%;position:absolute;top:0;left:0;font-size:110%;" ng-style="{ 'font-weight':(me.deviceuuid===phone.uuid)?'bold':'normal'}">
+							{{phone.name}}
+						</div>
+						<div style="width:10%;height:100%;position:absolute;top:0;right:0%;text-align:right;" ng-hide="me.deviceuuid===phone.uuid" ng-click="deletePhoneIndex(phone)">
+							<i style="display:unset !important;color:red;font-size:200%;" class="fas fa-times"></i> 
+						</div>
+						<div style="width:10%;height:100%;position:absolute;top:0;right:0%;text-align:right;" ng-show="me.deviceuuid===phone.uuid"">
+							<i style="display:unset !important;color:green;font-size:200%;" class="fas fa-mobile"></i> 
+						</div>
+					</div>
+					<div style="width:100%;height:3%;position:relative;margin-top:6%;margin-bottom:8%;">
+						<div style="width:100%;height:100%;text-align:left;position:absolute;top:0;left:0;font-size:110%;" ng-style="{ 'font-weight':(me.deviceuuid===phone.uuid)?'bold':'normal'}">
+						{{phone.uuid}}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="alertArea" ng-show="isPumpAlert">
+				<div style="width:100%;height:100%;position:relative">
+					<div class="alertHeader">
+					<div style="width:100%;height:100%;position:relative" >
+						<div style="width:30%;height:100%;position:absolute;top:0%;left:-2%;" class="textCenter">
+							<div class="verticalCenter">
+								<i class="pumpsvg leafIconSvg" style="fill:red"></i>
+							</div>
+						</div>
+						<div style="width:70%;height:100%;position:absolute;top:0%;right:0%;" >
+							<div class="verticalCenter">
+								<div style="color:Silver;width:100%;overflow:hidden;white-space:nowrap;" >
+									<p>Name:&nbsp;</p>
+									<p>{{selectedPump.name}}</p>
+								</div>
+								<div style="color:Silver;width:100%;overflow:hidden;white-space:nowrap;">
+									<p>Description:&nbsp;</p>
+									<p>{{selectedPump.description}}</p>
+								</div>
+								<div style="color:Silver;width:100%;overflow:hidden;white-space:nowrap;">
+									<p>Error Code:&nbsp;</p>
+									<p>{{alertErrorCode}}</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					</div>
+					<div class="alertContent" style="color:white;font-size=100%">
+						{{alertMsg}}
+					</div>
+
+					<div class="alertBottom">
+							<div class="alertButtonLeft" style="color:white" ng-click="dismissPumpAlert()"> 									Dismiss
+							</div>
+							<div class="alertButtonRight" style="color:#0496c1" ng-show="isItAlert" ng-click="showMorePumpAlert(alertErrorCode)"> 
+								More Information
+							</div>
+<!--
+						<div ng-show="popupStates[currentPopup].buttons.length>1">
+							<div class="alertButtonLeft" style="color:#0496c1" ng-click="popupStates[currentPopup].buttons[0].callback()"> {{popupStates[currentPopup].buttons[0].title}}
+							</div>
+							<div class="alertButtonRight" style="color:#0496c1" ng-click="popupStates[currentPopup].buttons[1].callback()"> {{popupStates[currentPopup].buttons[1].title}}
+							</div>
+						</div>
+						<div ng-show="popupStates[currentPopup].buttons.length==1">
+							<div class="alertButtonRight" style="color:#0496c1" ng-click="popupStates[currentPopup].buttons[0].callback()"> {{popupStates[currentPopup].buttons[0].title}}
+							</div>
+						</div>>
+-->
+					</div>
+				</div>
+		</div>
+
+		<div class="infoArea" ng-show="isMoreInfo">
+			<div class="header">
+				<div class="headerLeft textCenter" ng-click="toggleisMoreInfo()">
+					<div class="largeIcon verticalCenter">
+						<i class="fas fa-arrow-right" ng-style="{ 'color': 'white' }"></i>
+					</div>
+				</div>
+				<div class="headerMiddle textCenter">
+					<div class="largeIcon verticalCenter" style="font-weight:bold;">
+						Alert Information
+					</div>
+				</div>
+			</div>
+
+			<div style="width:100%;height:15%;position:relative;background-color:#e7e7e8;">
+					<div style="width:82%;height:100%;position:absolute;top:0%;left:0%;">
+						<div style="width:100%;height:100%;position:relative" >
+							<div style="width:40%;height:100%;position:absolute;top:0%;left:0%;" class="textCenter">
+								<div class="verticalCenter">
+									<i class="pumpsvg leafIconSvg" style="fill:red"></i>
+								</div>
+							</div>
+							<div style="width:60%;height:100%;position:absolute;top:0%;right:0%;" >
+								<div class="verticalCenter">
+									<div style="width:100%;overflow:hidden;white-space:nowrap;" >
+										<p>Name:&nbsp;</p>
+										<p>{{selectedPump.name}}</p>
+									</div>
+									<div style="width:100%;overflow:hidden;white-space:nowrap;">
+										<p>Description:&nbsp;</p>
+										<p>{{selectedPump.description}}</p>
+									</div>
+									<div style="width:100%;overflow:hidden;white-space:nowrap;" >
+										<p>MAC:&nbsp;</p>
+										<p>{{selectedPump.macaddress}}</p>
+									</div>
+									<div style="width:100%;overflow:hidden;white-space:nowrap;" >
+										<p>Version:&nbsp;</p>
+										<p>{{selectedPump.curFwVer}}</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+			</div>
+
+			<div class="infoContent"><br>
+				<div ng-repeat="err in pumpErrCodes" >
+					<div>
+						<p style="font-size:120%;"><b>Error Code:</b> {{err}}</p>
+					</div>
+					<div>
+						<p style="font-size:120%;"><b>Reason:</b> {{getPumpErrorReason(err)}}</p>
+					</div>
+					<div>
+						<p style="font-size:120%;white-space: pre-wrap;"><b>Resolution:</b><br>{{getPumpErrorResolution(err)}}</p>
+					</div><br>
+			</div>
+			</div>
+		</div>
+
+		<div class="popupBk allClicks" ng-show="popupShowing || isPumpAlert"></div>
+		<!--<div class="popup" id='popupDialog' ng-show="popupShowing">-->
+		<div class="popupAlert" id='popupDialog' ng-show="popupShowing">
+			<div class="popupTextContainer" ng-show="popupShowing">
+				<div class="popuAlertHeader">
+					{{popupStates[currentPopup].type}}
+				</div>
+				<div class="popuAlertContent">
+					<div class="popupTextContainer" ng-show="currentPopup==='popupMeIncomplete'">
+						You must fill out your Me information before you can Setup your pump or view your Pump List.
+					</div>
+
+					<div class="popupTextContainer" ng-show="currentPopup==='popupVerifyWifiFail'">
+						<div>
+							You are not connected to WiFi.
+						</div>
+						<div class="popupVerifyWifiBottom">
+							Please go to your phone's settings and connect to your home WiFi. Press phone back button to exit the app. 
+						</div>
+					</div>
+
+					<div class="popupTextContainer" ng-show="currentPopup==='popupVerifyWifiFailiOS'">
+						<div>
+							You are not connected to WiFi.
+						</div>
+						<div class="popupVerifyWifiBottom">
+							Please go to your phone's settings and connect to your home WiFi. Press phone back button to exit the app. 
+						</div>
+					</div>
+
+					<div class="popupTextContainer" ng-show="currentPopup==='popupConfirmDeletePump'">
+						Delete this pump?
+					</div>
+
+					<div class="popupTextContainer" ng-show="currentPopup==='pumplistFull'">
+						Pump phone list is full, please remove at least one entry and try again!
+					</div>
+
+					<div class="popupTextContainer" ng-show="currentPopup==='showConnectedWiFiInfo'">
+						This is the WiFi network that will allow communication between the pump and your phone / tablet.
+					</div>
+
+					<div class="popupTextContainer" ng-show="currentPopup==='popupVerifyWifiNo'">
+						For new system setup, your phone will need to be connected to the same Wifi network as you plan to use for the pump system.
+					</div>
+
+					<div class="popupTextContainer" ng-show="currentPopup==='popupVerifyWifiNoiOS'">
+						Please go to your phone's settings and connect to your home WiFi. Press phone back button to exit the app.
+					</div>
+
+					<div class="popupTextContainer" ng-show="currentPopup==='popupVerifyWifiNoContinue'">
+						This is not your Home WiFi network. You will not be able to get the most current pump status updates. However, you will still receive notification if there is a pump alarm.
+					</div>
+
+					<div class="popupTextContainer" ng-show="currentPopup==='popupVerifyWifiNoContinueiOS'">
+						This is not your Home WiFi network so you will not be able to get the most current pump status updates but you can still receive notification if there is a pump alarm.<br><br> Stay or press phone back button to exit the app.
+					</div>
+
+					<div class="popupTextContainer" ng-show="currentPopup==='popupConfirmExit'">
+						Are you sure you want to exit from the app?
+					</div>
+
+					<div class="popupTextContainer" ng-show="currentPopup==='popupVerifyWifi'">
+						<div class="popupVerifyWifiTop">
+							You are connected to:
+						</div>
+						<div class="popupVerifyWifiMiddle">
+							{{unverifiedSSID}}
+						</div>
+						<div class="popupVerifyWifiBottom">
+							Is this the home network for your Wifi pump system?
+						</div>
+					</div>
+
+					<div class="popupTextContainer" ng-show="currentPopup==='showMeAbout'">
+						<div class="popupVerifyWifiMiddle">
+							AppID: com.ecofloproducts.app
+						</div>
+						<div class="popupVerifyWifiMiddle">
+							Version: {{appVersionNo}}
+						</div>
+					</div>
+
+					<div class="popupTextContainer" ng-show="currentPopup==='upgradeFirmware'">
+						<div class="popupVerifyWifiTop" style="font-weight:800;font-family:'Open Sans'">
+							Current Firmware: {{selectedPump.curFwVer}}
+						</div>
+						<div class="popupVerifyWifiTop" style="font-weight:800;font-family:'Open Sans'">
+							New Firmware: {{selectedPump.newFwVer}}
+						</div>
+						<div class="popupVerifyWifiMiddle" style="margin-top:3%;font-weight:normal;">
+							If you decide to upgrade, it will take a minute for activation and the pump will restart by itself when ready.
+						</div>
+						<div class="popupVerifyWifiBottom" style="margin-top:2%;">
+							Do you want to upgrade now?
+						</div>
+					</div>
+
+					<div class="popupTextContainer" ng-show="currentPopup==='popupSetupCannotConnect'">
+						Click 'Ok' to go to your phone's WiFi settings.  Select the '{{targetSSID}}' from the list and click connect.  Wait for the phone to successfully connect, then press your phone's back button to return to the app.<br><br>Ignore the 'No Internet' warning if shown up.
+					</div>
+
+					<div class="popupTextContainer" ng-show="currentPopup==='getCurrentWifiSSID'">
+						After the permission is granted, click 'Ok' to check your home WiFi id.
+					</div>
+
+					<div class="popupTextContainer" ng-show="currentPopup==='genericPopupMessageAlert' || currentPopup==='genericPopupMessage'">
+						<div class="popupVerifyWifiTop textCenter" style="font-weight:bold; font-size:130%">
+							Alert Notification
+						</div><br>
+						<div class="popupVerifyWifiMiddle">
+							Pump ID: <span style="font-weight:normal">{{alertPumpID}}</span>
+						</div>
+						<div class="popupVerifyWifiMiddle">
+							Error Code: <span style="font-weight:normal">{{alertErrorCode}}</span>
+						</div>
+						<div class="popupVerifyWifiMiddle">
+							Message:<br><span style="font-weight:normal">{{alertMsg}}</span>
+						</div>
+					</div>
+
+					<div class="popupTextContainer" ng-show="currentPopup==='errorPopupMessage'">
+						{{generalErrorMessage}}
+					</div>
+				</div>
+					<div class="alertBottom">
+						<div ng-show="popupStates[currentPopup].buttons.length>1">
+							<div class="alertButtonLeft" style="color:white" ng-click="popupStates[currentPopup].buttons[1].callback()"> {{popupStates[currentPopup].buttons[1].title}}
+							</div>
+							<div class="alertButtonRight" style="color:#0496c1" ng-click="popupStates[currentPopup].buttons[0].callback()"> {{popupStates[currentPopup].buttons[0].title}}
+							</div>
+						</div>
+						<div ng-show="popupStates[currentPopup].buttons.length==1">
+							<div class="alertButtonRight" style="color:#0496c1" ng-click="popupStates[currentPopup].buttons[0].callback()"> {{popupStates[currentPopup].buttons[0].title}}
+							</div>
+						</div>>
+					</div>
+			</div>
+
+			<div class="popupInner"  ng-show="!popupShowing">
+				<div class="popupTop">
+
+					<div class="popupTextContainer" ng-show="currentPopup==='popupMeIncomplete'">
+						You must fill out your Me information before you can Setup your pump or view your Pump List.
+					</div>
+
+					<div class="popupTextContainer" ng-show="currentPopup==='popupVerifyWifiFail'">
+						<div>
+							You are not connected to WiFi.
+						</div>
+						<div class="popupVerifyWifiBottom">
+							Please go to your phone's settings and connect to your home WiFi. Press phone back button to exit the app. 
+						</div>
+					</div>
+
+					<div class="popupTextContainer" ng-show="currentPopup==='popupVerifyWifiFailiOS'">
+						<div>
+							You are not connected to WiFi.
+						</div>
+						<div class="popupVerifyWifiBottom">
+							Please go to your phone's settings and connect to your home WiFi. Press phone back button to exit the app. 
+						</div>
+					</div>
+
+					<div class="popupTextContainer" ng-show="currentPopup==='showConnectedWiFiInfo'">
+						This is the WiFi network that will allow communication between the pump and your phone / tablet.
+					</div>
+
+					<div class="popupTextContainer" ng-show="currentPopup==='popupVerifyWifiNo'">
+						For new system setup, your phone will need to be connected to the same Wifi network as you plan to use for the pump system.
+					</div>
+
+					<div class="popupTextContainer" ng-show="currentPopup==='popupVerifyWifiNoiOS'">
+						Please go to your phone's settings and connect to your home WiFi. Press phone back button to exit the app.
+					</div>
+
+					<div class="popupTextContainer" ng-show="currentPopup==='popupVerifyWifiNoContinue'">
+						This is not your Home WiFi network. You will not be able to get the most current pump status updates. However, you will still receive notification if there is a pump alarm.
+					</div>
+
+					<div class="popupTextContainer" ng-show="currentPopup==='popupVerifyWifiNoContinueiOS'">
+						This is not your Home WiFi network so you will not be able to get the most current pump status updates but you can still receive notification if there is a pump alarm.<br><br> Stay or press phone back button to exit the app.
+					</div>
+
+					<div class="popupTextContainer" ng-show="currentPopup==='popupConfirmExit'">
+						<div class="popupVerifyWifiBottom">
+						Are you sure you want to exit from the app?
+						</div>
+					</div>
+
+					<div class="popupTextContainer" ng-show="currentPopup==='popupVerifyWifi'">
+						<div class="popupVerifyWifiTop">
+							You are connected to:
+						</div>
+						<div class="popupVerifyWifiMiddle">
+							{{unverifiedSSID}}
+						</div>
+						<div class="popupVerifyWifiBottom">
+							Is this the home network for your Wifi pump system?
+						</div>
+					</div>
+
+					<div class="popupTextContainer" ng-show="currentPopup==='showMeAbout'">
+						<div class="popupVerifyWifiMiddle">
+							AppID: com.ecofloproducts.app
+						</div>
+						<div class="popupVerifyWifiMiddle">
+							Version: {{appVersionNo}}
+						</div>
+					</div>
+
+					<div class="popupTextContainer" ng-show="currentPopup==='upgradeFirmware'">
+						<div class="popupVerifyWifiMiddle">
+							Current Firmware: {{selectedPump.curFwVer}}
+						</div>
+						<div class="popupVerifyWifiMiddle">
+							New Firmware: {{selectedPump.newFwVer}}
+						</div>
+						<div class="popupVerifyWifiBottom">
+							Do you want to upgrad now?
+						</div>
+					</div>
+
+					<div class="popupTextContainer" ng-show="currentPopup==='popupSetupCannotConnect'">
+						Click 'Ok' to go to your phone's WiFi settings.  Select the '{{targetSSID}}' from the list and click connect.  Wait for the phone to successfully connect, then press your phone's back button to return to the app.<br><br>Ignore the 'No Internet' warning if shown up.
+					</div>
+
+					<div class="popupTextContainer" ng-show="currentPopup==='getCurrentWifiSSID'">
+						After the permission is granted, click 'Ok' to check your home WiFi id.
+					</div>
+
+					<div class="popupTextContainer" ng-show="currentPopup==='genericPopupMessageAlert' || currentPopup==='genericPopupMessage'">
+						<div class="popupVerifyWifiTop textCenter" style="font-weight:bold; font-size:130%">
+							Alert Notification
+						</div><br>
+						<div class="popupVerifyWifiMiddle">
+							Pump ID: <span style="font-weight:normal">{{alertPumpID}}</span>
+						</div>
+						<div class="popupVerifyWifiMiddle">
+							Error Code: <span style="font-weight:normal">{{alertErrorCode}}</span>
+						</div>
+						<div class="popupVerifyWifiMiddle">
+							Message:<br><span style="font-weight:normal">{{alertMsg}}</span>
+						</div>
+					</div>
+
+					<div class="popupTextContainer" ng-show="currentPopup==='errorPopupMessage'">
+						{{generalErrorMessage}}
+					</div>
+
+				</div>
+
+				<div class="popupBottom">
+					<div ng-repeat="item in popupStates[currentPopup].buttons">
+						<button class="{{item.styleClass}}" ng-click="item.callback()">{{item.title}}</button>
+					</div>
+				</div>
+
+			</div>
+		</div>
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/utilities.js"></script>
+        <script type="text/javascript" src="js/models.js"></script>
+        <script type="text/javascript" src="js/pumprequest.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript" src="js/pages/pumps.js"></script>
+        <script type="text/javascript" src="js/pages/pumpdetails.js"></script>
+        <script type="text/javascript" src="js/pages/setup.js"></script>
+        <script type="text/javascript" src="js/pages/me.js"></script>
+        <script type="text/javascript" src="js/pages/messages.js"></script>
+        <script type="text/javascript" src="js/pages/landing.js"></script>
+        <script type="text/javascript" src="js/app.js"></script>
+    </body>
+</html>

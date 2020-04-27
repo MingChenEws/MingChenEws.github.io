@@ -1,0 +1,20 @@
+<div class="setup-app">
+	<h1>Set up your pumps WiFi [3]</h1>
+	<div style="width:100%; text-align:center; padding-top:3%; padding-bottom:5%;" ng-init="startAniLeafCycle()">
+		<a><p ng-class="{'aniLeafCycleStep':aniLeafCycleStep===1}">1</p><img class="pumpsvg leafAny" style="width:20%; height:20%; color:red;" ng-show="aniLeafCycleStep!==1"><img  src="img/leafredyellowgreen.gif" style="width:20%;height:20%;" ng-show="aniLeafCycleStep===1"></a>
+		<a style="padding-right:11%; padding-left:11%;"><p ng-class="{'aniLeafCycleStep':aniLeafCycleStep===2}">2</p><img src="img/leafgrey.svg" style="width:20%; height:20%;" ng-show="aniLeafCycleStep!==2"><img src="img/leafgreengrey.gif" style="width:20%; height:20%;" ng-show="aniLeafCycleStep===2"/></a>
+		<a><p ng-class="{'aniLeafCycleStep':aniLeafCycleStep===3}">3</p><img src="img/leafgreen.svg" style="width:20%; height:20%;"></a>
+	</div>
+	<p class="cellmiddle" ng-style="{ 'color': (aniLeafCycleStep===1) ? '#75c043' : '#58585a', 'font-weight': (aniLeafCycleStep===1) ? 'normal' : 'normal' }">1. When the Restart Pump process begins, the pump will flash green, red, yellow.</p><br /><br />
+	<p class="cellmiddle" ng-style="{ 'color': (aniLeafCycleStep===2) ? '#75c043' : '#58585a', 'font-weight': (aniLeafCycleStep===2) ? 'normal' : 'normal'  }">2. The leaf will then flash green and grey while it attempts to connect to WiFi.</p><br /><br />
+	<p class="cellmiddle" ng-style="{ 'color': (aniLeafCycleStep===3) ? '#75c043' : '#58585a', 'font-weight': (aniLeafCycleStep===3) ? 'normal' : 'normal'  }">3. When successfully connected, the leaf will be solid green. Press <b>NEXT</b>.</p><br /><br />
+	<p class="cellmiddle">Not seeing any of the above? Tap <b class="greenColor" ng-click="$root.setupReturnStep=26;goToSetupPage(4)">HERE</b> for help.</p>
+</div>
+<div class="setup-footer">
+	<a ng-click="goToSetupPage(0)" class="backButton" style="float:left;display:none;">
+		<i class="fa fa-chevron-left" aria-hidden="true"></i>
+	</a>
+	<div style="margin:0;padding:0;width:100%;text-align:right;">
+		<button id="nextButton" ng-click="goToSetupPage(27)" class="buttonsmall forceshow">NEXT</button>
+	</div>
+</div>

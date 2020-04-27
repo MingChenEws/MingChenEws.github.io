@@ -1,0 +1,59 @@
+<div class="setup-app" ng-init="autoDetectPumpSerial()">
+	<h1>Set up your pump's Wifi [2]</h1>
+	<p class="cellmiddle" style="width:100%; font-weight:300; padding-top:2%; padding-bottom:2%">Enter pump information:</p>
+
+	<div style="width:100%;height:5%;position:relative;margin-top:5%;margin-bottom:3%;">
+		<div style="width:37%;height:100%;position:absolute;top:0;left:0;text-align:left">
+			<b>Pump WiFi ID:</b>
+		</div>
+		<div style="width:58%;height:100%;position:absolute;top:0;left:37%;font-size:110%;">
+			{{setupPump.name}}
+		</div>
+	</div>
+
+	<div style="width:100%;height:5%;position:relative;margin-top:2%;margin-bottom:3%;">
+		<div style="width:44%;height:100%;position:absolute;top:0;left:0;text-align:left">
+			<b>Name Your Pump:</b>
+		</div>
+		<div style="width:50%;height:100%;position:absolute;top:0;left:44%;">
+			<input id="pumpDescription" maxlength="30" ng-model="setupPump.description" class="text-line text-line-new" style="float:left;width:100%;margin-top:-1%;margin-bottom:5%;font-size:110%;" />
+		</div>
+	</div>
+
+	<div style="float:left;width:100%;text-align:center;vertical-align:middle;">
+		<button id="actionButton" class="buttonlarge" ng-click="performActionWiFi(connectToPump)">CONNECT</button>
+	</div>
+
+	<div>
+		<img class="progressSpinner" style="width:12%;float:right;margin-top:-13%;margin-right:3%;">
+		<i class="fa fa-check" style="width:12%;float:right;margin-top:-13%;margin-right:3%;" aria-hidden="true"></i>
+		<i class="fa fa-times" style="width:12%;float:right;margin-top:-13%;margin-right:3%;" aria-hidden="true"></i>
+	</div>
+	<div class="clearfix"></div>
+	<div style="margin-top:5%">
+		<div id="progressText" style="width:100%;height:5%;" ng-show="messageStepWifi.length > 0">
+			<div class="connectPumpProgressBarLabel textCenter">
+				<div class="verticalCenter">{{messageStepWifi}}</div>
+			</div>
+		</div>
+
+		<div id="pageTextA" style="margin-top:15%;display:unset" ng-hide="isAndroid()">
+			<p>If you are directed to your phone’s wifi settings, select your pump system’s wifi name and press phone’s back button or home key to return to this page and press <b>CONNECT</b> again</p>
+		</div>
+
+		<div id="pageText" style="margin-top:15%;display:unset" ng-show="isAndroid()">
+			<p>If you are directed to your phone’s wifi settings, select your pump system’s wifi name and wait for few seconds after it's connected. If there is a "Wi-fi has no Internet access" notification popped up, 'Tap for options' and answer 'Yes' to 'Stay connected'. Then press phone’s back button or home key to return to this page and press <b>CONNECT</b> again</p>
+		</div>
+
+		<div id="failureText" style="margin-top:15%;display:none">
+			<p>Failed to connect to the pump.  Please return to previous screen by pressing Back arrow.<br /><br />  Possible reasons:</p><br />
+			<p class="cellmiddle">- Controller no longer in Setup Mode<br>- WiFi password entered incorrectly<br>- No internet availability<br>- Incorrect serial number</p>
+		</div>
+
+	</div>
+</div>
+<div class="setup-footer">
+	<a ng-click="goToSetupPage(21)" class="backButton" style="float:left">
+		<i class="fa fa-chevron-left" aria-hidden="true"></i>
+	</a>
+</div>

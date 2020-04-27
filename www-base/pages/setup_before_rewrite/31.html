@@ -1,0 +1,16 @@
+<div class="setup-app"  ng-init="recheckHomeWifi()">
+	<h1>Enable phone notifications!</h1>
+	<div style="width:100%; text-align:center;padding-top:10%; padding-bottom:10%;" ng-init="enablePhoneNotificationsPrecheck()">
+	<img src="img/leafgreenyellow.gif" style="width:25%;height:25%;padding-left:5%;padding-right:11%;">
+	<img src="img/buttonpress.svg" style="width:50%;height:50%;">
+	</div>
+	<p class="cellmiddle">Press and hold the <b>UNLOCK/SETUP</b> button for 3 seconds until 2 beeps are heard and the light alternates between green and yellow. </p>
+</div>
+<div class="setup-footer">
+	<a ng-click="goToSetupPage(3)" class="backButton forceshow" style="float:left">
+		<i class="fa fa-chevron-left" aria-hidden="true"></i>
+	</a>
+	<div style="margin:0;padding:0;width:100%;text-align:right;">
+		<button id="nextButton" ng-click="goToSetupPage(32)" class="buttonsmall forceshow">NEXT</button>
+	</div>
+</div>

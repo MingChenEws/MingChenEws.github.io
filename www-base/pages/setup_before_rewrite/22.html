@@ -1,0 +1,67 @@
+<div class="setup-app">
+	<h1>Set up your pump's Wifi!</h1>
+	<p id="subHeader" class="cellmiddle" style="width:100%; padding-top:2%;display:none;">Attempting to discover last 6 digits of the pump: </p>
+	<p id="subHeaderEnter" class="cellmiddle" style="width:100%; padding-top:2%;">Please enter the last 6 digits of the pump serial number: </p>
+	<p id="subHeaderNoAutofill" class="cellmiddle" style="width:100%; padding-top:2%;display:none;">Failed to automatically discover pump. Enter the last 6 digits of your pump’s serial number: </p>
+
+	<div style="width:100%;height:5%;position:relative;margin-top:5%;"  ng-init="autoDetectPumpSerial()">
+		<div style="width:30%;height:100%;position:absolute;top:0;left:0;">
+			<p>{{serialPrefix}}</p>
+		</div>
+		<div style="width:65%;height:100%;position:absolute;top:0;left:35%;">
+			<input id="pumpSerialNumber" maxlength="6" class="text-line text-line-new" ng-model="setupPump.serialending" />
+		</div>
+	</div>
+	<div style="width:100%;height:5%;position:relative;margin-top:5%;margin-bottom:2.5%;">
+		<div style="width:30%;height:100%;position:absolute;top:0;left:0;">
+			<p>Description:</p>
+		</div>
+		<div style="width:65%;height:100%;position:absolute;top:0;left:35%;">
+			<input id="pumpDescription" maxlength="30" class="text-line text-line-new" ng-model="setupPump.description" />
+		</div>
+	</div>
+
+	<div style="float:left;width:100%;text-align:center;vertical-align:middle;margin-top:2.5%;margin-bottom:2.5%">
+		<button id="actionButton" class="buttonlarge" ng-click="performAction(connectToPump)" disabled>CONNECT</button>
+	</div>
+
+	<div>
+		<img class="progressSpinner" style="width:12%;float:right;margin-top:-13%;margin-right:3%;">
+		<i class="fa fa-check" style="width:12%;float:right;margin-top:-13%;margin-right:3%;" aria-hidden="true"></i>
+		<i class="fa fa-times" style="width:12%;float:right;margin-top:-13%;margin-right:3%;" aria-hidden="true"></i>
+	</div>
+
+	<div class="clearfix"></div>
+	<div style="margin-top:5%">
+
+		<div id="progressText" style="width:100%;height:5%;" ng-show="messageStepWifi.length > 0">
+			<div class="connectPumpProgressBarLabel textCenter">
+				<div class="verticalCenter">{{messageStepWifi}}</div>
+			</div>
+		</div>
+
+		<div id="failureText">
+			<p>Failed to connect to the pump! Please double check the serial number, or press the back arrow to retry the WiFi set up process, or go to System WiFi Settrings.</p><br /><br />
+			<!-- <p class="cellmiddle">Tap button below to go to</p>
+			<p class="cellmiddle">Tap <b class="greenColor" style="font-size:200%" ng-click="openWifiSettings()">HERE</b> to go to System WiFi Settings.</p> -->
+
+
+			<div style="float:left;width:100%;text-align:center;vertical-align:middle;">
+				<button id="actionButton" class="buttonlarge" ng-click="openWifiSettings()" >WiFi Settings</button>
+			</div>
+
+		</div>
+		<div id="successText">
+			<p>Successfully connected to pump!<br /><b>MAC Address:</b> {{setupPump.macaddress}}<br /><br /> Please press <b>NEXT</b> to continue.</p>
+		</div>
+
+	</div>
+</div>
+<div class="setup-footer">
+	<a ng-click="goToSetupPage(21)" class="backButton" style="float:left">
+		<i class="fa fa-chevron-left" aria-hidden="true"></i>
+	</a>
+	<div style="margin:0;padding:0;width:100%;text-align:right;">
+		<button id="nextButton" ng-click="goToSetupPage(24)" class="buttonsmall">NEXT</button>
+	</div>
+</div>

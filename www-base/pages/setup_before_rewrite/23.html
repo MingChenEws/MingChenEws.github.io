@@ -1,0 +1,55 @@
+<div class="setup-app">
+	<h1>Set up your pump's Wifi!</h1>
+	<p class="cellmiddle" style="width:100%; font-weight:300; padding-top:2%; padding-bottom:2%">Enter pump information:</p>
+	<p></br></br></p>
+
+	<form action="#" class="cmxform">
+			  <label for="pumpName"><b>{{serialPrefix}}</b></label>
+			  <input class="pumpInput" id="pumpName" type="number" maxlength="6" ng-model="setupPump.serialending"/>
+			  <status>
+						<i id="pumpNameStatus" class="fa fa-check" style="font-size:100%;float:right;padding-top:2%;"></i>
+				</status>
+
+			  <label for="pumpDescription"><b>Description:</b></label>
+			  <input class="pumpInput" id="pumpDescription" type="number|text" maxlength="30" ng-model="setupPump.description"/>
+			  <status>
+						<i id="pumpDescStatus" class="fa fa-check" style="font-size:100%;float:right;padding-top:2%;"></i>
+				</status>
+
+			  <label for="wifiname"><b>Wifi Name:</b></label>
+			  <input class="pumpInput" id="wifiName" ng-model="me.wifiname" readonly/>
+			  <status>
+						<i id="wifiNameStatus" class="fa fa-check" style="font-size:100%;float:right;padding-top:2%;"></i>
+				</status>
+
+			  <label for="wifipasword"><b>Password:</b></label>
+			  <input class="pumpInput" id="networkAccess" ng-model="me.wifipass" type="password" readonly/>
+			  <status>
+						<i id="wifiPasswordStatus" class="fa fa-check" style="font-size:100%;float:right;padding-top:2%;"></i>
+						<p id="passwordIconShow" ng-click="togglePassword(true)">
+							<i class="fa fa-eye-slash passwordIcon" style="float:right;font-size:100%;" ></i></p>
+						<p id="passwordIconHide" ng-click="togglePassword(false)">
+						<i class="fa fa-eye passwordIcon" style="float:right;font-size:100%;" ></i></p>
+				</status>
+				
+	</form></br>
+
+	<div style="float:left;width:100%;text-align:center;vertical-align:middle;" ng-init="autoDetectPumpSerial()>
+		<button id="actionButton" class="buttonlarge" ng-click="performAction(connectToPump)">CONNECT</button>
+	</div>
+	<div>
+		<img class="progressSpinner" style="width:12%;float:right;margin-top:-13%;margin-right:3%;">
+		<i class="fa fa-check" style="width:12%;float:right;margin-top:-13%;margin-right:3%;" aria-hidden="true"></i>
+		<i class="fa fa-times" style="width:12%;float:right;margin-top:-13%;margin-right:3%;" aria-hidden="true"></i>
+	</div>
+	<div class="clearfix"></div>
+	<div id="failureText" style="margin-top:10px;">
+		<p>Failed to update pump information! Please try saving again.</p><br /><br />
+		<p class="cellmiddle">Tap <b class="greenColor" ng-click="openWifiSettings()">HERE</b> to go to System WiFi Settings.</p>
+	</div>
+</div>
+<div class="setup-footer">
+	<a ng-click="goToSetupPage(21)" class="backButton" style="float:left">
+		<i class="fa fa-chevron-left" aria-hidden="true"></i>
+	</a>
+</div>

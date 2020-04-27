@@ -1,0 +1,100 @@
+<div class="meMain" ng-show="editingItem===null&&!showScanning&&!manageHomeWifis" ng-init="checkIsMeCompleted()">
+	<div class="meMainTop textCenter">
+		<div class="verticalCenter meMainTopInner">
+			<div class="meMainTopIcon">
+				<i class="fas fa-user-circle"></i>
+			</div>
+			<div class="meDeviceIdText" ng-show="isMeComplete()">
+				Device ID: {{me.deviceuuid}}
+			</div>
+			<div class="meMainTopText" ng-show="!isMeComplete()">
+				Please complete the following information:
+			</div>
+		</div>
+	</div>
+	<div class="meMainBottom">
+		<div class="meMainInner">
+			<div class="meMainBox" ng-repeat="item in editOptions" ng-click="editMe(item)">
+				<div class="meMainBoxwhole" ng-show="item.name==='done'" ng-style="{ 'background-color':(me['done']===true)?'#75c043':'#58585a'}">
+						<div class="verticalCenter meMainBoxInner" style="text-align:center;color:white;font-weight:bold;font-size:150%;">
+							{{meStatus}}
+						</div>
+				</div>
+				<div ng-hide="item.name==='done'">
+					<div class="meMainBoxLeft">
+						<div class="verticalCenter meMainBoxInner">
+							{{item.title}}<span ng-style="{'font-weight':'bold','color':(me[item.name]!=='')?((item.name==='allowlocation')?(me[item.name]===null?'red':'#75c043'):'#75c043'):(item.name!=='wifipass')?'red':(me['wifipassexists']===null)?'red':'#75c043'}">{{item.required}}</span>
+						</div>
+					</div>
+
+					<div class="meMainBoxMiddle">
+						<div class="verticalCenter meMainBoxInner">
+							<i ng-show="item.name==='wifiname'" style="color:#75c043;font-size:200%;" class="fas fa-info-circle"></i>
+
+						</div>
+					</div>
+
+					<div class="meMainBoxRight">
+						<div class="verticalCenter meMainBoxInner">
+							{{item.name==='wifipass'?(me.wifipass===''?(me.wifipassexists===null||!me.wifipassexists?'':'None'):'******'): (item.name==='allowlocation'? (me[item.name]===true?'Yes':(me[item.name]===false?'No':'')):me[item.name])}}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="meEdit" ng-show="editingItem!==null&&!showScanning">
+	<div class="meEditInner">
+		<div class="meEditTitle">
+			{{editingItem.wording}}
+		</div>
+		<div class="meEditInputs" style="position:relative">
+			<input id="meEditInputTextbox" maxlength="{{editingItem.maxlength}}" ng-keyup="typeEdit()" ng-show="editingItem.name!=='allowlocation'" ng-model="editingTextInput" ng-change="editingCheckboxInput=false" placeholder="Enter your {{editingItem.title}}" type="{{editingItem.name==='wifipass'&&!showPasswordText?'password':(editingItem.name==='zipcode'?'number':(editingItem.name==='email'?'email':'text'))}}" />
+			<div ng-init="showPasswordText=false" style="position: absolute;top: 5%;right: 0;color:#75c043;font-size: 120%;" ng-show="editingItem.name==='wifipass'">
+				<p ng-click="showPasswordText=!showPasswordText" ng-hide="showPasswordText"><i class="fa fa-eye-slash passwordIcon"></i></p>
+				<p ng-click="showPasswordText=!showPasswordText" ng-show="showPasswordText"><i class="fa fa-eye passwordIcon"></i></p>
+			</div>
+			<div ng-show="editingItem.name==='requesturlserver'">
+				<select ng-init="initOptions()" id="requestServer" ng-model="selectedOptionName" ng-change="changeRequesturlserver()">
+					<option ng-repeat="opt in selectOptions" ><p>{{opt.name}}</p></option>
+				</select>
+			</div>
+			<div ng-show="editingItem.showCheckbox" class="checkboxFive"> 		
+				<input type="checkbox" ng-model="editingCheckboxInput" id="meCheckbox" name="meCheckbox" ng-click="editingTextInput=''" />
+				<label for="meCheckbox"></label>
+				{{editingItem.checkboxText}}<br>
+			</div>
+		</div>
+		<div class="meEditSave">
+			<button class="popupButtonConfirm" ng-class="{'popupButtonConfirmWifiNo':!allowSave}" ng-click="saveEdit()">Save</button>
+		</div>
+	</div>
+</div>
+<div class="meEdit" ng-show="manageHomeWifis&&!showScanning">
+	<div class="meEditInner">
+		<div class="meEditTitle">
+			Manage Home Network WiFi
+		</div>
+		<div class="meEditInputs" style="position:relative"><!--ng-repeat="(key, value) in homewifis"-->
+			<table cellspacing="0" border="0" style="width:100%">
+				<tr>
+					<th style="width:40%;text-align:left;overflow:hidden;">WiFi Name</th>
+					<th style="width:50%;text-align:left;overflow:hidden;">WiFi Password</th>
+					<th style="width:10%;text-align:left;overflow:hidden;">Delete</th>
+				</tr>
+				<tr ng-repeat="(key, value) in homewifis" ng-if="!key.endsWith('exists')">
+					<td style="width:40%;overflow:hidden;">
+						{{key}}
+					</td>
+					<td style="width:50%;overflow:hidden;">
+						<input type="text" ng-model="homewifis[key]" ng-disabled="me.currentwifiname===key" />
+					</td>
+					<td style="width:10%;overflow:hidden;text-align:center;" ng-click="deleteWifi(key)">
+						<i style="display:unset !important;color:red;font-size:150%;" class="fas fa-times"></i>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</div>

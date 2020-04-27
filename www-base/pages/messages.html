@@ -1,0 +1,113 @@
+<div class="pumpDetailsMain">
+<!--
+	<div class="pumpDetailsHeader textCenter" ng-style="{'background-color':iconFillColor(selectedPump.idAsNumber, selectedPump.isAccessible, selectedPump.isInPump)}">
+			<div class="pumpDetailsIcon">
+				<img class="pumpsvg leafIconSvg" style="color:white" />
+			</div>
+			<div class="pumpDetailsInfo">
+				<div class="pumpDetailsName">
+					{{pumpDetails.name}}
+				</div>
+				<div class="pumpDetailsDescription">
+					{{pumpDetails.description}}
+				</div>
+			</div>
+	</div>
+-->
+		<div style="width:100%;height:18%;position:relative;" ng-style="{'background-color':iconFillColor(selectedPump.idAsNumber, selectedPump.isAccessible, selectedPump.isInPump)}">
+				<div style="width:82%;height:100%;position:absolute;top:0%;left:0%;">
+					<div style="width:100%;height:100%;position:relative" >
+						<div style="width:35%;height:100%;position:absolute;top:0%;left:0%;" class="textCenter">
+							<div class="verticalCenter">
+								<i class="pumpsvg leafIconSvg" style="fill:white"></i>
+							</div>
+						</div>
+						<div style="width:65%;height:100%;position:absolute;top:0%;right:0%;" >
+							<div class="verticalCenter">
+								<div style="width:100%;overflow:hidden;white-space:nowrap;font-size:85%;color:white" >
+									<p>Name:&nbsp;</p>
+									<p>{{selectedPump.name}}</p>
+								</div>
+								<div style="width:100%;overflow:hidden;white-space:nowrap;font-size:85%;color:white">
+									<p>Description:&nbsp;</p>
+									<p>{{selectedPump.description}}</p>
+								</div>
+								<div style="width:100%;overflow:hidden;white-space:nowrap;font-size:85%;color:white" >
+									<p>MAC:&nbsp;</p>
+									<p>{{selectedPump.macaddress}}</p>
+								</div>
+								<div style="width:100%;overflow:hidden;white-space:nowrap;font-size:85%;color:white" >
+									<p>Version:&nbsp;</p>
+									<p>{{selectedPump.curFwVer}}</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+	</div>
+	
+	<div class="messagesMainContainter">
+		<div class="messagesListContainer">
+			<div class="messagesItem" ng-repeat="item in currentMessages" on-finish-render="ngRepeatFinished" ng-class="{'messagesItemFromUser':!item.senderIsPump}">
+				<div class="messagesItemIcon textCenter" ng-class="{'messagesItemIconRight':!item.senderIsPump}">
+					<div class="pumpsvg leafIconSvg" ng-show="item.senderIsPump" ng-click="showAlerMsgMoreInfo(item)" ng-class="{'messagesItemAlert':item.isAlert}" style="color:{{iconFillColor(selectedPump.idAsNumber, selectedPump.isAccessible, selectedPump.isInPump)}}"></div>
+					<div class="pumpsvg messagesPerson messagesItemFromUser" ng-show="!item.senderIsPump" ng-class="{'messagesItemAlert':item.isAlert}" style="color:{{iconFillColor(selectedPump.idAsNumber, selectedPump.isAccessible, selectedPump.isInPump)}}"></div>
+				</div>
+				<div class="messagesItemDetails"  ng-class="{'messagesItemDetailsLeft':!item.senderIsPump}">
+					<div class="messagesItemTime">
+						{{messageDateToLocale(item.datetime) + ' : ' + selectedPump.name}}
+					</div>
+					<div class="messagesItemText" ng-class="{'messagesItemAlert':item.isAlert}">
+						{{item.message}}
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="messagesInputContainer">
+			<div class="messagesShortcuts keyboardAnchorBottom" ng-show="showingShortcuts">
+				<div class="messagesShortcutsInner">
+					<div class="messagesShortcutsCol" ng-repeat="col in shortCutCommands" ng-style="{'left':(37*$index)+'%'}">
+						<div class="messagesShortcutsRow textCenter" ng-repeat="item in shortCutCommands[$index]" ng-click="shortcutClick(item)">
+							<div class="verticalCenter textCenter">
+								<div class="messagesShortcutIconContainer">
+									<div class="verticalCenter">
+										<i class="{{'pumpsvg ' + item.icon}}" style="font-size:200%"></i>
+									</div>
+								</div>
+								<div class="messagesShortcutTitle">
+									{{item.title}}
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="messagesInputTop">
+				<div class="messageInputContainer">
+					<div class="verticalCenter">
+						<input class="messageInput" type="text" placeholder="Type pump command here" ng-keydown="toggleShowShortcuts(false)" ng-model="messageInputText" />
+					</div>
+				</div>
+				<div class="messageInputButton textCenter" ng-click="toggleShowShortcuts()" ng-show="!keyboadIsShown">
+					<div class="verticalCenter" ng-hide="showingShortcuts">
+						<i class="fas fa-plus"></i>
+					</div>
+					<div class="verticalCenter" ng-show="showingShortcuts">
+						<i class="fas fa-minus"  style="color:red"></i>
+					</div>
+				</div>
+				<div class="messageInputButton textCenter" ng-click="dismissKeyboad()" ng-show="messageInputText.length <= 0 && keyboadIsShown">
+					<div class="verticalCenter">
+						<i style="display:unset !important;color:red;font-size:120%;" class="fas fa-times"></i> 
+					</div>
+				</div>
+				<div class="messageInputButton textCenter" ng-click="sendInputAsCommand()" ng-show="messageInputText.length > 0 && keyboadIsShown" style="color:white;font-size:120%; background-color:#75c043">
+					<div class="verticalCenter messageInputSendContainer">
+						<!-- <div class="messageInputSend">Send</div> -->
+						Send
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

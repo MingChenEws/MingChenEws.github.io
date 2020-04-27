@@ -1,0 +1,147 @@
+<div class="pumpDetailsMain">
+<!--
+	<div class="pumpDetailsHeader textCenter" ng-style="{'background-color':iconFillColors[selectedPump.idAsNumber, selectedPump.isAccessible, selectedPump.isInPump]}">
+			<div class="pumpDetailsIcon">
+				<img class="pumpsvg leafIconSvg" style="fill:white" />
+			</div>
+			<div class="pumpDetailsInfo">
+				<div class="pumpDetailsName">
+					{{selectedPump.name}}
+				</div>
+				<div class="pumpDetailsDescription">
+					{{selectedPump.description}}
+				</div>
+				<div class="pumpDetailsFwVer">
+					{{selectedPump.curFwVer}}
+				</div>
+			</div>
+	</div> -->
+
+	<div style="width:100%;height:18%;position:relative;" ng-style="{'background-color':iconFillColor(selectedPump.idAsNumber, selectedPump.isAccessible, selectedPump.isInPump)}">
+				<div style="width:82%;height:100%;position:absolute;top:0;left:0;">
+					<div style="width:100%;height:100%;position:relative" >
+						<div style="width:40%;height:100%;position:absolute;top:0;left:0;" class="textCenter">
+							<div class="verticalCenter">
+								<i class="pumpsvg leafIconSvg" style="fill:white"></i>
+							</div>
+						</div>
+						<div style="width:60%;height:100%;position:absolute;top:0;right:0;" >
+							<div class="verticalCenter">
+								<div style="width:100%;overflow:hidden;white-space:nowrap;font-size:85%;color:white" >
+									<p>Name:&nbsp;</p>
+									<p>{{selectedPump.name}}</p>
+								</div>
+								<div style="width:100%;overflow:hidden;white-space:nowrap;font-size:85%;color:white">
+									<p>Description:&nbsp;</p>
+									<p>{{selectedPump.description}}</p>
+								</div>
+								<div style="width:100%;overflow:hidden;white-space:nowrap;font-size:85%;color:white" >
+									<p>MAC:&nbsp;</p>
+									<p>{{selectedPump.macaddress}}</p>
+								</div>
+								<div style="width:100%;overflow:hidden;white-space:nowrap;font-size:85%;color:white" >
+									<p>Version:&nbsp;</p>
+									<p>{{selectedPump.curFwVer}}</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+	</div>
+
+	<div class="pumpDetailsContent" style="height:80%;">
+		<div class="pumpDetailsItem" ng-repeat="item in pumpDetailsBasics" ng-class="{'pumpDetailsItemFirst':$index===0}">
+			<div class="pumpDetailsItemSummary" ng-init="fixItemHeight('.pumpDetailsContent', '.pumpDetailsItemSummary')" ng-click="item.collapsed = !item.collapsed">
+				<div class="pumpDetailsItemLeft">
+					<div class="pumpDetailsItemInner">
+						<div class="pumpDetailsItemTitle">
+							<div class="verticalCenter">
+								{{item.title}}
+							</div>
+						</div>
+						<div class="pumpDetailsItemValue">
+							<div class="verticalCenter" >
+								<font ng-style="{ 'color': (selectedPump.isPumpOffline && (item.title == 'Last Update Time')) ? 'red' : '#75c043' }">
+								{{pumpDetail[item.valueKey]}}</font>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="pumpDetailsItemRight textCenter" ng-show="item.hasHistory" >
+					<div class="pumpDetailsItemExpand" ng-class="{'rotate90':!item.collapsed}">
+						<div class="verticalCenter">
+							<i class="fas fa-chevron-right"></i>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="pumpDetailsItemDetails" uib-collapse="item.collapsed" ng-init="getHistoricalData(item.valueKey, '7', item.dataidx)" ng-if="item.hasHistory">
+				<div style="margin-left:5%;margin-bottom:2.5%;">
+					<button ng-click="getHistoricalData(item.valueKey, '7', item.dataidx)" style="color:#75c043;background-color:white;border-color:#75c043;">7 Sets</button>&nbsp;&nbsp;
+					<button ng-click="getHistoricalData(item.valueKey, '30', item.dataidx)" style="color:#75c043;background-color:white;border-color:#75c043;">30 Sets</button>
+				</div>
+				<canvas id="base" class="chart-bar"
+				  chart-data="item.data" chart-labels="item.labels" chart-colors="datasetcolors"
+				  chart-dataset-override="datasetOverride" chart-options="item.chartOptions" >
+				</canvas> 
+			</div>
+		</div>
+
+		<div class="pumpDetailsItem" ng-if="pumpDetail['error'] !== '00'" >
+			<div class="pumpDetailsItemSummary" ng-init="fixItemHeight('.pumpDetailsContent', '.pumpDetailsItemSummary')" >
+				<div class="pumpDetailsItemLeft">
+					<div class="pumpDetailsItemInner">
+						<div class="pumpDetailsItemTitle">
+							<div class="verticalCenter" >
+								<font color="red">Alarm</font>
+							</div>
+						</div>
+						<div class="pumpDetailsItemValue">
+							<div class="verticalCenter">
+								<font color="red">{{pumpDetail['errorMessage']}}</font>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="pumpDetailsItem" ng-if="pumpDetail['error2'] !== '00'" >
+			<div class="pumpDetailsItemSummary" ng-init="fixItemHeight('.pumpDetailsContent', '.pumpDetailsItemSummary')" >
+				<div class="pumpDetailsItemLeft">
+					<div class="pumpDetailsItemInner">
+						<div class="pumpDetailsItemTitle">
+							<div class="verticalCenter" >
+								<font color="red">Alarm</font>
+							</div>
+						</div>
+						<div class="pumpDetailsItemValue">
+							<div class="verticalCenter">
+								<font color="red">{{pumpDetail['error2Message']}}</font>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="pumpDetailsStatus">
+			<div class="pumpStatusItem" ng-repeat="item in pumpDetail.statusList track by $index" ng-init="fixItemHeight('.pumpDetailsContent', '.pumpStatusItem')" ng-if="pumpStatusLable[$index]!==''" >
+				<div class="pumpStatusItemInner">
+					<div class="pumpStatusItemLeft">
+						<div class="verticalCenter" >
+							{{pumpStatusLable[$index]}}
+<!--
+							Status #{{$index+1}}
+-->
+						</div>
+					</div>
+					<div class="pumpStatusItemRight textCenter">
+						<svg fill="{{item==='0'? ($index===1?'transparent':'green'):($index===1?'green':'red')}}" style="pumpStatusItemSvg" height="10" width="10">
+						  <circle cx="5" cy="10" r="5" stroke="black" stroke-width="0" />
+						</svg>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

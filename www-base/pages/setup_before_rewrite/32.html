@@ -1,0 +1,50 @@
+<div class="setup-app">
+	<h1>Enable phone notifications!</h1>
+
+	<p class="cellmiddle" style="width:100%; padding-top:2%; padding-bottom:10%;">Press <b>ENABLE NOTIFICATIONS</b> to enable alerts for your phone: </p>
+
+	<div ng-init="macaddr=setupPump.macaddress">
+		<p style="width:15%;float:left;margin-top:5%;margin-bottom:5%;">MAC: </p>
+		<input id="macaddress" type="text" maxlength="12" ng-model="macaddr" class="text-line1" style="float:left;width:65%;margin-top:5%;margin-bottom:5%;;font-size:120%;" />
+		<p style="float:right;margin-top:5%;margin-bottom:5%;font-size:150%;" ng-click="scanMac()"><i class="fa fa-barcode"></i></p>
+	</div>
+
+	<div style="margin-top:5%;margin-bottom:5%;" ng-init="enablePhoneNotificationsPrecheck()">
+		<center><button id="actionButton" class="buttonlarge" style="width:90%;" ng-click="performAction(enablePhoneNotifications)">
+		ENABLE NOTIFICATIONS</button></center>
+		<div>
+			<img class="progressSpinner" style="width:12%;float:right;margin-top:-13%;margin-right:-9%;">
+			<i class="fa fa-check" style="width:12%;float:right;margin-top:-13%;margin-right:-9%;" aria-hidden="true"></i>
+			<i class="fa fa-times" style="width:12%;float:right;margin-top:-13%;margin-right:-9%;" aria-hidden="true"></i>
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+	<div class="enablePhoneProgressBar" ng-show="progressBarCurrent>0">
+		<div class="enablePhoneProgressBarFill"></div>
+		<div class="enablePhoneProgressBarLabel textCenter">
+			<div class="verticalCenter">{{progressBarCurrent}}/{{progressBarTotal}}</div>
+		</div>
+	</div>
+	<div id="failureText">
+		<p class="cellmiddle" style="width:100%; padding-top:10%; padding-bottom:10%;">Failed enable phone notifications!<br><br>
+		Please press <b>ENABLE NOTIFICATIONS</b> to try again, or press the back button to retry the setup process, or go to System Wifi Settings to ensure you are connected to the HOME Wifi.</p><br /><br />
+		<!--<p class="cellmiddle">To make sure you are connected to the HOME Wifi, tap <b class="greenColor" ng-click="openWifiSettings()">HERE</b> to go to System WiFi Settings.</p> -->
+
+		<div style="float:left;width:100%;text-align:center;vertical-align:middle;">
+			<button id="actionButton" class="buttonlarge" ng-click="openWifiSettings()" >WiFi Settings</button>
+		</div>
+
+	</div>
+	<div id="successText">
+		<p class="cellmiddle" style="width:100%; padding-top:10%; padding-bottom:10%;"></p>
+	</div>
+</div>
+<div class="setup-footer">
+	<a ng-click="goToSetupPage(31)" class="backButton" style="float:left">
+		<i class="fa fa-chevron-left" aria-hidden="true"></i>
+	</a>
+	<div style="margin:0;padding:0;width:100%;text-align:right;">
+		<button id="nextButton" ng-click="goToSetupPage(34)" class="buttonsmall">NEXT</button>
+	</div>
+</div>
